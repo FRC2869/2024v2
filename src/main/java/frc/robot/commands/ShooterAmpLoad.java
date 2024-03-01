@@ -22,6 +22,7 @@ public class ShooterAmpLoad extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
-    shooter.setSpeed(1000, -1000);
+    System.err.println("AMPL");
+    shooter.setSpeed(.2,- .2);
   }
 }

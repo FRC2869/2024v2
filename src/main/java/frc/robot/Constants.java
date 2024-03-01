@@ -27,7 +27,7 @@ public class Constants {
 
         public static final int id2 = 18;
         public static final int id1 = 19;
-        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 0, 0, 0, 1, -1, 0, 0, 40, true, false, 0);
+        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.5, -0.5, 0, 0, 40, true, false, 0);
 
     }
 }
