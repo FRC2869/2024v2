@@ -23,4 +23,11 @@ public class Constants {
             public static final int port = 3;
         } 
     }
+    public static class ShooterConstants {
+
+        public static final int id2 = 18;
+        public static final int id1 = 19;
+        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 0, 0, 0, 1, -1, 0, 0, 40, true, false, 0);
+
+    }
 }
