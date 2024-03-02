@@ -24,6 +24,9 @@ import frc.robot.commands.Intake.IntakeFloorPos;
 import frc.robot.commands.Intake.IntakeSpinIn;
 import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
+import frc.robot.commands.PivotAmp;
+import frc.robot.commands.PivotBase;
+import frc.robot.commands.PivotFar;
 
 public class RobotContainer {
   private double MaxSpeed = 6; // 6 meters per second desired top speed
@@ -64,6 +67,9 @@ public class RobotContainer {
     Inputs.getIntakeSpinOut().onTrue(new IntakeSpinOut());
     Inputs.getIntakeSpinStop().onTrue(new IntakeSpinStop());
     System.out.println("GH");
+    Inputs.getPivotAmp().onTrue(new PivotAmp());
+    Inputs.getPivotBase().onTrue(new PivotBase());
+    Inputs.getPivotFar().onTrue(new PivotFar());
   }
 
   public Command getAutonomousCommand() {

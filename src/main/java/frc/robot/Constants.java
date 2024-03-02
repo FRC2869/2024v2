@@ -59,4 +59,17 @@ public class Constants {
             }
         }
     }
+
+    public static class PivotConstants {
+        public static final int id = 17;
+        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 0, 0, 0, .3, -.3, ((30/18.0)*(56.0/30.0)*(25)), 0, 40, false, false, 0);
+        public static final int basePosition = 0;
+        public static final double kMinAngle = 0;
+        public static final double kMaxAngle = 0;
+        public static final double ampPosition = 100;
+        public static final double farPosition = 0;
+        public static enum PositionsPivot{
+            BASE, AMP, FAR,
+        }
+    }
 }

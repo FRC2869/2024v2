@@ -60,5 +60,21 @@ public class Inputs {
     public static Trigger getIntakeSpinStop() {
         return operatorBoard.button(5);
     }
+
+    public static double getPivotOverride(){
+        return operator.getRightY();
+    }
+
+    public static Trigger getPivotBase(){
+        return operatorBoard.button(1);
+    }
+
+    public static Trigger getPivotAmp(){
+        return operatorBoard.button(2);
+    }
+
+    public static Trigger getPivotFar(){
+        return operatorBoard.button(3);
+    }
     
 }

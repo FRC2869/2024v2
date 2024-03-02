@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Intake.IntakeSpeedControl;
 import frc.robot.subsystems.IntakePivotSubsystem;
+import frc.robot.commands.DefaultPivot;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -70,6 +71,7 @@ public class Robot extends TimedRobot {
     IntakePivotSubsystem.getInstance().setBrake();
     CommandScheduler.getInstance().cancelAll();
     new IntakeSpeedControl().schedule();
+    new DefaultPivot().schedule();
   }
 
   @Override
