@@ -23,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private TalonFX shooter2;
   private double speed1;
   private double speed2;
-  private boolean stopped;
+  private boolean stopped = true;
   
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
@@ -53,8 +53,8 @@ public class ShooterSubsystem extends SubsystemBase {
       shooter1.stopMotor();
       shooter2.stopMotor();
     }else{
-      // var velo1 = new VelocityDutyCycle(speed1);
-      // var velo2 = new VelocityDutyCycle(speed2);
+      // var velo1 = new VelocityDutyCycle(this.speed1);
+      // var velo2 = new VelocityDutyCycle(this.speed2);
       
       // shooter1.setControl(velo1);
       // shooter2.setControl(velo2);

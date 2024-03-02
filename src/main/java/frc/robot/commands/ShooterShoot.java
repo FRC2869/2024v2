@@ -22,6 +22,6 @@ public class ShooterShoot extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
-    shooter.setSpeed(1, 1);
+    shooter.setSpeed(1, -1);
   }
 }

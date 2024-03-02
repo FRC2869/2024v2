@@ -24,4 +24,16 @@ public class Inputs {
     public static Trigger getShooterStop(){
         return operatorBoard.button(4);
     }
+
+    public static double getTranslationX() {
+        return driver.getLeftX();
+    }
+
+    public static double getRotation() {
+        return driver.getRightX();
+    }
+
+    public static double getTranslationY() {
+        return driver.getLeftY(); 
+    }
 }
