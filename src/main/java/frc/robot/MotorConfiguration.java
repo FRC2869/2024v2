@@ -5,6 +5,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkBase;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkRelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 public class MotorConfiguration {
@@ -150,7 +152,7 @@ public class MotorConfiguration {
         this.inverted = inverted;
     }
 
-    public static void configureMotor(CANSparkBase motor, MotorConfiguration config){
+    public static RelativeEncoder configureMotor(CANSparkBase motor, MotorConfiguration config){
         motor.restoreFactoryDefaults();
         var pid = motor.getPIDController();
         pid.setP(config.getP());
@@ -167,6 +169,7 @@ public class MotorConfiguration {
         motor.setIdleMode(config.isIdleCoast() ? IdleMode.kCoast : IdleMode.kBrake);
         motor.setOpenLoopRampRate(config.getOpenLoopRampRate());
         motor.burnFlash();
+        return encoder;
     }
 
     public static TalonFXConfiguration configureMotor(TalonFX motor, MotorConfiguration config){

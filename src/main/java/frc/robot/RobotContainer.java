@@ -15,14 +15,17 @@ import frc.robot.commands.Intake.IntakeSpinStop;
 public class RobotContainer {
   public RobotContainer() {
     configureBindings();
+    System.out.println("RC");
   }
 
   private void configureBindings() {
-    Inputs.getIntakeBasePos().onTrue(new IntakeBasePos());
-    Inputs.getIntakeFloorPos().onTrue(new IntakeFloorPos());
     Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());
+    Inputs.getIntakeBasePos().onTrue(new IntakeBasePos());
+    System.out.println("rc");
+    Inputs.getIntakeFloorPos().onTrue(new IntakeFloorPos());
     Inputs.getIntakeSpinOut().onTrue(new IntakeSpinOut());
-    Inputs.getIntakeSpinOut().onTrue(new IntakeSpinStop());
+    Inputs.getIntakeSpinStop().onTrue(new IntakeSpinStop());
+    System.out.println("GH");
   }
 
   public Command getAutonomousCommand() {

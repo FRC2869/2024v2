@@ -1,17 +1,17 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.MotorConfiguration;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.PositionsIntake;
+import frc.robot.MotorConfiguration;
 
 public class IntakePivotSubsystem extends SubsystemBase{
     private static IntakePivotSubsystem instance;
@@ -20,14 +20,15 @@ public class IntakePivotSubsystem extends SubsystemBase{
         return instance;
     }
 
-    private TalonFX spinMotor;
+    // private TalonFX spinMotor;
     private CANSparkFlex pivotMotor;
-    private double spinSpeed;
+    // private double spinSpeed;
     private boolean isPosControl = false;
     private double pivotPos;
     private double pivotSpeed;
     private PositionsIntake currentPos = PositionsIntake.BASE;
-    private boolean isCoast = false;
+    // private boolean isCoast = false;
+    private RelativeEncoder encoder;
 
     public IntakePivotSubsystem() {
         pivotMotor = new CANSparkFlex(16, MotorType.kBrushless);
@@ -35,7 +36,7 @@ public class IntakePivotSubsystem extends SubsystemBase{
     }
 
     private void configureMotors() {
-        MotorConfiguration.configureMotor(pivotMotor, IntakeConstants.pivotMotorConfig);
+        encoder = MotorConfiguration.configureMotor(pivotMotor, IntakeConstants.pivotMotorConfig);
     }
 
     public void setPivotPos(double pos){
@@ -47,15 +48,15 @@ public class IntakePivotSubsystem extends SubsystemBase{
     }
 
     public void resetPivot() {
-        pivotMotor.getEncoder().setPosition(IntakeConstants.basePosition);
+        encoder.setPosition(IntakeConstants.basePosition);
     }
 
     public double getAngle(){
-        return pivotMotor.getEncoder().getPosition();
+        return encoder.getPosition();
     }
 
     public double getVelocity(){
-        return pivotMotor.getEncoder().getVelocity();
+        return encoder.getVelocity();
     }
 
     public boolean isAtPosition(){
@@ -81,6 +82,7 @@ public class IntakePivotSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
+        SmartDashboard.putNumber("intake", getAngle());
         if (isPosControl) {
             if(getAngle()>0&&getAngle()<110)
                 pivotMotor.getPIDController().setReference(pivotPos, ControlType.kPosition);

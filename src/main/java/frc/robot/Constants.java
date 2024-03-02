@@ -28,8 +28,8 @@ public class Constants {
         public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(.5, -.5, 20, true, false);
         public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 0, 0, 0, 1, -1, 5*(50/16.0)*(32/16.0), 0, 40, false, false, 0);
         public static final double kMinAngle = 0;
-        public static final double kMaxAngle = 0;
-        public static final double floorPosition = 0;
+        public static final double kMaxAngle = 640;
+        public static final double floorPosition = 640;
         public static final double basePosition = 0;
         public static enum PositionsIntake {
             BASE, FLOOR
