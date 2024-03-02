@@ -36,4 +36,29 @@ public class Inputs {
     public static double getTranslationY() {
         return driver.getLeftY(); 
     }
+
+    public static double getIntakePivotSpeed() {
+        return operator.getLeftX();
+    }
+
+    public static Trigger getIntakeFloorPos() {
+        return operatorBoard.button(1);
+    }
+
+    public static Trigger getIntakeBasePos() {
+        return operatorBoard.button(2);
+    }
+
+    public static Trigger getIntakeSpinIn() {
+        return operatorBoard.button(3);
+    }
+
+    public static Trigger getIntakeSpinOut() {
+        return operatorBoard.button(4);
+    }
+
+    public static Trigger getIntakeSpinStop() {
+        return operatorBoard.button(5);
+    }
+    
 }
