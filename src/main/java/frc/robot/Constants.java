@@ -30,7 +30,7 @@ public class Constants {
         public static final int basePosition = 0;
         public static final double kMinAngle = 0;
         public static final double kMaxAngle = 0;
-        public static final double ampPosition = 0;
+        public static final double ampPosition = 100;
         public static final double farPosition = 0;
         public static enum PositionsPivot{
             BASE, AMP, FAR,
