@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.LinkedList;
+
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -9,32 +11,48 @@ public class Inputs {
     private static final CommandXboxController operator = new CommandXboxController(Constants.OperatorConstants.OperatorController.port); 
     private static final CommandGenericHID operatorBoard = new CommandGenericHID(Constants.OperatorConstants.OperatorButtonBoard.port); 
 
+    public static Trigger getResetGyro(){
+        return driver.y();
+    }
+
     public static Trigger getShooterShoot(){
-        return operatorBoard.button(1);
+        return operator.pov(90);
     }
 
     public static Trigger getShooterAmpScore(){
-        return operatorBoard.button(2);
+        return operator.a();
     }
 
     public static Trigger getShooterAmpLoad(){
-        return operatorBoard.button(3);
+        return operator.pov(0);
     }
 
     public static Trigger getShooterStop(){
-        return operatorBoard.button(4);
+        return operator.leftBumper();
     }
 
     public static double getTranslationX() {
-        return driver.getLeftX();
+        return -driver.getLeftX();
     }
 
     public static double getRotation() {
-        return driver.getRightX();
+        return -driver.getRightX();
     }
 
+    private static LinkedList<Double> speedList = new LinkedList<>();
+     
     public static double getTranslationY() {
-        return driver.getLeftY(); 
+        var speed = driver.getLeftY(); 
+        // speedList.removeFirst();
+		// speedList.add(speed);
+
+        // double avg = 0;
+		// for (int i = 0; i < speedList.size(); i++) {
+		// 	avg += speedList.get(i);
+		// }
+		// avg /= speedList.size();
+		return speed; 
+        
     }
 
     public static double getIntakePivotSpeed() {
@@ -42,23 +60,23 @@ public class Inputs {
     }
 
     public static Trigger getIntakeFloorPos() {
-        return operatorBoard.button(1);
+        return operatorBoard.button(5);
     }
 
     public static Trigger getIntakeBasePos() {
-        return operatorBoard.button(2);
+        return operatorBoard.button(6);
     }
 
     public static Trigger getIntakeSpinIn() {
-        return operatorBoard.button(3);
+        return operator.x();
     }
 
     public static Trigger getIntakeSpinOut() {
-        return operatorBoard.button(4);
+        return operator.y();
     }
 
     public static Trigger getIntakeSpinStop() {
-        return operatorBoard.button(5);
+        return operator.b();
     }
 
     public static double getPivotOverride(){
@@ -66,15 +84,15 @@ public class Inputs {
     }
 
     public static Trigger getPivotBase(){
-        return operatorBoard.button(1);
+        return operatorBoard.button(10);
     }
 
     public static Trigger getPivotAmp(){
-        return operatorBoard.button(2);
+        return operatorBoard.button(11);
     }
 
     public static Trigger getPivotFar(){
-        return operatorBoard.button(3);
+        return operatorBoard.button(12);
     }
     
 }

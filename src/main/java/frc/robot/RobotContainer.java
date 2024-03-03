@@ -19,11 +19,15 @@ import frc.robot.commands.ShooterShoot;
 import frc.robot.commands.ShooterStop;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.IntakePivotSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.commands.Intake.IntakeBasePos;
 import frc.robot.commands.Intake.IntakeFloorPos;
+import frc.robot.commands.Intake.IntakeSpeedControl;
 import frc.robot.commands.Intake.IntakeSpinIn;
 import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
+import frc.robot.commands.DefaultPivot;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
@@ -34,7 +38,7 @@ public class RobotContainer {
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
-  private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+  public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -60,16 +64,17 @@ public class RobotContainer {
             .withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(Inputs.getRotation() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
+    Inputs.getResetGyro().onTrue()
     Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());
     Inputs.getIntakeBasePos().onTrue(new IntakeBasePos());
-    System.out.println("rc");
     Inputs.getIntakeFloorPos().onTrue(new IntakeFloorPos());
     Inputs.getIntakeSpinOut().onTrue(new IntakeSpinOut());
     Inputs.getIntakeSpinStop().onTrue(new IntakeSpinStop());
-    System.out.println("GH");
     Inputs.getPivotAmp().onTrue(new PivotAmp());
     Inputs.getPivotBase().onTrue(new PivotBase());
     Inputs.getPivotFar().onTrue(new PivotFar());
+    IntakePivotSubsystem.getInstance().setDefaultCommand(new IntakeSpeedControl());
+    PivotSubsystem.getInstance().setDefaultCommand(new DefaultPivot());
   }
 
   public Command getAutonomousCommand() {
