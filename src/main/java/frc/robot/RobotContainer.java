@@ -28,6 +28,7 @@ import frc.robot.commands.Intake.IntakeSpinIn;
 import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
 import frc.robot.commands.DefaultPivot;
+import frc.robot.commands.DrivetrainResetGyro;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
@@ -38,7 +39,7 @@ public class RobotContainer {
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
-  public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+  public final static CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -64,7 +65,7 @@ public class RobotContainer {
             .withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(Inputs.getRotation() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
-    Inputs.getResetGyro().onTrue()
+    Inputs.getResetGyro().onTrue(new DrivetrainResetGyro());
     Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());
     Inputs.getIntakeBasePos().onTrue(new IntakeBasePos());
     Inputs.getIntakeFloorPos().onTrue(new IntakeFloorPos());

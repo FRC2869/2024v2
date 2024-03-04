@@ -16,10 +16,13 @@ public class DrivetrainResetGyro extends InstantCommand {
 
   public DrivetrainResetGyro() {
     swerve = RobotContainer.drivetrain;
+    addRequirements(swerve);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void execute() {
+    swerve.getPigeon2().reset();
+  }
 }

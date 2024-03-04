@@ -32,17 +32,29 @@ public class Inputs {
     }
 
     public static double getTranslationX() {
-        return -driver.getLeftX();
+        var speed = -driver.getLeftY();
+        if(driver.rightBumper().getAsBoolean()){
+            return speed*.5;
+        }
+        return speed;
     }
 
     public static double getRotation() {
-        return -driver.getRightX();
+        var speed =  -driver.getRightX();
+        if(driver.rightBumper().getAsBoolean()){
+            return speed*.5;
+        }
+        return speed;
     }
 
     private static LinkedList<Double> speedList = new LinkedList<>();
      
     public static double getTranslationY() {
-        var speed = driver.getLeftY(); 
+        var speed = -driver.getLeftX(); 
+        if(driver.rightBumper().getAsBoolean()){
+            return speed*.5;
+        }
+        return speed;
         // speedList.removeFirst();
 		// speedList.add(speed);
 
@@ -51,12 +63,17 @@ public class Inputs {
 		// 	avg += speedList.get(i);
 		// }
 		// avg /= speedList.size();
-		return speed; 
+		// return speed; 
         
     }
 
     public static double getIntakePivotSpeed() {
-        return operator.getLeftX();
+
+        var speed =  operator.getLeftX();
+        if(Math.abs(speed)<.1){
+            speed = 0;
+        }
+        return speed;
     }
 
     public static Trigger getIntakeFloorPos() {

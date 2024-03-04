@@ -32,11 +32,11 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     public void spinIn() {
-        spinSpeed = .5;
+        spinSpeed = .25;
     }
 
     public void spinOut(){
-        spinSpeed = -.5;
+        spinSpeed = -1;
     }
 
     public void spinStop(){
