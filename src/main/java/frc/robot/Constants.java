@@ -5,6 +5,13 @@ import edu.wpi.first.wpilibj.Timer;
 public class Constants {
     public static Timer timer = new Timer();
 
+    public static class FieldConstants {
+        //These are wrong!
+        public static final double fieldWidth = 54;
+        public static final double speakerHeight = 14.5;
+        public static final double distFromSpeakerWallToCenterOfHole = .1;
+    }
+
     public static class OperatorConstants {
         public static interface DriverController {
             public static final int port = 0;

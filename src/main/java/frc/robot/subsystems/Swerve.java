@@ -122,4 +122,8 @@ public class Swerve extends SubsystemBase {
     
     return AutoBuilder.followPath(path);
   }
+
+  public double getAngle() {
+      return Math.atan(Constants.FieldConstants.speakerHeight/(Constants.FieldConstants.fieldWidth - Constants.FieldConstants.distFromSpeakerWallToCenterOfHole - getPose()));
+  }
 }
