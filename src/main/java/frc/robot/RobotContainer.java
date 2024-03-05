@@ -76,6 +76,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Swerve.getInstance().getPathCommand("Grab Left Note", true);
+    return Swerve.getInstance().getTrajectory("TestPath");
   }
 }
