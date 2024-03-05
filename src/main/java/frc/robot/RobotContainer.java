@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.RobotCentric;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,6 +21,7 @@ import frc.robot.commands.ShooterShoot;
 import frc.robot.commands.ShooterStop;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Swerve;
 import frc.robot.commands.Intake.IntakeBasePos;
 import frc.robot.commands.Intake.IntakeFloorPos;
 import frc.robot.commands.Intake.IntakeSpinIn;
@@ -29,14 +32,14 @@ import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
 
 public class RobotContainer {
-  private double MaxSpeed = 6; // 6 meters per second desired top speed
-  private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
+  private double MaxSpeed = 8; // 6 meters per second desired top speed
+  private double MaxAngularRate = 2 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
-  private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
+  // private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
-  private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+  private final FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
@@ -50,29 +53,29 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    Inputs.getShooterShoot().onTrue(new ShooterShoot());
-    Inputs.getShooterStop().onTrue(new ShooterStop());
-    Inputs.getShooterAmpLoad().onTrue(new ShooterAmpLoad());
-    Inputs.getShooterAmpScore().onTrue(new ShooterAmpScore());
+    // Inputs.getShooterShoot().onTrue(new ShooterShoot());
+    // Inputs.getShooterStop().onTrue(new ShooterStop());
+    // Inputs.getShooterAmpLoad().onTrue(new ShooterAmpLoad());
+    // Inputs.getShooterAmpScore().onTrue(new ShooterAmpScore());
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive forward with
+        drivetrain.applyRequest(() -> drive.withVelocityX(-Inputs.getTranslationY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
-            .withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(Inputs.getRotation() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            .withVelocityY(-Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-Inputs.getRotation() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
-    Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());
-    Inputs.getIntakeBasePos().onTrue(new IntakeBasePos());
-    System.out.println("rc");
-    Inputs.getIntakeFloorPos().onTrue(new IntakeFloorPos());
-    Inputs.getIntakeSpinOut().onTrue(new IntakeSpinOut());
-    Inputs.getIntakeSpinStop().onTrue(new IntakeSpinStop());
-    System.out.println("GH");
-    Inputs.getPivotAmp().onTrue(new PivotAmp());
-    Inputs.getPivotBase().onTrue(new PivotBase());
-    Inputs.getPivotFar().onTrue(new PivotFar());
+    // Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());
+    // Inputs.getIntakeBasePos().onTrue(new IntakeBasePos());
+    // System.out.println("rc");
+    // Inputs.getIntakeFloorPos().onTrue(new IntakeFloorPos());
+    // Inputs.getIntakeSpinOut().onTrue(new IntakeSpinOut());
+    // Inputs.getIntakeSpinStop().onTrue(new IntakeSpinStop());
+    // System.out.println("GH");
+    // Inputs.getPivotAmp().onTrue(new PivotAmp());
+    // Inputs.getPivotBase().onTrue(new PivotBase());
+    // Inputs.getPivotFar().onTrue(new PivotFar());
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return Swerve.getInstance().getPathCommand("Grab Left Note", true);
   }
 }

@@ -6,6 +6,10 @@ package frc.robot.subsystems;
 
 import java.util.function.Consumer;
 
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.ApplyChassisSpeeds;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -13,6 +17,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -23,10 +28,11 @@ import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.generated.TunerConstants;
 
 public class Swerve extends SubsystemBase {
-  private Swerve instance;
+  private static Swerve instance;
   private CommandSwerveDrivetrain swerve;
+  private ApplyChassisSpeeds speedsC;
 
-  public Swerve getInstance() {
+  public static Swerve getInstance() {
     if (instance == null) instance = new Swerve();
     return instance;
   }
@@ -34,27 +40,7 @@ public class Swerve extends SubsystemBase {
   /** Creates a new Swerve. */
   public Swerve() {
     swerve = TunerConstants.DriveTrain;
-    AutoBuilder.configureHolonomic(
-      this::getPose, //pose2d
-      this::resetPose, //pose2d
-      this::getRobotRelativeSpeeds, //ChassisSpeeds
-      this::driveRobotRelative, //ChassisSpeeds
-      new HolonomicPathFollowerConfig(
-        new PIDConstants(5.0, 0.0, 0.0),
-        new PIDConstants(5.0, 0.0, 0.0),
-        4.5,
-        0.4,
-        new ReplanningConfig()
-      ),
-      () -> {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-          return alliance.get() == DriverStation.Alliance.Red;
-        }
-        return false;
-      },
-      this
-    );
+    setupPathPlanner();
   }
 
   public Pose2d getPose() {
@@ -62,9 +48,10 @@ public class Swerve extends SubsystemBase {
   }
 
   //Find out how pose is supposed to be incorporated pls
-  public void resetPose(Pose2d pose) {
-    swerve.tareEverything();
-  }
+  public void resetOdometry(Pose2d pose) {
+  // swerve.tareEverything(); 
+  swerve.seedFieldRelative(pose); 
+}
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
     SwerveDriveKinematics kinematics = swerve.getKinematics();
@@ -72,14 +59,67 @@ public class Swerve extends SubsystemBase {
     return speeds;
   }
   public void driveRobotRelative(ChassisSpeeds speeds) {
-    SwerveDriveKinematics kinematics = swerve.getKinematics();
-    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
-    for (int i = 0; i < 4; i++)
-      swerve.getModule(4).apply(states[0], null);
+  //   SwerveDriveKinematics kinematics = swerve.getKinematics();
+  //   SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+    speedsC.withSpeeds(speeds);
+    System.out.println(speeds);
+    swerve.setControl(speedsC);
+    // for (int i = 0; i < 4; i++)
+    //   swerve.getModule(i).apply(states[i], DriveRequestType.Velocity);
   }
 
-  public Command getPathCommand(String path) {
-    PathPlannerPath pathCommand = PathPlannerPath.fromPathFile(path);
-    return AutoBuilder.followPath(pathCommand);
+  public Rotation2d getHeading()
+  {
+    return swerve.getPigeon2().getRotation2d();
+  }
+
+  public void setupPathPlanner()
+  {
+    AutoBuilder.configureHolonomic(
+        this::getPose, // Robot pose supplier
+        this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+        this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+        this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                                         new PIDConstants(1.7, 0.0, 0.65),
+                                         // Translation PID constants
+                                         new PIDConstants(0.118,
+                                                          0,
+                                                          0.3),
+                                         // Rotation PID constants
+                                         4.5,
+                                         // Max module speed, in m/s
+                                         14.67,
+                                         // Drive base radius in meters. Distance from robot center to furthest module.
+                                         new ReplanningConfig()
+                                         // Default path replanning config. See the API for the options here
+        ),
+        () -> {
+          // Boolean supplier that controls when the path will be mirrored for the red alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+          var alliance = DriverStation.getAlliance();
+          return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
+        },
+        TunerConstants.DriveTrain // Reference to this subsystem to set requirements
+                                  );
+
+       speedsC = new ApplyChassisSpeeds();
+  speedsC.withDriveRequestType(DriveRequestType.Velocity);
+  speedsC.withSteerRequestType(SteerRequestType.MotionMagic);
+
+  }
+
+  public Command getPathCommand(String pathName, boolean setOdomToStart) {
+    PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+
+    if (setOdomToStart)
+    {
+      resetOdometry(new Pose2d(path.getPoint(0).position, getHeading()));
+    }
+
+    // Create a path following command using AutoBuilder. This will also trigger event markers.
+    
+    return AutoBuilder.followPath(path);
   }
 }
