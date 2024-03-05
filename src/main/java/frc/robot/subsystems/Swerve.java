@@ -16,6 +16,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import frc.robot.generated.TunerConstants;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -25,7 +26,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CommandSwerveDrivetrain;
-import frc.robot.generated.TunerConstants;
+import frc.robot.Constants;
 
 public class Swerve extends SubsystemBase {
   private static Swerve instance;
@@ -117,6 +118,7 @@ public class Swerve extends SubsystemBase {
     {
       resetOdometry(new Pose2d(path.getPoint(0).position, getHeading()));
     }
+    Pose2d pose;
 
     // Create a path following command using AutoBuilder. This will also trigger event markers.
     
@@ -124,6 +126,6 @@ public class Swerve extends SubsystemBase {
   }
 
   public double getAngle() {
-      return Math.atan(Constants.FieldConstants.speakerHeight/(Constants.FieldConstants.fieldWidth - Constants.FieldConstants.distFromSpeakerWallToCenterOfHole - getPose()));
+      return Math.atan(Constants.FieldConstants.speakerHeight/(Constants.FieldConstants.fieldWidth - Constants.FieldConstants.distFromSpeakerWallToCenterOfHole - getPose().getX()));
   }
 }
