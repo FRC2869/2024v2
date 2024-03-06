@@ -19,6 +19,7 @@ import frc.robot.commands.ShooterAmpLoad;
 import frc.robot.commands.ShooterAmpScore;
 import frc.robot.commands.ShooterShoot;
 import frc.robot.commands.ShooterStop;
+import frc.robot.commands.SwerveResetGyro;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Swerve;
@@ -53,23 +54,24 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    // Inputs.getShooterShoot().onTrue(new ShooterShoot());
-    // Inputs.getShooterStop().onTrue(new ShooterStop());
-    // Inputs.getShooterAmpLoad().onTrue(new ShooterAmpLoad());
-    // Inputs.getShooterAmpScore().onTrue(new ShooterAmpScore());
+    Inputs.getShooterShoot().onTrue(new ShooterShoot());
+    Inputs.getShooterStop().onTrue(new ShooterStop());
+    Inputs.getShooterAmpLoad().onTrue(new ShooterAmpLoad());
+    Inputs.getShooterAmpScore().onTrue(new ShooterAmpScore());
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-Inputs.getTranslationY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityY(-Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(-Inputs.getRotation() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
-    // Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());
+    Inputs.getResetGyro().onTrue(new SwerveResetGyro());
+    Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());
     // Inputs.getIntakeBasePos().onTrue(new IntakeBasePos());
-    // System.out.println("rc");
+    System.out.println("rc");
     // Inputs.getIntakeFloorPos().onTrue(new IntakeFloorPos());
-    // Inputs.getIntakeSpinOut().onTrue(new IntakeSpinOut());
-    // Inputs.getIntakeSpinStop().onTrue(new IntakeSpinStop());
-    // System.out.println("GH");
+    Inputs.getIntakeSpinOut().onTrue(new IntakeSpinOut());
+    Inputs.getIntakeSpinStop().onTrue(new IntakeSpinStop());
+    System.out.println("GH");
     // Inputs.getPivotAmp().onTrue(new PivotAmp());
     // Inputs.getPivotBase().onTrue(new PivotBase());
     // Inputs.getPivotFar().onTrue(new PivotFar());

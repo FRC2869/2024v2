@@ -12,6 +12,8 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.ApplyChassisSpeeds;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.RobotCentric;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -27,8 +29,10 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CommandSwerveDrivetrain;
+import frc.robot.commands.setOdometry;
 import frc.robot.generated.TunerConstants;
 
 public class Swerve extends SubsystemBase {
@@ -44,6 +48,11 @@ public class Swerve extends SubsystemBase {
   /** Creates a new Swerve. */
   public Swerve() {
     swerve = TunerConstants.DriveTrain;
+    
+    speedsC = new ApplyChassisSpeeds();
+    
+    speedsC.withDriveRequestType(DriveRequestType.Velocity);
+    speedsC.withSteerRequestType(SteerRequestType.MotionMagic);
   }
 
   public Pose2d getPose() {
@@ -79,7 +88,7 @@ public class Swerve extends SubsystemBase {
   
   public Command getTrajectory(String pathName) {
     ChoreoTrajectory traj = Choreo.getTrajectory(pathName);
-    return Choreo.choreoSwerveCommand(
+    return new SequentialCommandGroup(new setOdometry(traj.getInitialPose()), Choreo.choreoSwerveCommand(
       traj, 
       this::getPose, 
       Choreo.choreoSwerveController(new PIDController(0, 0, 0), new PIDController(0, 0, 0), new PIDController(0, 0, 0)), 
@@ -87,10 +96,11 @@ public class Swerve extends SubsystemBase {
       () -> {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
+          System.out.println(alliance.get());
           return alliance.get() == DriverStation.Alliance.Red;
         }
         return false;
       },
-      this);
+      TunerConstants.DriveTrain));
   }
 }

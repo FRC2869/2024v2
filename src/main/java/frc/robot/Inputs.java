@@ -9,21 +9,21 @@ public class Inputs {
     private static final CommandXboxController operator = new CommandXboxController(Constants.OperatorConstants.OperatorController.port); 
     private static final CommandGenericHID operatorBoard = new CommandGenericHID(Constants.OperatorConstants.OperatorButtonBoard.port); 
 
-//     public static Trigger getShooterShoot(){
-//         return operatorBoard.button(1);
-//     }
+    public static Trigger getShooterShoot(){
+        return operatorBoard.button(1);
+    }
 
-//     public static Trigger getShooterAmpScore(){
-//         return operatorBoard.button(2);
-//     }
+    public static Trigger getShooterAmpScore(){
+        return operatorBoard.button(2);
+    }
 
-//     public static Trigger getShooterAmpLoad(){
-//         return operatorBoard.button(3);
-//     }
+    public static Trigger getShooterAmpLoad(){
+        return operatorBoard.button(3);
+    }
 
-//     public static Trigger getShooterStop(){
-//         return operatorBoard.button(4);
-//     }
+    public static Trigger getShooterStop(){
+        return operatorBoard.button(4);
+    }
 
     public static double getTranslationX() {
         return driver.getLeftX();
@@ -37,44 +37,48 @@ public class Inputs {
         return driver.getLeftY(); 
     }
 
-//     public static double getIntakePivotSpeed() {
-//         return operator.getLeftX();
-//     }
+    public static Trigger getResetGyro() {
+        return driver.y();
+    }
 
-//     public static Trigger getIntakeFloorPos() {
-//         return operatorBoard.button(1);
-//     }
+    public static double getIntakePivotSpeed() {
+        return operator.getLeftX();
+    }
 
-//     public static Trigger getIntakeBasePos() {
-//         return operatorBoard.button(2);
-//     }
+    public static Trigger getIntakeFloorPos() {
+        return operatorBoard.button(1);
+    }
 
-//     public static Trigger getIntakeSpinIn() {
-//         return operatorBoard.button(3);
-//     }
+    public static Trigger getIntakeBasePos() {
+        return operatorBoard.button(2);
+    }
 
-//     public static Trigger getIntakeSpinOut() {
-//         return operatorBoard.button(4);
-//     }
+    public static Trigger getIntakeSpinIn() {
+        return operatorBoard.button(3);
+    }
 
-//     public static Trigger getIntakeSpinStop() {
-//         return operatorBoard.button(5);
-//     }
+    public static Trigger getIntakeSpinOut() {
+        return operatorBoard.button(4);
+    }
 
-//     public static double getPivotOverride(){
-//         return operator.getRightY();
-//     }
+    public static Trigger getIntakeSpinStop() {
+        return operatorBoard.button(5);
+    }
 
-//     public static Trigger getPivotBase(){
-//         return operatorBoard.button(1);
-//     }
+    public static double getPivotOverride(){
+        return operator.getRightY();
+    }
 
-//     public static Trigger getPivotAmp(){
-//         return operatorBoard.button(2);
-//     }
+    public static Trigger getPivotBase(){
+        return operatorBoard.button(1);
+    }
 
-//     public static Trigger getPivotFar(){
-//         return operatorBoard.button(3);
-//     }
+    public static Trigger getPivotAmp(){
+        return operatorBoard.button(2);
+    }
+
+    public static Trigger getPivotFar(){
+        return operatorBoard.button(3);
+    }
     
 }
