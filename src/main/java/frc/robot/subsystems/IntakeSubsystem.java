@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
@@ -13,7 +15,7 @@ public class IntakeSubsystem extends SubsystemBase{
         return instance;
     }
 
-    private TalonFX spinMotor;
+    private CANSparkFlex spinMotor;
     // private CANSparkFlex pivotMotor;
     private double spinSpeed;
     // private boolean isPosControl = false;
@@ -22,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase{
     // private PositionsIntake currentPos = PositionsIntake.BASE;
 
     public IntakeSubsystem() {
-        spinMotor = new TalonFX(15, "rio");
+        spinMotor = new CANSparkFlex(15, MotorType.kBrushless);
         configureMotors();
         // System.out.println("ayya");
     }
@@ -32,7 +34,7 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     public void spinIn() {
-        spinSpeed = .25;
+        spinSpeed = 1;
     }
 
     public void spinOut(){
@@ -45,6 +47,6 @@ public class IntakeSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
-        spinMotor.set(spinSpeed);
+        spinMotor.set(spinSpeed);;
     }
 }

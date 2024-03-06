@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class Inputs {
     private static final CommandXboxController driver = new CommandXboxController(Constants.OperatorConstants.DriverController.port); 
     private static final CommandXboxController operator = new CommandXboxController(Constants.OperatorConstants.OperatorController.port); 
-    private static final CommandGenericHID operatorBoard = new CommandGenericHID(Constants.OperatorConstants.OperatorButtonBoard.port); 
+    // private static final CommandGenericHID operatorBoard = new CommandGenericHID(Constants.OperatorConstants.OperatorButtonBoard.port); 
 
     public static Trigger getResetGyro(){
         return driver.y();
@@ -76,13 +76,13 @@ public class Inputs {
         return speed;
     }
 
-    public static Trigger getIntakeFloorPos() {
-        return operatorBoard.button(5);
-    }
+    // public static Trigger getIntakeFloorPos() {
+    //     return operatorBoard.button(5);
+    // }
 
-    public static Trigger getIntakeBasePos() {
-        return operatorBoard.button(6);
-    }
+    // public static Trigger getIntakeBasePos() {
+    //     return operatorBoard.button(6);
+    // }
 
     public static Trigger getIntakeSpinIn() {
         return operator.x();
@@ -100,16 +100,15 @@ public class Inputs {
         return operator.getRightY();
     }
 
-    public static Trigger getPivotBase(){
-        return operatorBoard.button(10);
-    }
+    // public static Trigger getPivotBase(){
+    //     return operatorBoard.button(10);
+    // }
 
-    public static Trigger getPivotAmp(){
-        return operatorBoard.button(11);
-    }
+    // public static Trigger getPivotAmp(){
+    //     return operatorBoard.button(11);
+    // }
 
-    public static Trigger getPivotFar(){
-        return operatorBoard.button(12);
-    }
-    
+    // public static Trigger getPivotFar(){
+    //     return operatorBoard.button(12);
+    // }  
 }
