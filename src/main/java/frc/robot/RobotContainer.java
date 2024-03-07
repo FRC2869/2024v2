@@ -10,13 +10,20 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.RobotCentric;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
+import edu.wpi.first.hal.HAL.SimPeriodicAfterCallback;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.ShooterAmpLoad;
 import frc.robot.commands.ShooterAmpScore;
+import frc.robot.commands.ShooterAutoShoot;
 import frc.robot.commands.ShooterShoot;
 import frc.robot.commands.ShooterStop;
 import frc.robot.commands.SwerveResetGyro;
@@ -28,11 +35,15 @@ import frc.robot.commands.Intake.IntakeFloorPos;
 import frc.robot.commands.Intake.IntakeSpinIn;
 import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
+import frc.robot.commands.IntakeAutoPickup;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
 
 public class RobotContainer {
+  private enum Autos {
+		Nothing, Forward, ShootOne, ShootPickup
+	}
   private double MaxSpeed = 8; // 6 meters per second desired top speed
   private double MaxAngularRate = 2 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
@@ -47,9 +58,16 @@ public class RobotContainer {
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
+  private SendableChooser<Autos> newautopick;
 
   public RobotContainer() {
     configureBindings();
+    newautopick = new SendableChooser<>();
+		newautopick.addOption("Nothing", Autos.Nothing);
+		newautopick.addOption("Forward", Autos.Forward);	
+		newautopick.addOption("ShootOne", Autos.ShootOne);	
+		newautopick.addOption("ShootPickup", Autos.ShootPickup);	
+		Shuffleboard.getTab("auto").add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
     System.out.println("RC");
   }
 
@@ -78,6 +96,15 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Swerve.getInstance().getTrajectory("TestPath");
+    switch(newautopick.getSelected()){
+      case ShootPickup:
+        return new SequentialCommandGroup(new ShooterAutoShoot(), Swerve.getInstance().getTrajectory("TwoPiece"), new IntakeAutoPickup(), new ShooterAutoShoot());
+      case ShootOne:
+        return new SequentialCommandGroup(new ShooterAutoShoot(), new WaitCommand(50000));
+      case Forward:
+        return Swerve.getInstance().getTrajectory("2m");
+      default:
+        return new WaitCommand(50000);
+    }
   }
 }
