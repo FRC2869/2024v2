@@ -21,11 +21,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.ShooterAmpLoad;
-import frc.robot.commands.ShooterAmpScore;
-import frc.robot.commands.ShooterAutoShoot;
-import frc.robot.commands.ShooterShoot;
-import frc.robot.commands.ShooterStop;
 import frc.robot.commands.SwerveResetGyro;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
@@ -38,6 +33,11 @@ import frc.robot.commands.Intake.IntakeSpeedControl;
 import frc.robot.commands.Intake.IntakeSpinIn;
 import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
+import frc.robot.commands.Shooter.ShooterAmpLoad;
+import frc.robot.commands.Shooter.ShooterAmpScore;
+import frc.robot.commands.Shooter.ShooterAutoShoot;
+import frc.robot.commands.Shooter.ShooterShoot;
+import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.DefaultPivot;
 import frc.robot.commands.DrivetrainResetGyro;
 import frc.robot.commands.IntakeAutoPickup;
@@ -47,7 +47,7 @@ import frc.robot.commands.PivotFar;
 
 public class RobotContainer {
   private enum Autos {
-		Nothing, Forward, ShootOne, ShootPickup
+		Nothing, Forward, ShootOne, ShootPickup, SubWooferAuto, BasicPath
 	}
   private double MaxSpeed = 8; // 6 meters per second desired top speed
   private double MaxAngularRate = 2 * Math.PI; // 3/4 of a rotation per second max angular velocity
@@ -69,9 +69,11 @@ public class RobotContainer {
     configureBindings();
     newautopick = new SendableChooser<>();
 		newautopick.addOption("Nothing", Autos.Nothing);
-		newautopick.addOption("Forward", Autos.Forward);	
-		newautopick.addOption("ShootOne", Autos.ShootOne);	
+		newautopick.addOption("Forward", Autos.Forward);	//2m path
+		newautopick.addOption("ShootOne", Autos.ShootOne);	//shoots and waits
 		newautopick.addOption("ShootPickup", Autos.ShootPickup);	
+		newautopick.addOption("BlueAutoPath", Autos.SubWooferAuto);	
+		newautopick.addOption("BasicPath", Autos.BasicPath);	
 		Shuffleboard.getTab("auto").add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
     System.out.println("RC");
   }
@@ -108,7 +110,11 @@ public class RobotContainer {
         return new SequentialCommandGroup(new ShooterAutoShoot(), new WaitCommand(50000));
       case Forward:
         return Swerve.getInstance().getTrajectory("2m");
-      default:
+      case SubWooferAuto:
+        return Swerve.getInstance().getTrajectory("BlueAutoPath");
+      case BasicPath:
+        return Swerve.getInstance().getTrajectory("BasicPath");
+      default: //Autos.Nothing
         return new WaitCommand(50000);
     }
   }
