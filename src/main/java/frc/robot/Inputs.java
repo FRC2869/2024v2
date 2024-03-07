@@ -67,10 +67,6 @@ public class Inputs {
         
     }
 
-    public static Trigger getResetGyro() {
-        return driver.y();
-    }
-
     public static double getIntakePivotSpeed() {
 
         var speed =  operator.getLeftX();

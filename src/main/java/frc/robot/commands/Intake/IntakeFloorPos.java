@@ -31,4 +31,10 @@ public class IntakeFloorPos extends Command {
     intakePivot.setPivotPos(IntakeConstants.floorPosition);
     intakePivot.setCurrentPosition(PositionsIntake.FLOOR);
   }
+
+  @Override
+  public void end(boolean i){
+    intakePivot.setPositionControl(false);
+    intakePivot.setPivotSpeed(0);
+  }
 }

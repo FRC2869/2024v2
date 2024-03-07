@@ -82,10 +82,10 @@ public class RobotContainer {
     Inputs.getShooterAmpLoad().onTrue(new ShooterAmpLoad());
     Inputs.getShooterAmpScore().onTrue(new ShooterAmpScore());
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-Inputs.getTranslationY() * MaxSpeed) // Drive forward with
+        drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
-            .withVelocityY(-Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-Inputs.getRotation() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(Inputs.getRotation() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
     Inputs.getResetGyro().onTrue(new DrivetrainResetGyro());
     Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());

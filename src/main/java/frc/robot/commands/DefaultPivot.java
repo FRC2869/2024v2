@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Inputs;
 // import frc.robot.Inputs;
 import frc.robot.subsystems.PivotSubsystem;
 
@@ -25,7 +26,7 @@ public class DefaultPivot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // pivot.setSpeed(Inputs.getPivotOverride());
+    pivot.setSpeed(Inputs.getPivotOverride());
     pivot.setPositionControl(false);
   }
 

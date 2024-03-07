@@ -31,4 +31,10 @@ public class IntakeBasePos extends Command {
     intakePivot.setPivotPos(IntakeConstants.basePosition);
     intakePivot.setCurrentPosition(PositionsIntake.BASE);
   }
+
+  @Override
+  public void end(boolean i){
+    intakePivot.setPositionControl(false);
+    intakePivot.setPivotSpeed(0);
+  }
 }

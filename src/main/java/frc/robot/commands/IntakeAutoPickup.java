@@ -19,6 +19,6 @@ public class IntakeAutoPickup extends SequentialCommandGroup {
   public IntakeAutoPickup() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new ParallelRaceGroup(new IntakeFloorPos(), new WaitCommand(1)), new IntakeSpinIn(), new WaitCommand(2), new ParallelRaceGroup(new IntakeFloorPos(), new WaitCommand(1)));
+    addCommands(new ParallelRaceGroup(new IntakeFloorPos(), new WaitCommand(1)), new IntakeSpinIn(), new WaitCommand(2), new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(1)));
   }
 }
