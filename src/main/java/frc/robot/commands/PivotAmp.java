@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
@@ -12,7 +13,7 @@ import frc.robot.subsystems.PivotSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class PivotAmp extends InstantCommand {
+public class PivotAmp extends Command {
   private PivotSubsystem pivot;
 
   public PivotAmp() {
@@ -26,5 +27,6 @@ public class PivotAmp extends InstantCommand {
     pivot.setPositionControl(true);
     pivot.setCurrentPosition(PositionsPivot.AMP);
     pivot.position(PivotConstants.ampPosition);
+    System.out.println("AMP");
   }
 }

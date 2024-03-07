@@ -47,6 +47,10 @@ public class IntakePivotSubsystem extends SubsystemBase{
         this.pivotSpeed = speed;
     }
 
+    public void setPositionControl(boolean isPosControl){
+		this.isPosControl = isPosControl;
+	}
+
     public void resetPivot() {
         encoder.setPosition(IntakeConstants.basePosition);
     }
@@ -84,7 +88,8 @@ public class IntakePivotSubsystem extends SubsystemBase{
     public void periodic(){
         SmartDashboard.putNumber("intake", getAngle());
         if (isPosControl) {
-            if(getAngle()>0&&getAngle()<110)
+            if((getAngle()<IntakeConstants.basePosition||pivotPos!=IntakeConstants.basePosition)
+            && (getAngle()>IntakeConstants.floorPosition||pivotPos!=IntakeConstants.floorPosition))
                 pivotMotor.getPIDController().setReference(pivotPos, ControlType.kPosition);
             else
                 pivotMotor.set(0);

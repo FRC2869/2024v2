@@ -67,12 +67,12 @@ public class RobotContainer {
         ));
     Inputs.getResetGyro().onTrue(new DrivetrainResetGyro());
     Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());
-    // Inputs.getIntakeBasePos().onTrue(new IntakeBasePos());
-    // Inputs.getIntakeFloorPos().onTrue(new IntakeFloorPos());
+    Inputs.getIntakeBasePos().whileTrue(new IntakeBasePos());
+    Inputs.getIntakeFloorPos().whileTrue(new IntakeFloorPos());
     Inputs.getIntakeSpinOut().onTrue(new IntakeSpinOut());
     Inputs.getIntakeSpinStop().onTrue(new IntakeSpinStop());
-    // Inputs.getPivotAmp().onTrue(new PivotAmp());
-    // Inputs.getPivotBase().onTrue(new PivotBase());
+    Inputs.getPivotAmp().whileTrue(new PivotAmp());
+    Inputs.getPivotBase().whileTrue(new PivotBase());
     // Inputs.getPivotFar().onTrue(new PivotFar());
     IntakePivotSubsystem.getInstance().setDefaultCommand(new IntakeSpeedControl());
     PivotSubsystem.getInstance().setDefaultCommand(new DefaultPivot());

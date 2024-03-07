@@ -4,12 +4,13 @@
 
 package frc.robot.commands.Intake;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.PositionsIntake;
 import frc.robot.subsystems.IntakePivotSubsystem;
 
-public class IntakeBasePos extends InstantCommand {
+public class IntakeBasePos extends Command {
   private IntakePivotSubsystem intakePivot;
 
   /** Creates a new IntakeMove. */
@@ -26,6 +27,7 @@ public class IntakeBasePos extends InstantCommand {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    intakePivot.setPositionControl(true);
     intakePivot.setPivotPos(IntakeConstants.basePosition);
     intakePivot.setCurrentPosition(PositionsIntake.BASE);
   }

@@ -87,11 +87,17 @@ public class PivotSubsystem extends SubsystemBase {
   public void periodic() {
 	var angleString = rounder.format(getAngle());
 	SmartDashboard.putString("Pivot Angle 1", angleString);
+	// SmartDashboard.putBoolean("pivotPos", isPosControl);
+	// SmartDashboard.putNumber("pos", pos);
 	if (isPosControl) {
-		if(true)
+		if(currentPos!=PositionsPivot.BASE||getAngle()<PivotConstants.basePosition){
+			SmartDashboard.putBoolean("enabled", true);
 			pivotMotor.getPIDController().setReference(pos, ControlType.kPosition);
-		else
+		}else{
 			pivotMotor.set(0);	
+			SmartDashboard.putBoolean("enabled", false);
+
+		}
 	}else{
 		pivotMotor.set(speed);
 	}
