@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 
 public class Constants {
@@ -12,7 +14,9 @@ public class Constants {
         //feet (78 inches)
         public static final double speakerHeight = 6.5;
 
-        public static final double distanceFromCenterSpeaker = 0;
+        public static final double distanceFromCenterSpeaker = 0.1;
+        
+        public static final Pose2d humanPlayerStationPose = new Pose2d(0, 0, new Rotation2d(0));
 
     }
 
