@@ -79,6 +79,8 @@ public class Constants {
         public static final double kMaxAngle = -20;
         public static final double ampPosition = -170;
         public static final double farPosition = 0;
+        public static final double intakeTransferPos = 0;
+        public static final double shooterTransferPos = 0;
         public static enum PositionsPivot{
             BASE, AMP, FAR,
         }
