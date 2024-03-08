@@ -5,6 +5,17 @@ import edu.wpi.first.wpilibj.Timer;
 public class Constants {
     public static Timer timer = new Timer();
 
+    public static class FieldConstants {
+        //feet (323.125 inches)
+        public static final double fieldWidth = 26.92708;
+
+        //feet (78 inches)
+        public static final double speakerHeight = 6.5;
+
+        public static final double distanceFromCenterSpeaker = 0;
+
+    }
+
     public static class OperatorConstants {
         public static interface DriverController {
             public static final int port = 0;

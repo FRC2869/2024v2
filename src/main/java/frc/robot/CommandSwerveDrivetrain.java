@@ -63,4 +63,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     public SwerveDriveKinematics getKinematics() {
         return super.m_kinematics;
     }
+    
+    public double getAngle() {
+        return Math.atan(Constants.FieldConstants.speakerHeight/(Constants.FieldConstants.fieldWidth - Constants.FieldConstants.distanceFromCenterSpeaker - getState().Pose.getX()));
+    }
 }

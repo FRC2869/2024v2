@@ -6240,7 +6240,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "2m": {
             "waypoints": [
@@ -6571,6 +6571,13 @@
                         "last"
                     ],
                     "type": "StopPoint"
+                },
+                {
+                    "scope": [
+                        1
+                    ],
+                    "type": "WptVelocityDirection",
+                    "direction": 0
                 }
             ],
             "usesControlIntervalGuessing": true,
@@ -6578,7 +6585,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "BasicPath": {
             "waypoints": [
