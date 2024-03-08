@@ -33,8 +33,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setSpeed(double speed1, double speed2){
-    this.speed1 = speed1; 
-    this.speed2 = speed2; 
+    this.speed1 = speed1;
+    this.speed2 = speed2;
     stopped = false;
   }
 
