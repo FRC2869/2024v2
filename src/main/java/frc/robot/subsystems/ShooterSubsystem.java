@@ -30,6 +30,7 @@ public class ShooterSubsystem extends SubsystemBase {
     shooter1 = new TalonFX(ShooterConstants.id1);
     shooter2 = new TalonFX(ShooterConstants.id2);
     MotorConfiguration.configureMotor(shooter1, ShooterConstants.config);
+    MotorConfiguration.configureMotor(shooter2, ShooterConstants.config);
   }
 
   public void setSpeed(double speed1, double speed2){
@@ -53,13 +54,14 @@ public class ShooterSubsystem extends SubsystemBase {
       shooter1.stopMotor();
       shooter2.stopMotor();
     }else{
-      // var velo1 = new VelocityDutyCycle(this.speed1);
-      // var velo2 = new VelocityDutyCycle(this.speed2);
+      var velo1 = new VelocityDutyCycle(-150);
+      var velo2 = new VelocityDutyCycle(150);
+      shooter1.setControl(velo1);
       
-      // shooter1.setControl(velo1);
-      // shooter2.setControl(velo2);
-      shooter1.set(speed1);
-      shooter2.set(speed2);
+      
+      shooter2.setControl(velo2);
+      // shooter1.set(speed1);
+      // shooter2.set(speed2);
     }
     // This method will be called once per scheduler run
   }

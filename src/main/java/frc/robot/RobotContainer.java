@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.SwerveResetGyro;
@@ -57,7 +59,7 @@ public class RobotContainer {
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
   private final FieldCentric drive = new SwerveRequest.FieldCentric()
-      .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+      .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 5% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -72,7 +74,7 @@ public class RobotContainer {
 		newautopick.addOption("Forward", Autos.Forward);	//2m path
 		newautopick.addOption("ShootOne", Autos.ShootOne);	//shoots and waits
 		newautopick.addOption("ShootPickup", Autos.ShootPickup);	
-		newautopick.addOption("BlueAutoPath", Autos.SubWooferAuto);	
+		newautopick.addOption("SubWooferAuto", Autos.SubWooferAuto);	
 		newautopick.addOption("BasicPath", Autos.BasicPath);	
 		Shuffleboard.getTab("auto").add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
     System.out.println("RC");
@@ -111,9 +113,11 @@ public class RobotContainer {
       case Forward:
         return Swerve.getInstance().getTrajectory("2m");
       case SubWooferAuto:
-        return Swerve.getInstance().getTrajectory("BlueAutoPath");
+        return new SequentialCommandGroup(new ShooterAutoShoot(), new ParallelCommandGroup(Swerve.getInstance().getTrajectory("TopBlueAutoPath"), 
+        new SequentialCommandGroup(new WaitCommand(1), new IntakeAutoPickup())));
       case BasicPath:
-        return Swerve.getInstance().getTrajectory("BasicPath");
+        return new SequentialCommandGroup(new ShooterAutoShoot(), new IntakeSpinIn(), new ParallelRaceGroup(new IntakeFloorPos(), new WaitCommand(.25)),
+        new ParallelRaceGroup(Swerve.getInstance().getTrajectory("TwoPieceMiddle"), new IntakeFloorPos()), new IntakeAutoPickup(), new ShooterAutoShoot() );
       default: //Autos.Nothing
         return new WaitCommand(50000);
     }

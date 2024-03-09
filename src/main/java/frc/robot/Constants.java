@@ -16,6 +16,7 @@ public class Constants {
 
         public static final double distanceFromCenterSpeaker = 0.1;
         
+        //THIS NEEDS SET!!!!!!
         public static final Pose2d humanPlayerStationPose = new Pose2d(0, 0, new Rotation2d(0));
 
     }
@@ -46,18 +47,18 @@ public class Constants {
 
         public static final int id2 = 18;
         public static final int id1 = 19;
-        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 0, 0, 0, 0.5, -0.5, 0, 0, 80,
+        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 0, 0, 0, 1, -1, 0, 0, 80,
                 true, false, 0);
     }
 
     public static class IntakeConstants {
         public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 80, true, false);
-        public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 5, 0, 0, 0.5, -0.5,
+        public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.3, -0.5,
                 (5 * (50 / 16.0) * (32 / 16.0)), 0, 40, false, false, 0);
         public static final double kMinAngle = -700;
         public static final double kMaxAngle = 0;
-        public static final double floorPosition = -700;
-        public static final double basePosition = 30;
+        public static final double floorPosition = -830;
+        public static final double basePosition = -40;
 
         public static enum PositionsIntake {
             BASE, FLOOR
@@ -81,7 +82,7 @@ public class Constants {
         public static final int basePosition = -30;
         public static final double kMinAngle = -200;
         public static final double kMaxAngle = -20;
-        public static final double ampPosition = -170;
+        public static final double ampPosition = -50;//-170
         public static final double farPosition = 0;
         public static final double intakeTransferPos = 0;
         public static final double shooterTransferPos = 0;
