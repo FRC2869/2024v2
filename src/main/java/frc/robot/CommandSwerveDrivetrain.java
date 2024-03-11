@@ -68,6 +68,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
      * @return angle between floor and speaker
      */
     public double getAngle() {
-        return Math.atan(Constants.FieldConstants.speakerHeight/(Constants.FieldConstants.fieldWidth - Constants.FieldConstants.distanceFromCenterSpeaker - getState().Pose.getX()));
+        return 180 * Math.atan(Constants.FieldConstants.speakerHeight/(Constants.FieldConstants.fieldWidth - Constants.FieldConstants.distanceFromWallSpeaker - getState().Pose.getX())) / Math.PI;
     }
 }

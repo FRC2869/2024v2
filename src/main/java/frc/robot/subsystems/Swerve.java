@@ -12,9 +12,16 @@ import com.choreo.lib.ChoreoTrajectoryState;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.ApplyChassisSpeeds;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -48,6 +55,7 @@ public class Swerve extends SubsystemBase {
     speedsC.withSteerRequestType(SteerRequestType.MotionMagic);
     SmartDashboard.putNumber("PosX", getPose().getX());
     SmartDashboard.putNumber("PosY", getPose().getY());
+    AutoBuilder.configureHolonomic(this::getPose, this::resetOdometry, this::getRobotRelativeSpeeds, this::driveRobotRelative, new HolonomicPathFollowerConfig(3, Math.sqrt(2)*20.75, new ReplanningConfig()), () -> false, TunerConstants.DriveTrain);
   }
 
   public Pose2d getPose() {
@@ -87,24 +95,10 @@ public class Swerve extends SubsystemBase {
    * @return A sequential command group created by Choreo Swerve Command 
    */
   public Command getTrajectory(String pathName) {
-    ChoreoTrajectory traj = Choreo.getTrajectory(pathName);
+    PathPlannerPath traj = PathPlannerPath.fromChoreoTrajectory(pathName);
     
-    return new SequentialCommandGroup(new setOdometry(traj.getInitialPose()), 
-      Choreo.choreoSwerveCommand(
-      traj, 
-      this::getPose, 
-      Choreo.choreoSwerveController(new PIDController(0, 0, 0), 
-      new PIDController(0, 0, 0), new PIDController(0, 0, 0)), 
-      this::driveRobotRelative, 
-      () -> {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-          System.out.println(alliance.get());
-          return alliance.get() == DriverStation.Alliance.Red;
-        }
-        return false;
-      },
-      TunerConstants.DriveTrain));
+    return new SequentialCommandGroup(new setOdometry(traj.getPreviewStartingHolonomicPose()  ), 
+     AutoBuilder.followPath(traj));
   }
   
   /**
@@ -138,9 +132,14 @@ public class Swerve extends SubsystemBase {
   public Command goToPosition(Pose2d... poses) {
     ArrayList<ChoreoTrajectoryState> list = new ArrayList<>();
     for (Pose2d pose : poses) {
-      list.add(new ChoreoTrajectoryState(0, pose.getX(), pose.getY(), 0, .5, .5, .5));
+      list.add(new ChoreoTrajectoryState(0, pose.getX(), pose.getY(), pose.getRotation().getRadians(), .5, .5, .5));
     }
     return getTrajectory(new ChoreoTrajectory(list));
+  }
+
+  public Command faceSpeaker() {
+    return goToPosition(getPose(), new Pose2d(getPose().getTranslation(),
+    new Rotation2d(Math.atan((getPose().getX() - Constants.FieldConstants.speakerToOriginDist)/getPose().getY()))));
   }
 
   //Previous max speed of 4800 changed to 4000

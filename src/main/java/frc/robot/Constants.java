@@ -8,16 +8,20 @@ public class Constants {
     public static Timer timer = new Timer();
 
     public static class FieldConstants {
-        //feet (323.125 inches)
-        public static final double fieldWidth = 26.92708;
+        //ALL ARE SET TO INCHES
+        public static final double fieldWidth = 323.125;
 
-        //feet (78 inches)
-        public static final double speakerHeight = 6.5;
+        public static final double speakerHeight = 78;
 
-        public static final double distanceFromCenterSpeaker = 0.1;
+        public static final double distanceFromWallSpeaker = 9;
         
         //THIS NEEDS SET!!!!!!
-        public static final Pose2d humanPlayerStationPose = new Pose2d(0, 0, new Rotation2d(0));
+        public static final Pose2d humanPlayerStationPose = new Pose2d(15.326556205749512, 1.4545217752456665, new Rotation2d(-56.309925735));
+        //except this, this is in meters!
+        /**
+         * meters
+         */
+        public static final double speakerToOriginDist = 291;
 
     }
 
@@ -53,15 +57,16 @@ public class Constants {
 
     public static class IntakeConstants {
         public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 80, true, false);
-        public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.3, -0.5,
+        public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.25, -0.25,
                 (5 * (50 / 16.0) * (32 / 16.0)), 0, 40, false, false, 0);
-        public static final double kMinAngle = -700;
+        public static final double kMinAngle = -780;
         public static final double kMaxAngle = 0;
-        public static final double floorPosition = -830;
-        public static final double basePosition = -40;
+        public static final double floorPosition = -780;
+        public static final double basePosition = 0;
+        public static final double farPosition = -100;
 
         public static enum PositionsIntake {
-            BASE, FLOOR
+            BASE, FLOOR, FAR
         }
 
         public static double getTargetPos(PositionsIntake intakeEnum) {
@@ -82,8 +87,8 @@ public class Constants {
         public static final int basePosition = -30;
         public static final double kMinAngle = -200;
         public static final double kMaxAngle = -20;
-        public static final double ampPosition = -50;//-170
-        public static final double farPosition = 0;
+        public static final double ampPosition = -170;//-170
+        public static final double farPosition = -50;
         public static final double intakeTransferPos = 0;
         public static final double shooterTransferPos = 0;
         public static enum PositionsPivot{

@@ -20,6 +20,6 @@ public class AimAtSpeaker extends InstantCommand {
 
   @Override
   public void execute() {
-    pivot.position(Math.PI - swerve.getAngle());
+    pivot.position(60 - swerve.getAngle());
   }
 }

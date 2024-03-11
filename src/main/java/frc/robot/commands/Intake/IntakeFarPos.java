@@ -10,12 +10,11 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.PositionsIntake;
 import frc.robot.subsystems.IntakePivotSubsystem;
 
-public class IntakeFloorPos extends Command {
+public class IntakeFarPos extends Command {
   private IntakePivotSubsystem intakePivot;
-  private boolean hasRun;
 
   /** Creates a new IntakeMove. */
-  public IntakeFloorPos() {
+  public IntakeFarPos() {
     intakePivot = IntakePivotSubsystem.getInstance();
     addRequirements(intakePivot);
   }
@@ -23,18 +22,14 @@ public class IntakeFloorPos extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hasRun = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!hasRun){
     intakePivot.setPositionControl(true);
-    intakePivot.setPivotPos(IntakeConstants.floorPosition);
-    intakePivot.setCurrentPosition(PositionsIntake.FLOOR);
-    hasRun = true;
-    }
+    intakePivot.setPivotPos(IntakeConstants.farPosition);
+    intakePivot.setCurrentPosition(PositionsIntake.FAR);
   }
 
   @Override

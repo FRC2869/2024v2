@@ -30,6 +30,7 @@ import frc.robot.subsystems.IntakePivotSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.Swerve;
 import frc.robot.commands.Intake.IntakeBasePos;
+import frc.robot.commands.Intake.IntakeFarPos;
 import frc.robot.commands.Intake.IntakeFloorPos;
 import frc.robot.commands.Intake.IntakeSpeedControl;
 import frc.robot.commands.Intake.IntakeSpinIn;
@@ -38,11 +39,13 @@ import frc.robot.commands.Intake.IntakeSpinStop;
 import frc.robot.commands.Shooter.ShooterAmpLoad;
 import frc.robot.commands.Shooter.ShooterAmpScore;
 import frc.robot.commands.Shooter.ShooterAutoShoot;
+import frc.robot.commands.Shooter.ShooterFarShoot;
 import frc.robot.commands.Shooter.ShooterShoot;
 import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.DefaultPivot;
 import frc.robot.commands.DrivetrainResetGyro;
 import frc.robot.commands.IntakeAutoPickup;
+import frc.robot.commands.IntakeAutoRetract;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
@@ -99,9 +102,13 @@ public class RobotContainer {
     Inputs.getIntakeSpinStop().onTrue(new IntakeSpinStop());
     Inputs.getPivotAmp().whileTrue(new PivotAmp());
     Inputs.getPivotBase().whileTrue(new PivotBase());
-    // Inputs.getPivotFar().onTrue(new PivotFar());
+    Inputs.getPivotFar().onTrue(new PivotFar());
+    Inputs.getIntakeFar().onTrue(new IntakeFarPos());
     IntakePivotSubsystem.getInstance().setDefaultCommand(new IntakeSpeedControl());
     PivotSubsystem.getInstance().setDefaultCommand(new DefaultPivot());
+    Inputs.getAutoIntakeDown().onTrue(new IntakeAutoPickup());
+    Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
+    Inputs.getAutoShoot().onTrue(new ShooterAutoShoot());
   }
 
   public Command getAutonomousCommand() {
@@ -116,8 +123,8 @@ public class RobotContainer {
         return new SequentialCommandGroup(new ShooterAutoShoot(), new ParallelCommandGroup(Swerve.getInstance().getTrajectory("TopBlueAutoPath"), 
         new SequentialCommandGroup(new WaitCommand(1), new IntakeAutoPickup())));
       case BasicPath:
-        return new SequentialCommandGroup(new ShooterAutoShoot(), new IntakeSpinIn(), new ParallelRaceGroup(new IntakeFloorPos(), new WaitCommand(.25)),
-        new ParallelRaceGroup(Swerve.getInstance().getTrajectory("TwoPieceMiddle"), new IntakeFloorPos()), new IntakeAutoPickup(), new ShooterAutoShoot() );
+        return new SequentialCommandGroup(new ShooterAutoShoot(), new IntakeSpinIn(), new ParallelRaceGroup(new IntakeFloorPos(), new WaitCommand(.75)),
+        new ParallelRaceGroup(Swerve.getInstance().getTrajectory("TwoPieceMiddle"), new IntakeFloorPos()), new IntakeAutoPickup(), new IntakeAutoRetract(), new ShooterFarShoot() );
       default: //Autos.Nothing
         return new WaitCommand(50000);
     }

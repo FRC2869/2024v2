@@ -54,8 +54,8 @@ public class ShooterSubsystem extends SubsystemBase {
       shooter1.stopMotor();
       shooter2.stopMotor();
     }else{
-      var velo1 = new VelocityDutyCycle(-150);
-      var velo2 = new VelocityDutyCycle(150);
+      var velo1 = new VelocityDutyCycle(speed1);
+      var velo2 = new VelocityDutyCycle(speed2);
       shooter1.setControl(velo1);
       
       

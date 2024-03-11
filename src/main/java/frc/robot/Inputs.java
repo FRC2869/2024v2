@@ -33,7 +33,7 @@ public class Inputs {
 
     public static double getTranslationX() {
         var speed = -driver.getLeftY();
-        if(driver.rightBumper().getAsBoolean()){
+        if(driver.getHID().getRightBumper()){
             return speed*.25;
         }
         return speed;
@@ -41,7 +41,7 @@ public class Inputs {
 
     public static double getRotation() {
         var speed =  -driver.getRightX();
-        if(driver.rightBumper().getAsBoolean()){
+        if(driver.getHID().getRightBumper()){
             return speed*.25;
         }
         return speed;
@@ -51,7 +51,7 @@ public class Inputs {
      
     public static double getTranslationY() {
         var speed = -driver.getLeftX(); 
-        if(driver.rightBumper().getAsBoolean()){
+        if(driver.getHID().getRightBumper()){
             return speed*.25;
         }
         return speed;
@@ -69,7 +69,7 @@ public class Inputs {
 
     public static double getIntakePivotSpeed() {
 
-        var speed =  operator.getLeftX();
+        var speed =  operator.getHID().getLeftX()*.5;
         if(Math.abs(speed)<.1){
             speed = 0;
         }
@@ -97,7 +97,7 @@ public class Inputs {
     }
 
     public static double getPivotOverride(){
-        return operator.getRightY();
+        return operator.getHID().getRightY()*.5;
     }
 
     public static Trigger getPivotBase(){
@@ -108,7 +108,22 @@ public class Inputs {
         return operator.pov(270);
     }
 
-    // public static Trigger getPivotFar(){
-    //     return operatorBoard.button(12);
-    // }  
+    public static Trigger getPivotFar(){
+        return operatorBoard.button(12);
+    }
+    public static Trigger getIntakeFar(){
+        return operatorBoard.button(7);
+    }
+    
+    public static Trigger getAutoIntakeDown(){
+        return operatorBoard.button(1);
+    }
+    public static Trigger getAutoIntakeUp(){
+        return operatorBoard.button(2);
+    }
+
+    public static Trigger getAutoShoot(){
+        return operatorBoard.button(3);
+    }
 }
+

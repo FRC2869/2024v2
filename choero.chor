@@ -4158,8 +4158,8 @@
                     "controlIntervalCount": 29
                 },
                 {
-                    "x": 7.7312092781066895,
-                    "y": 7.5006422996521,
+                    "x": 0,
+                    "y": 0,
                     "heading": 0,
                     "isInitialGuess": false,
                     "translationConstrained": true,
