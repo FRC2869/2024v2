@@ -64,10 +64,26 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return super.m_kinematics;
     }
     
+    
+
     /**
-     * @return angle between floor and speaker
+     * @return angle between floor and speaker in degrees
+     * MUST ADD Constants.PivotConstants.basePosition in set the encoder properly
      */
+    
     public double getAngle() {
         return 180 * Math.atan(Constants.FieldConstants.speakerHeight/(Constants.FieldConstants.fieldWidth - Constants.FieldConstants.distanceFromWallSpeaker - getState().Pose.getX())) / Math.PI;
+    }
+
+    /**
+     * Gets the angle between the intake and the shooter
+     * intake angle is already added
+     * @return
+     */
+    public double getIntakeAngle() {
+        return 180*Math.atan((
+            (Constants.PivotConstants.pivotRestingHeight + (Constants.PivotConstants.shooterPivotLength * Math.sin(Math.PI * (getAngle())/180)))
+            /(Constants.PivotConstants.chassisWidth - (Constants.PivotConstants.shooterPivotLength * Math.cos(Math.PI * (getAngle())/180))))
+             / Math.PI) - Constants.PivotConstants.intakeAngle;
     }
 }

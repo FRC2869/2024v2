@@ -101,6 +101,8 @@ public class PivotSubsystem extends SubsystemBase {
 	}else{
 		pivotMotor.set(speed);
 	}
+	
+	SmartDashboard.putNumber("Angle Shooter", getAngle());
   }
 
   public void toggleBrake(){
@@ -114,3 +116,4 @@ public class PivotSubsystem extends SubsystemBase {
         pivotMotor.setIdleMode(IdleMode.kBrake);
     }
 }
+

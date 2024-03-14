@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
@@ -13,6 +15,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.ApplyChassisSpeeds;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -21,18 +24,21 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
+import frc.robot.commands.IntakeAutoPickup;
+import frc.robot.commands.IntakeAutoRetract;
 import frc.robot.commands.setOdometry;
+import frc.robot.commands.Intake.IntakeWaitNote;
+import frc.robot.commands.Shooter.ShooterAutoShoot;
+import frc.robot.commands.Shooter.ShooterFarShoot;
 import frc.robot.generated.TunerConstants;
 
 public class Swerve extends SubsystemBase {
@@ -56,6 +62,7 @@ public class Swerve extends SubsystemBase {
     SmartDashboard.putNumber("PosX", getPose().getX());
     SmartDashboard.putNumber("PosY", getPose().getY());
     AutoBuilder.configureHolonomic(this::getPose, this::resetOdometry, this::getRobotRelativeSpeeds, this::driveRobotRelative, new HolonomicPathFollowerConfig(3, Math.sqrt(2)*20.75, new ReplanningConfig()), () -> false, TunerConstants.DriveTrain);
+    
   }
 
   public Pose2d getPose() {
@@ -96,11 +103,29 @@ public class Swerve extends SubsystemBase {
    */
   public Command getTrajectory(String pathName) {
     PathPlannerPath traj = PathPlannerPath.fromChoreoTrajectory(pathName);
-    
-    return new SequentialCommandGroup(new setOdometry(traj.getPreviewStartingHolonomicPose()  ), 
+    if(isRed()){
+    return new SequentialCommandGroup(new setOdometry(traj.flipPath().getPreviewStartingHolonomicPose()), 
+     AutoBuilder.followPath(traj.flipPath()));
+    }
+    else{
+      return new SequentialCommandGroup(new setOdometry(traj.getPreviewStartingHolonomicPose()), 
      AutoBuilder.followPath(traj));
+    }
   }
   
+  public Command getAuto(String autoName){
+    return new PathPlannerAuto(autoName);
+  }
+
+  public boolean isRed(){
+    var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+          System.out.println(alliance.get());
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+  }
+
   /**
    * @param pathName A human readable description of Path.
    * Paths include: 

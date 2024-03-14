@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.PivotFar;
-import frc.robot.commands.Intake.IntakeBasePos;
 import frc.robot.commands.Intake.IntakeFarPos;
 import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
@@ -21,6 +20,12 @@ public class ShooterFarShoot extends ParallelRaceGroup {
   public ShooterFarShoot() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new SequentialCommandGroup(new ParallelRaceGroup(new IntakeFarPos(), new PivotFar(), new WaitCommand(1)), new ShooterShoot(), new WaitCommand(1), new IntakeSpinOut(), new WaitCommand(0.5), new ShooterStop(), new IntakeSpinStop()));
+    addCommands(new IntakeFarPos(), new PivotFar(), 
+    new SequentialCommandGroup(new WaitCommand(1), 
+      
+      new ShooterShoot(), 
+      new WaitCommand(1), new IntakeSpinOut(), 
+      new WaitCommand(0.5), new ShooterStop(), 
+      new IntakeSpinStop()));
   }
 }

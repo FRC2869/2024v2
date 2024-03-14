@@ -2,18 +2,14 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.PositionsIntake;
-import frc.robot.Constants.PivotConstants;
-import frc.robot.Constants.PivotConstants.PositionsPivot;
 import frc.robot.MotorConfiguration;
 
 public class IntakePivotSubsystem extends SubsystemBase{
@@ -70,9 +66,9 @@ public class IntakePivotSubsystem extends SubsystemBase{
 	}
     public boolean isAtPosition(){
 		if(currentPos == PositionsIntake.BASE){
-            return getAngle()>IntakeConstants.basePosition;
+            return getAngle()>=IntakeConstants.basePosition-5;
         }else if(currentPos == PositionsIntake.FLOOR){
-            return getAngle()<IntakeConstants.floorPosition;
+            return getAngle()<=IntakeConstants.floorPosition+5;
         }else {
             return Math.abs(pivotPos - getAngle()) < 3;
         }
@@ -104,7 +100,10 @@ public class IntakePivotSubsystem extends SubsystemBase{
         }else{
             pivotMotor.set(pivotSpeed);
         }
+        
+        SmartDashboard.putNumber("Angle Intake", getAngle());
     }
+
     
     public void toggleBrake(){
         if(pivotMotor.getIdleMode()==IdleMode.kCoast)

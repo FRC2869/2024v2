@@ -5,14 +5,14 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakePivotSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeWaitPosition extends Command {
-  private IntakePivotSubsystem intake;
+public class IntakeWaitNote extends Command {
+  private IntakeSubsystem intake;
 
-  /** Creates a new IntakeWaitPosition. */
-  public IntakeWaitPosition() {
-    intake = IntakePivotSubsystem.getInstance();
+  /** Creates a new IntakeWaitNote. */
+  public IntakeWaitNote() {
+    intake = IntakeSubsystem.getInstance();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -23,7 +23,6 @@ public class IntakeWaitPosition extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
   }
 
   // Called once the command ends or is interrupted.
@@ -33,10 +32,6 @@ public class IntakeWaitPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(intake.isAtPosition()){
-      System.out.println("DONE");
-      return true;
-    }
-    return false;
+    return intake.isIntake();
   }
 }

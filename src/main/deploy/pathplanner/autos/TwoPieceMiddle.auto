@@ -1,0 +1,85 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.4057706594467163,
+      "y": 5.507532596588135
+    },
+    "rotation": 3.0319414334791496e-29
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeAutoPickup"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "TwoPieceMiddle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeWaitNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeAutoRetract"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterFarShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeAutoPickup"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ThreePieceMiddle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeWaitNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeAutoRetract"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterFarShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": true
+}

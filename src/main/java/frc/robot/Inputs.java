@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.LinkedList;
-
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -47,7 +45,7 @@ public class Inputs {
         return speed;
     }
 
-    private static LinkedList<Double> speedList = new LinkedList<>();
+    // private static LinkedList<Double> speedList = new LinkedList<>();
      
     public static double getTranslationY() {
         var speed = -driver.getLeftX(); 
@@ -124,6 +122,11 @@ public class Inputs {
 
     public static Trigger getAutoShoot(){
         return operatorBoard.button(3);
+    }
+
+    // for auto-align calibration
+    public static Trigger getAngles() {
+        return null;
     }
 }
 

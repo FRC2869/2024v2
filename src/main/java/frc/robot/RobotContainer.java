@@ -4,44 +4,23 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.RobotCentric;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
-import edu.wpi.first.hal.HAL.SimPeriodicAfterCallback;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.SwerveResetGyro;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.IntakePivotSubsystem;
-import frc.robot.subsystems.PivotSubsystem;
-import frc.robot.subsystems.Swerve;
-import frc.robot.commands.Intake.IntakeBasePos;
-import frc.robot.commands.Intake.IntakeFarPos;
-import frc.robot.commands.Intake.IntakeFloorPos;
-import frc.robot.commands.Intake.IntakeSpeedControl;
-import frc.robot.commands.Intake.IntakeSpinIn;
-import frc.robot.commands.Intake.IntakeSpinOut;
-import frc.robot.commands.Intake.IntakeSpinStop;
-import frc.robot.commands.Shooter.ShooterAmpLoad;
-import frc.robot.commands.Shooter.ShooterAmpScore;
-import frc.robot.commands.Shooter.ShooterAutoShoot;
-import frc.robot.commands.Shooter.ShooterFarShoot;
-import frc.robot.commands.Shooter.ShooterShoot;
-import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.DefaultPivot;
 import frc.robot.commands.DrivetrainResetGyro;
 import frc.robot.commands.IntakeAutoPickup;
@@ -49,12 +28,30 @@ import frc.robot.commands.IntakeAutoRetract;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
+import frc.robot.commands.Intake.IntakeBasePos;
+import frc.robot.commands.Intake.IntakeFarPos;
+import frc.robot.commands.Intake.IntakeFloorPos;
+import frc.robot.commands.Intake.IntakeSpeedControl;
+import frc.robot.commands.Intake.IntakeSpinIn;
+import frc.robot.commands.Intake.IntakeSpinOut;
+import frc.robot.commands.Intake.IntakeSpinStop;
+import frc.robot.commands.Intake.IntakeWaitNote;
+import frc.robot.commands.Shooter.ShooterAmpLoad;
+import frc.robot.commands.Shooter.ShooterAmpScore;
+import frc.robot.commands.Shooter.ShooterAutoShoot;
+import frc.robot.commands.Shooter.ShooterFarShoot;
+import frc.robot.commands.Shooter.ShooterShoot;
+import frc.robot.commands.Shooter.ShooterStop;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.IntakePivotSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
   private enum Autos {
-		Nothing, Forward, ShootOne, ShootPickup, SubWooferAuto, BasicPath
+		Nothing, Forward, ShootOne, ShootPickup, SubWooferAuto, BasicPath, SubWooferAutoR
 	}
-  private double MaxSpeed = 8; // 6 meters per second desired top speed
+  private double MaxSpeed = 5; // 6 meters per second desired top speed
   private double MaxAngularRate = 2 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
@@ -65,13 +62,26 @@ public class RobotContainer {
       .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 5% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
-  private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-  private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-  private final Telemetry logger = new Telemetry(MaxSpeed);
+  // private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+  // private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+  // private final Telemetry logger = new Telemetry(MaxSpeed);
   private SendableChooser<Autos> newautopick;
 
   public RobotContainer() {
     configureBindings();
+    Swerve.getInstance();
+    // Map<String, Command> eventMap = new HashMap<>();
+    // eventMap.put("IntakeAutoPickup", new IntakeAutoPickup());
+    // eventMap.put("IntakeWaitNote", new IntakeWaitNote());
+    // eventMap.put("IntakeAutoRetract", new IntakeAutoRetract());
+    // eventMap.put("ShooterFarShoot", new ShooterFarShoot());
+    // eventMap.put("ShooterAutoShoot", new ShooterAutoShoot());
+    // NamedCommands.registerCommands(eventMap);
+    NamedCommands.registerCommand("IntakeAutoPickup", new IntakeAutoPickup());
+    NamedCommands.registerCommand("IntakeWaitNote", new IntakeWaitNote());
+    NamedCommands.registerCommand("IntakeAutoRetract", new IntakeAutoRetract());
+    NamedCommands.registerCommand("ShooterFarShoot", new ShooterFarShoot());
+    NamedCommands.registerCommand("ShooterAutoShoot", new ShooterAutoShoot());
     newautopick = new SendableChooser<>();
 		newautopick.addOption("Nothing", Autos.Nothing);
 		newautopick.addOption("Forward", Autos.Forward);	//2m path
@@ -79,6 +89,7 @@ public class RobotContainer {
 		newautopick.addOption("ShootPickup", Autos.ShootPickup);	
 		newautopick.addOption("SubWooferAuto", Autos.SubWooferAuto);	
 		newautopick.addOption("BasicPath", Autos.BasicPath);	
+		newautopick.addOption("SubWooferAutoR", Autos.SubWooferAutoR);	
 		Shuffleboard.getTab("auto").add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
     System.out.println("RC");
   }
@@ -106,6 +117,7 @@ public class RobotContainer {
     Inputs.getIntakeFar().onTrue(new IntakeFarPos());
     IntakePivotSubsystem.getInstance().setDefaultCommand(new IntakeSpeedControl());
     PivotSubsystem.getInstance().setDefaultCommand(new DefaultPivot());
+    // LightingSubsystem.getInstance().setDefaultCommand(new LEDCommand(LightingSetting.CANSHOOT));
     Inputs.getAutoIntakeDown().onTrue(new IntakeAutoPickup());
     Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
     Inputs.getAutoShoot().onTrue(new ShooterAutoShoot());
@@ -123,8 +135,9 @@ public class RobotContainer {
         return new SequentialCommandGroup(new ShooterAutoShoot(), new ParallelCommandGroup(Swerve.getInstance().getTrajectory("TopBlueAutoPath"), 
         new SequentialCommandGroup(new WaitCommand(1), new IntakeAutoPickup())));
       case BasicPath:
-        return new SequentialCommandGroup(new ShooterAutoShoot(), new IntakeSpinIn(), new ParallelRaceGroup(new IntakeFloorPos(), new WaitCommand(.75)),
-        new ParallelRaceGroup(Swerve.getInstance().getTrajectory("TwoPieceMiddle"), new IntakeFloorPos()), new IntakeAutoPickup(), new IntakeAutoRetract(), new ShooterFarShoot() );
+        return Swerve.getInstance().getAuto("TwoPieceMiddle");
+      case SubWooferAutoR:
+        return Swerve.getInstance().getAuto("OnePiece(not)Mid (The One Piece is real)");
       default: //Autos.Nothing
         return new WaitCommand(50000);
     }

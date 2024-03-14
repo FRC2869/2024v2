@@ -5,12 +5,11 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
-import com.ctre.phoenix6.controls.compound.Diff_VelocityDutyCycle_Velocity;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.MotorConfiguration;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.MotorConfiguration;
 
 public class ShooterSubsystem extends SubsystemBase {
   public static ShooterSubsystem instance;
@@ -63,6 +62,7 @@ public class ShooterSubsystem extends SubsystemBase {
       // shooter1.set(speed1);
       // shooter2.set(speed2);
     }
+  
     // This method will be called once per scheduler run
   }
 }

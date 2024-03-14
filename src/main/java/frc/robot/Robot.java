@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Intake.IntakeSpeedControl;
+import frc.robot.Constants.ShooterConstants.LightingSetting;
+import frc.robot.commands.SwerveResetGyro;
+import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
 import frc.robot.subsystems.Swerve;
-import frc.robot.commands.DefaultPivot;
-import frc.robot.commands.SwerveResetGyro;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -25,9 +25,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    // System.out.println("INIT");
+  //  System.out.println("INIT");
     m_robotContainer = new RobotContainer();
     new SwerveResetGyro().schedule();
+    new LEDCommand(LightingSetting.INTAKE).schedule();
     field = new Field2d();
   }
 
@@ -82,10 +83,10 @@ public class Robot extends TimedRobot {
   
   @Override
   public void testInit() {
-    IntakePivotSubsystem.getInstance().setBrake();
-    CommandScheduler.getInstance().cancelAll();
-    new IntakeSpeedControl().schedule();
-    new DefaultPivot().schedule();
+    //IntakePivotSubsystem.getInstance().setBrake();
+    //CommandScheduler.getInstance().cancelAll();
+    //new IntakeSpeedControl().schedule();
+    //new DefaultPivot().schedule();
   }
 
   @Override

@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
 import frc.robot.subsystems.PivotSubsystem;
@@ -28,5 +27,10 @@ public class PivotBase extends Command {
     pivot.setCurrentPosition(PositionsPivot.BASE);
     pivot.position(PivotConstants.basePosition);
     System.out.println("BASE");
+  }
+  @Override
+  public void end(boolean i){
+    pivot.setPositionControl(false);
+    pivot.setSpeed(0);
   }
 }
