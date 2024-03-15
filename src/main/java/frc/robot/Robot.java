@@ -14,12 +14,15 @@ import frc.robot.commands.SwerveResetGyro;
 import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
+import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.Swerve;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  
+  private LightingSubsystem lights = LightingSubsystem.getInstance();
 
   private Field2d field;
 
@@ -28,7 +31,7 @@ public class Robot extends TimedRobot {
   //  System.out.println("INIT");
     m_robotContainer = new RobotContainer();
     new SwerveResetGyro().schedule();
-    new LEDCommand(LightingSetting.INTAKE).schedule();
+    new LEDCommand(LightingSetting.SCORING).schedule();
     field = new Field2d();
   }
 
@@ -41,7 +44,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    lights.setLights(LightingSetting.DISABLED);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -51,6 +56,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    lights.setLights(LightingSetting.INTAKE);
     IntakePivotSubsystem.getInstance().setBrake();
     CommandScheduler.getInstance().cancelAll();
     TunerConstants.DriveTrain.getDefaultCommand().cancel();
@@ -69,6 +75,7 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopInit() {
+    lights.setLights(LightingSetting.SCORING);
     IntakePivotSubsystem.getInstance().setBrake();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -95,5 +102,9 @@ public class Robot extends TimedRobot {
   @Override
   public void testExit() {
     CommandScheduler.getInstance().cancelAll();
+  }
+
+  public void itsTeaTimeInit() {
+    System.out.println("OI BRUV HAVE YOU GOT A LICENSE FOR THAT");
   }
 }

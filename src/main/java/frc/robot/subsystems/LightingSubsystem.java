@@ -100,6 +100,21 @@ public class LightingSubsystem extends SubsystemBase {
             }
           }
         break;
+      case DISABLED:
+        speed = 1;
+        for (int i = 0; i < m_ledBuffer.getLength(); i++) {
+            if (i < m_ledBuffer.getLength()/3)
+              m_ledBuffer.setRGB(i, 255, 150, 0);
+            else if (i < 2 * m_ledBuffer.getLength()/3) {
+              m_ledBuffer.setRGB(i, 255, 255, 255);
+              if (i == (int)(m_ledBuffer.getLength()/2))
+                m_ledBuffer.setRGB(i, 0, 0, 255);
+            }
+            else {
+              m_ledBuffer.setRGB(i, 0, 255, 0);
+            }
+          }
+        break;
       default:
         for (int i = 0; i < m_ledBuffer.getLength(); i++) {
             m_ledBuffer.setRGB(i, 0, 0, 150);

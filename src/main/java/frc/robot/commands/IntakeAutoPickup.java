@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Intake.IntakeFloorPos;
 import frc.robot.commands.Intake.IntakeSpinIn;
 import frc.robot.commands.Intake.IntakeWaitPosition;
@@ -28,7 +29,7 @@ public class IntakeAutoPickup extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new IntakeSpinIn(), 
-      new ParallelRaceGroup(new IntakeFloorPos(), new IntakeWaitPosition())
+      new ParallelRaceGroup(new IntakeFloorPos(), new SequentialCommandGroup(new WaitCommand(.1), new IntakeWaitPosition()))
     );
       // new WaitCommand(1), 
       // new ParallelRaceGroup(new IntakeBasePos(), new IntakeWaitPosition()),

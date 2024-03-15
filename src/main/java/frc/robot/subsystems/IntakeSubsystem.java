@@ -47,7 +47,7 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     public boolean isIntake() {
-        return (spinMotor.getSupplyCurrent().getValue() > 50);
+        return (spinMotor.getSupplyCurrent().getValue() > 35);
     }
 
     @Override

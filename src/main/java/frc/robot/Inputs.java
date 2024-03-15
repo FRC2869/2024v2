@@ -1,16 +1,18 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Inputs {
-    private static final CommandXboxController driver = new CommandXboxController(Constants.OperatorConstants.DriverController.port); 
+    private static final CommandGenericHID driver1 = new CommandGenericHID(Constants.OperatorConstants.DriverController.port); 
+    private static final CommandXboxController driver2 = new CommandXboxController(Constants.OperatorConstants.DriverController2.port); 
     private static final CommandXboxController operator = new CommandXboxController(Constants.OperatorConstants.OperatorController.port); 
     private static final CommandGenericHID operatorBoard = new CommandGenericHID(Constants.OperatorConstants.OperatorButtonBoard.port); 
 
     public static Trigger getResetGyro(){
-        return driver.y();
+        return driver1.button(2);
     }
 
     public static Trigger getShooterShoot(){
@@ -30,16 +32,16 @@ public class Inputs {
     }
 
     public static double getTranslationX() {
-        var speed = -driver.getLeftY();
-        if(driver.getHID().getRightBumper()){
+        var speed = driver1.getRawAxis(1);
+        if(driver1.getHID().getRawButton(1)){
             return speed*.25;
         }
         return speed;
     }
 
     public static double getRotation() {
-        var speed =  -driver.getRightX();
-        if(driver.getHID().getRightBumper()){
+        var speed =  -driver2.getRawAxis(0);
+        if(driver1.getHID().getRawButton(1)){
             return speed*.25;
         }
         return speed;
@@ -48,8 +50,8 @@ public class Inputs {
     // private static LinkedList<Double> speedList = new LinkedList<>();
      
     public static double getTranslationY() {
-        var speed = -driver.getLeftX(); 
-        if(driver.getHID().getRightBumper()){
+        var speed = driver1.getRawAxis(0); 
+        if(driver1.getHID().getRawButton(1)){
             return speed*.25;
         }
         return speed;

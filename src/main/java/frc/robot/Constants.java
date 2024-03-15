@@ -34,6 +34,14 @@ public class Constants {
             public static final double righYDeadband = .01;
         }
 
+        public static interface DriverController2 {
+            public static final int port = 1;
+            public static final double leftXDeadband = .01;
+            public static final double leftYDeadband = .01;
+            public static final double rightXDeadband = .01;
+            public static final double righYDeadband = .01;
+        }
+
         public static interface OperatorController {
             public static final int port = 2;
             public static final double leftXDeadband = .01;
@@ -49,23 +57,23 @@ public class Constants {
 
     public static class ShooterConstants {
         public static enum LightingSetting {
-            SCORING, ORANGEWHITEGREENWITHBLUESPECKSITUATION, CANSHOOT, INTAKE
+            SCORING, ORANGEWHITEGREENWITHBLUESPECKSITUATION, CANSHOOT, INTAKE, DISABLED
           }
         public static final int id2 = 18;
         public static final int id1 = 19;
-        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 0, 0, 0, 1, -1, 0, 0, 80,
+        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 0, 0, 0, 1, -1, 0, 0, 40,
                 true, false, 0);
     }
 
     public static class IntakeConstants {
-        public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 80, true, false);
-        public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.25, -0.25,
+        public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 40, true, false);
+        public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.4, -0.4,
                 (5 * (50 / 16.0) * (32 / 16.0)), 0, 40, false, false, 0);
-        public static final double kMinAngle = -780;
+        public static final double kMinAngle = -770;
         public static final double kMaxAngle = 0;
-        public static final double floorPosition = -780;
+        public static final double floorPosition = -770;
         public static final double basePosition = 0;
-        public static final double farPosition = -60;
+        public static final double farPosition = -30;
 
         public static enum PositionsIntake {
             BASE, FLOOR, FAR
@@ -88,14 +96,17 @@ public class Constants {
         public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 2, 0, 0, .25, -.5, ((16/30.0)*(48.0/48.0)*(25.0)), 0, 40, false, false, 0);
         public static final int basePosition = -30;
         public static final double kMinAngle = -200;
-        public static final double kMaxAngle = -20;
+        public static final double kMaxAngle = -15;
         public static final double ampPosition = -170;//-170
-        public static final double farPosition = -39;
-        public static final double pivotRestingHeight = 0; // placeholder
-        public static final double chassisWidth = 0; // placeholder
-        public static final double shooterPivotLength = 0; // placeholder
-        public static final double shooterAngle = 0; //placeholder
+        public static final double farPosition = -22;
+        /**inches */
+        public static final double pivotRestingHeight = 25; // not good
+        /**inches */
+        public static final double chassisWidth = 26; // not good
+        /**inches */
+        public static final double shooterPivotLength = 9; // not good
         // public static final double intakeAngle = 180 - 140;
+        /**degrees */
         public static final double intakeAngle = 67;
         public static enum PositionsPivot{
             BASE, AMP, FAR,

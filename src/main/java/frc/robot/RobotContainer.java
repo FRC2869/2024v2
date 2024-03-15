@@ -120,7 +120,7 @@ public class RobotContainer {
     // LightingSubsystem.getInstance().setDefaultCommand(new LEDCommand(LightingSetting.CANSHOOT));
     Inputs.getAutoIntakeDown().onTrue(new IntakeAutoPickup());
     Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
-    Inputs.getAutoShoot().onTrue(new ShooterAutoShoot());
+    Inputs.getAutoShoot().onTrue(new ShooterFarShoot());
   }
 
   public Command getAutonomousCommand() {

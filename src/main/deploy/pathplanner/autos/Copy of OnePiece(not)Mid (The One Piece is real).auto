@@ -5,7 +5,7 @@
       "x": 1.4057706594467163,
       "y": 5.507532596588135
     },
-    "rotation": 2.9526605339660816e-28
+    "rotation": 7.362465016594098e-27
   },
   "command": {
     "type": "sequential",
@@ -87,6 +87,12 @@
           "type": "named",
           "data": {
             "name": "ShooterAutoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": null
           }
         }
       ]
