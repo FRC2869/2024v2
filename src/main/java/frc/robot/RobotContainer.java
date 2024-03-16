@@ -25,6 +25,7 @@ import frc.robot.commands.DefaultPivot;
 import frc.robot.commands.DrivetrainResetGyro;
 import frc.robot.commands.IntakeAutoPickup;
 import frc.robot.commands.IntakeAutoRetract;
+import frc.robot.commands.Move;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
@@ -40,6 +41,7 @@ import frc.robot.commands.Shooter.ShooterAmpLoad;
 import frc.robot.commands.Shooter.ShooterAmpScore;
 import frc.robot.commands.Shooter.ShooterAutoShoot;
 import frc.robot.commands.Shooter.ShooterFarShoot;
+import frc.robot.commands.Shooter.ShooterRevWait;
 import frc.robot.commands.Shooter.ShooterShoot;
 import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.generated.TunerConstants;
@@ -48,8 +50,9 @@ import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
+  private Swerve swerve;
   private enum Autos {
-		Nothing, Forward, ShootOne, ShootPickup, SubWooferAuto, BasicPath, SubWooferAutoR
+		Nothing, Forward, ShootOne, ShootPickup, SubWooferAuto, BasicPath, SubWooferAutoR, SubWooferAutoR2
 	}
   private double MaxSpeed = 5; // 6 meters per second desired top speed
   private double MaxAngularRate = 2 * Math.PI; // 3/4 of a rotation per second max angular velocity
@@ -69,7 +72,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureBindings();
-    Swerve.getInstance();
+    swerve = Swerve.getInstance();
     // Map<String, Command> eventMap = new HashMap<>();
     // eventMap.put("IntakeAutoPickup", new IntakeAutoPickup());
     // eventMap.put("IntakeWaitNote", new IntakeWaitNote());
@@ -82,6 +85,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("IntakeAutoRetract", new IntakeAutoRetract());
     NamedCommands.registerCommand("ShooterFarShoot", new ShooterFarShoot());
     NamedCommands.registerCommand("ShooterAutoShoot", new ShooterAutoShoot());
+    NamedCommands.registerCommand("PPath1", swerve.getPathPlannerTrajectory("PPath1"));
+    NamedCommands.registerCommand("PPath2", swerve.getPathPlannerTrajectory("PPath2"));
+    NamedCommands.registerCommand("PPath3", swerve.getPathPlannerTrajectory("PPath3"));
+    NamedCommands.registerCommand("Rev", new ShooterRevWait());
     newautopick = new SendableChooser<>();
 		newautopick.addOption("Nothing", Autos.Nothing);
 		newautopick.addOption("Forward", Autos.Forward);	//2m path
@@ -89,7 +96,9 @@ public class RobotContainer {
 		newautopick.addOption("ShootPickup", Autos.ShootPickup);	
 		newautopick.addOption("SubWooferAuto", Autos.SubWooferAuto);	
 		newautopick.addOption("BasicPath", Autos.BasicPath);	
-		newautopick.addOption("SubWooferAutoR", Autos.SubWooferAutoR);	
+		newautopick.addOption("SubWooferAutoR", Autos.SubWooferAutoR);
+		newautopick.addOption("SubWooferAutoR2", Autos.SubWooferAutoR2);
+    //SUPER ULTIMATE PATH!!!!!!! (WATCH OUT, LIBERALS)
 		Shuffleboard.getTab("auto").add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
     System.out.println("RC");
   }
@@ -121,6 +130,9 @@ public class RobotContainer {
     Inputs.getAutoIntakeDown().onTrue(new IntakeAutoPickup());
     Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
     Inputs.getAutoShoot().onTrue(new ShooterFarShoot());
+    
+    // Inputs.getLeft().onTrue(new Move(-1));
+    // Inputs.getRight().onTrue(new SMove(1));
   }
 
   public Command getAutonomousCommand() {
@@ -138,6 +150,8 @@ public class RobotContainer {
         return Swerve.getInstance().getAuto("TwoPieceMiddle");
       case SubWooferAutoR:
         return Swerve.getInstance().getAuto("OnePiece(not)Mid (The One Piece is real)");
+      case SubWooferAutoR2:
+        return Swerve.getInstance().getAuto("SUPER ULTIMATE PATH! (watch out, liberals)");
       default: //Autos.Nothing
         return new WaitCommand(50000);
     }

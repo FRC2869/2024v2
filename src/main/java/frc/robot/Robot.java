@@ -4,12 +4,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.util.PixelFormat;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.ShooterConstants.LightingSetting;
+import frc.robot.commands.Move;
 import frc.robot.commands.SwerveResetGyro;
 import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.generated.TunerConstants;
@@ -26,13 +31,19 @@ public class Robot extends TimedRobot {
 
   private Field2d field;
 
+  private UsbCamera camera;
   @Override
   public void robotInit() {
   //  System.out.println("INIT");
     m_robotContainer = new RobotContainer();
     new SwerveResetGyro().schedule();
-    new LEDCommand(LightingSetting.SCORING).schedule();
+    //new LEDCommand(LightingSetting.SCORING).schedule();
     field = new Field2d();
+
+    
+	  camera = CameraServer.startAutomaticCapture("cam0",0);
+    camera.setResolution(100000, 100000);
+    camera.setFPS(300);
   }
 
   @Override
@@ -45,7 +56,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    lights.setLights(LightingSetting.DISABLED);
+    //lights.setLights(LightingSetting.ORANGEWHITEGREENWITHBLUESPECKSITUATION);
+    lights.game();
+    
+    // Inputs.getLeft().onTrue(new Move(-10));
+    // Inputs.getRight().onTrue(new Move(10));
   }
 
   @Override
@@ -94,6 +109,8 @@ public class Robot extends TimedRobot {
     //CommandScheduler.getInstance().cancelAll();
     //new IntakeSpeedControl().schedule();
     //new DefaultPivot().schedule();
+
+    lights.setLights(LightingSetting.GAME);
   }
 
   @Override

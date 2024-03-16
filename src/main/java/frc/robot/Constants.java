@@ -57,7 +57,7 @@ public class Constants {
 
     public static class ShooterConstants {
         public static enum LightingSetting {
-            SCORING, ORANGEWHITEGREENWITHBLUESPECKSITUATION, CANSHOOT, INTAKE, DISABLED
+            SCORING, ORANGEWHITEGREENWITHBLUESPECKSITUATION, CANSHOOT, INTAKE, DISABLED, GAME, LOSE, WIN
           }
         public static final int id2 = 18;
         public static final int id1 = 19;
@@ -73,7 +73,7 @@ public class Constants {
         public static final double kMaxAngle = 0;
         public static final double floorPosition = -770;
         public static final double basePosition = 0;
-        public static final double farPosition = -30;
+        public static final double farPosition = -30;//-30
 
         public static enum PositionsIntake {
             BASE, FLOOR, FAR
@@ -96,9 +96,10 @@ public class Constants {
         public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 2, 0, 0, .25, -.5, ((16/30.0)*(48.0/48.0)*(25.0)), 0, 40, false, false, 0);
         public static final int basePosition = -30;
         public static final double kMinAngle = -200;
-        public static final double kMaxAngle = -15;
+        public static final double kMaxAngle = 0;
         public static final double ampPosition = -170;//-170
-        public static final double farPosition = -22;
+        public static final double farPosition = -22;//-22
+        public static final double closePosition = -5;
         /**inches */
         public static final double pivotRestingHeight = 25; // not good
         /**inches */
@@ -109,7 +110,7 @@ public class Constants {
         /**degrees */
         public static final double intakeAngle = 67;
         public static enum PositionsPivot{
-            BASE, AMP, FAR,
+            BASE, AMP, FAR, CLOSE,
         } //57, 13
     }
 }

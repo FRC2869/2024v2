@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.MotorConfiguration;
@@ -45,10 +46,19 @@ public class ShooterSubsystem extends SubsystemBase {
     
   }
 
+  public double getRPM() {
+    return shooter1.getVelocity().getValueAsDouble();
+  }
+
+  public boolean isAtRPM() {
+    return Math.abs(getRPM()-speed1)<2;
+  }
+
   @Override
   public void periodic() {
     // var velo1 = new Diff_VelocityDutyCycle_Velocity(new VelocityDutyCycle(speed1, 3.0, true, 0, 0, false, false, false), new VelocityDutyCycle(speed1));
     // var velo2 = new Diff_VelocityDutyCycle_Velocity(new VelocityDutyCycle(speed2, 3.0, true, 0, 0, false, false, false), new VelocityDutyCycle(speed2));
+    SmartDashboard.putNumber("Shooter Speed", getRPM());
     if(stopped){
       shooter1.stopMotor();
       shooter2.stopMotor();

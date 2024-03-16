@@ -32,7 +32,7 @@ public class Inputs {
     }
 
     public static double getTranslationX() {
-        var speed = driver1.getRawAxis(1);
+        var speed = -driver1.getRawAxis(1);
         if(driver1.getHID().getRawButton(1)){
             return speed*.25;
         }
@@ -50,7 +50,7 @@ public class Inputs {
     // private static LinkedList<Double> speedList = new LinkedList<>();
      
     public static double getTranslationY() {
-        var speed = driver1.getRawAxis(0); 
+        var speed = -driver1.getRawAxis(0); 
         if(driver1.getHID().getRawButton(1)){
             return speed*.25;
         }
@@ -130,5 +130,14 @@ public class Inputs {
     public static Trigger getAngles() {
         return null;
     }
+
+    public static boolean getLeft() {
+        return driver1.povLeft().getAsBoolean();
+    }
+    public static boolean getRight() {
+        return driver1.povRight().getAsBoolean();
+    }
+
+    
 }
 

@@ -112,6 +112,22 @@ public class Swerve extends SubsystemBase {
      AutoBuilder.followPath(traj));
     }
   }
+  /**
+   * @param pathName A human readable description of Path.
+   * Paths include: 
+   * @return A sequential command group created by Pathplanner swerve Command 
+   */
+  public Command getPathPlannerTrajectory(String pathName) {
+    PathPlannerPath traj = PathPlannerPath.fromPathFile(pathName);
+    if(isRed()){
+    return new SequentialCommandGroup(new setOdometry(traj.flipPath().getPreviewStartingHolonomicPose()), 
+     AutoBuilder.followPath(traj.flipPath()));
+    }
+    else{
+      return new SequentialCommandGroup(new setOdometry(traj.getPreviewStartingHolonomicPose()), 
+     AutoBuilder.followPath(traj));
+    }
+  }
   
   public Command getAuto(String autoName){
     return new PathPlannerAuto(autoName);
