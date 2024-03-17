@@ -66,7 +66,7 @@ public class Constants {
     }
 
     public static class IntakeConstants {
-        public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 40, true, false);
+        public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 20, true, false);
         public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.4, -0.4,
                 (5 * (50 / 16.0) * (32 / 16.0)), 0, 40, false, false, 0);
         public static final double kMinAngle = -770;
@@ -99,7 +99,7 @@ public class Constants {
         public static final double kMaxAngle = 0;
         public static final double ampPosition = -170;//-170
         public static final double farPosition = -22;//-22
-        public static final double closePosition = -5;
+        public static final double closePosition = -7;
         /**inches */
         public static final double pivotRestingHeight = 25; // not good
         /**inches */

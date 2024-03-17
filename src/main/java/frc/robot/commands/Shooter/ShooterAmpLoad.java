@@ -23,6 +23,6 @@ public class ShooterAmpLoad extends InstantCommand {
   @Override
   public void execute() {
     System.err.println("AMPL");
-    shooter.setSpeed(10, -10);
+    shooter.setSpeed(-15, -15);
   }
 }

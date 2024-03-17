@@ -84,7 +84,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("IntakeWaitNote", new IntakeWaitNote());
     NamedCommands.registerCommand("IntakeAutoRetract", new IntakeAutoRetract());
     NamedCommands.registerCommand("ShooterFarShoot", new ShooterFarShoot());
+    NamedCommands.registerCommand("ShooterShoot", new ShooterShoot());
     NamedCommands.registerCommand("ShooterAutoShoot", new ShooterAutoShoot());
+    NamedCommands.registerCommand("ShooterAutoShootStop", new ShooterAutoShoot());
     NamedCommands.registerCommand("PPath1", swerve.getPathPlannerTrajectory("PPath1"));
     NamedCommands.registerCommand("PPath2", swerve.getPathPlannerTrajectory("PPath2"));
     NamedCommands.registerCommand("PPath3", swerve.getPathPlannerTrajectory("PPath3"));
@@ -127,9 +129,9 @@ public class RobotContainer {
     IntakePivotSubsystem.getInstance().setDefaultCommand(new IntakeSpeedControl());
     PivotSubsystem.getInstance().setDefaultCommand(new DefaultPivot());
     // LightingSubsystem.getInstance().setDefaultCommand(new LEDCommand(LightingSetting.CANSHOOT));
-    Inputs.getAutoIntakeDown().onTrue(new IntakeAutoPickup());
+    Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeWaitNote(), new IntakeAutoRetract()));
     Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
-    Inputs.getAutoShoot().onTrue(new ShooterFarShoot());
+    Inputs.getAutoShoot().onTrue(new ShooterAutoShoot());
     
     // Inputs.getLeft().onTrue(new Move(-1));
     // Inputs.getRight().onTrue(new SMove(1));

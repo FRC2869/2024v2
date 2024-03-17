@@ -30,8 +30,8 @@ public class IntakeWaitNote extends Command {
   @Override
   public void execute() {
     if(!hasRun){
-      timer.start();
       timer.reset();
+      timer.start();  
     }
   }
 

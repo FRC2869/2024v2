@@ -47,11 +47,11 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getRPM() {
-    return shooter1.getVelocity().getValueAsDouble();
+    return shooter2.getVelocity().getValueAsDouble();
   }
 
   public boolean isAtRPM() {
-    return Math.abs(getRPM()-speed1)<2;
+    return Math.abs(getRPM()-speed2)<2;
   }
 
   @Override

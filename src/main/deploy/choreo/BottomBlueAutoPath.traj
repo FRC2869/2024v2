@@ -1765,51 +1765,5 @@
       "timestamp": 14.16750662434595
     }
   ],
-  "eventMarkers": [
-    {
-      "timestamp": 0,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "ShooterAutoShoot"
-        }
-      }
-    },
-    {
-      "timestamp": 3.481762181332772,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeAutoPickup"
-        }
-      }
-    },
-    {
-      "timestamp": 6.949505366360833,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "ShooterAutoShoot"
-        }
-      }
-    },
-    {
-      "timestamp": 10.554927860562008,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeAutoPickup"
-        }
-      }
-    },
-    {
-      "timestamp": 14.16750662434595,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "ShooterAutoShoot"
-        }
-      }
-    }
-  ]
+  "eventMarkers": []
 }

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4057706594467163,
-      "y": 5.507532596588135
+      "x": 1.4,
+      "y": 5.5
     },
-    "rotation": 7.362465016594098e-27
+    "rotation": 3.0217247422956186e-27
   },
   "command": {
     "type": "sequential",
@@ -28,9 +28,22 @@
                 }
               },
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "TwoPieceMiddle"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.25
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "TwoPieceMiddle"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -55,7 +68,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Rev"
+                  "name": "ShooterShoot"
                 }
               },
               {
@@ -109,15 +122,15 @@
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "PPath3"
+                  "pathName": "ThreePieceMiddle (Alt3)"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Rev"
+                  "name": "ShooterShoot"
                 }
               }
             ]
@@ -140,9 +153,9 @@
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "PPath1"
+                  "pathName": "ThreePieceMiddle (Alt 4)"
                 }
               }
             ]
@@ -165,15 +178,15 @@
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "PPath2"
+                  "pathName": "ThreePieceMiddle (Auto 5)"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Rev"
+                  "name": "ShooterShoot"
                 }
               }
             ]
@@ -182,7 +195,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ShooterAutoShoot"
+            "name": "ShooterAutoShootStop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ThreePieceMiddle (Alt 6)"
           }
         }
       ]

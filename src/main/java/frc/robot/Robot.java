@@ -56,8 +56,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    //lights.setLights(LightingSetting.ORANGEWHITEGREENWITHBLUESPECKSITUATION);
-    lights.game();
+    lights.setLights(LightingSetting.DISABLED);
+    // lights.game();
     
     // Inputs.getLeft().onTrue(new Move(-10));
     // Inputs.getRight().onTrue(new Move(10));
