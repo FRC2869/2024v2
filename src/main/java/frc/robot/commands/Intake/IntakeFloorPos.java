@@ -10,7 +10,9 @@ import frc.robot.Constants.IntakeConstants.PositionsIntake;
 import frc.robot.subsystems.IntakePivotSubsystem;
 
 /**
- * @author 
+ * Sets the intake to the Floor Position
+ * Never Ends
+ * On Interupt switches to speed control and sets speed to 0
  */
 public class IntakeFloorPos extends Command {
   private IntakePivotSubsystem intakePivot;

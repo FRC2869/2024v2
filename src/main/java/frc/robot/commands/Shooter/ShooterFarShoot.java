@@ -14,14 +14,12 @@ import frc.robot.commands.Intake.IntakeFarPos;
 import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**
+ * Shoots the note into the speaker from far away
+ */
 public class ShooterFarShoot extends SequentialCommandGroup {
   /** Creates a new ShooterFarShoot. */
   public ShooterFarShoot() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
     addCommands(new ParallelRaceGroup(new IntakeFarPos(), new PivotFar(), 
     new SequentialCommandGroup(new WaitCommand(.5), 
       

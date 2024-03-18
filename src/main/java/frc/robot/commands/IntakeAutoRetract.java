@@ -7,16 +7,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.Intake.IntakeBasePos;
 import frc.robot.commands.Intake.IntakeClosePos;
 import frc.robot.commands.Intake.IntakeSpinStop;
 import frc.robot.commands.Intake.IntakeWaitPosition;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 /**
- * A sequnetial command that stops intake, and moves it back to it's original position.
+ *  Sequential Command for putting the intake up, 
+ *  stopping intake, and then going back to base position. 
+ *  This class will be used by autonomous commands
  */
 public class IntakeAutoRetract extends SequentialCommandGroup {
   /** Creates a new IntakeAutoRetract. */

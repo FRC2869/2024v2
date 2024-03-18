@@ -7,6 +7,12 @@ package frc.robot.commands.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakePivotSubsystem;
 
+
+/**
+ * Waits for the intake to be at the right position
+ * Doesn't add requirements
+ * Ends on IntakePivotSubsystem.isAtPosition()
+ */
 public class IntakeWaitPosition extends Command {
   private IntakePivotSubsystem intake;
 
@@ -34,7 +40,6 @@ public class IntakeWaitPosition extends Command {
   @Override
   public boolean isFinished() {
     if(intake.isAtPosition()){
-      System.out.println("DONE");
       return true;
     }
     return false;

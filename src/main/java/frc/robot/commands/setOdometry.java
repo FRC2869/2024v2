@@ -8,9 +8,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Swerve;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**
+ * sets the odometry to the given Pose2d
+ */
 public class setOdometry extends InstantCommand {
   private Swerve swerve;
   private Pose2d pose;

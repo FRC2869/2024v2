@@ -7,6 +7,11 @@ package frc.robot.commands.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
+/**
+ * Waits for the Shooter to spin to the right speed
+ * Doesn't add requirements
+ * Ends on Shooter +- 2 rps
+ */
 public class ShooterRevWait extends Command {
   /** Creates a new ShooterRevWait. */
   ShooterSubsystem shooter = ShooterSubsystem.getInstance();
