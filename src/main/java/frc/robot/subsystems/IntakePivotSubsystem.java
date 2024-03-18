@@ -10,10 +10,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.PositionsIntake;
+import frc.robot.Constants;
 import frc.robot.MotorConfiguration;
 
 /**
- * Controls the Intake Pivot
+ * Controls the pivot of the intake.
+ * @author "Arsh, the Ankur is here" -Mirage
  */
 public class IntakePivotSubsystem extends SubsystemBase{
     private static IntakePivotSubsystem instance;
@@ -101,17 +103,17 @@ public class IntakePivotSubsystem extends SubsystemBase{
 	}
 
     /**
-     * increases target angle by 2
+     * increases target angle by Constants.PivotConstants.adjustment
      */
     public void adjustUp() {
-		pivotPos += 2;
+		pivotPos += Constants.PivotConstants.adjustment;
 	}
 
     /**
-     * decreases target angle by 2
+     * decreases target angle by Constants.PivotConstants.adjustment
      */
 	public void adjustDown() {
-		pivotPos -= 2;
+		pivotPos -= Constants.PivotConstants.adjustment;
 	}
 
     /**

@@ -4,6 +4,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+/**
+ * A class containing static functions for each of the inputs
+ * @author ChatGPT
+ */
 public class Inputs {
     private static final CommandGenericHID driver1 = new CommandGenericHID(Constants.OperatorConstants.DriverController.port); 
     private static final CommandXboxController driver2 = new CommandXboxController(Constants.OperatorConstants.DriverController2.port); 

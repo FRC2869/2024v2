@@ -33,6 +33,10 @@ import frc.robot.Constants;
 import frc.robot.commands.setOdometry;
 import frc.robot.generated.TunerConstants;
 
+/**
+ * Swerve drive.
+ * @author Ankur "Rag(havan) to Riches"
+ */
 public class Swerve extends SubsystemBase {
   private static Swerve instance;
   private CommandSwerveDrivetrain swerve;

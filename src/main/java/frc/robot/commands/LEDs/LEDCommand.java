@@ -8,10 +8,19 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ShooterConstants.LightingSetting;
 import frc.robot.subsystems.LightingSubsystem;
 
+/**
+ * Sets the LED to a certain mode
+ * @author Umesh Poragupati
+ */
 public class LEDCommand extends InstantCommand {
-  LightingSubsystem lights = LightingSubsystem.getInstance();
-  LightingSetting light;
+  private LightingSubsystem lights = LightingSubsystem.getInstance();
+  private LightingSetting light;
   /** Creates a new ShootLEDCommand. */
+    
+  /**
+   * Sets the LED to a certain mode
+   * @param light the LightSetting that the lights will be changed to.
+   */
   public LEDCommand(LightingSetting light) {
     addRequirements(lights);
     runsWhenDisabled();

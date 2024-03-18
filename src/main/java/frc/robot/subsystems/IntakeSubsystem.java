@@ -7,6 +7,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.MotorConfiguration;
 
+/**
+ * Controls the speed of the intake and 
+ * measures if the note has been fully intaked in autonomous.
+ * @author Encore "Raghavan"
+ */
 public class IntakeSubsystem extends SubsystemBase{
     private static IntakeSubsystem instance;
     public static IntakeSubsystem getInstance(){
@@ -28,22 +33,38 @@ public class IntakeSubsystem extends SubsystemBase{
         // System.out.println("ayya");
     }
 
+    /**
+     * Configures the motor I guess...
+     */
     private void configureMotors() {
         MotorConfiguration.configureMotor(spinMotor, IntakeConstants.spinMotorConfig);
     }
 
+    /**
+     * Sets speed to 50%, spinning notes into the robot
+     */
     public void spinIn() {
         spinSpeed = .5;
     }
 
+    /**
+     * Sets speed to 100%, spinning notes out of the robot
+     */
     public void spinOut(){
         spinSpeed = -1;
     }
 
+    /**
+     * Sets speed to 0%
+     */
     public void spinStop(){
         spinSpeed = 0;
     }
 
+    /**
+     * 
+     * @return a boolean stating true if the velocity decreases (signifying a note is inside the intake)
+     */
     public boolean isIntake() {
         //return (spinMotor.getSupplyCurrent().getValue() > 15);
         return (spinMotor.getVelocity().getValue() < 3);

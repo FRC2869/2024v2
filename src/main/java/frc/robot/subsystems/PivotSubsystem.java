@@ -17,7 +17,12 @@ import frc.robot.Constants.PivotConstants.PositionsPivot;
 import frc.robot.MotorConfiguration;
 
 /**
+<<<<<<< Updated upstream
  * Controls the Shooter Pivot
+=======
+ * Controls the pivot of the shooter.
+ * @author VP
+>>>>>>> Stashed changes
  */
 public class PivotSubsystem extends SubsystemBase {
   public static PivotSubsystem instance;
@@ -34,6 +39,7 @@ public class PivotSubsystem extends SubsystemBase {
   private double pos;
   private PositionsPivot currentPos; 
   /** Creates a new PivotSubsystem. */
+
   public PivotSubsystem() {
     pivotMotor = new CANSparkMax(PivotConstants.id, MotorType.kBrushless);
     MotorConfiguration.configureMotor(pivotMotor, PivotConstants.config);
@@ -51,8 +57,13 @@ public class PivotSubsystem extends SubsystemBase {
 	}
 
 	/**
+<<<<<<< Updated upstream
 	 * Gets the current angle of the pivot
 	 * @return
+=======
+	 * 
+	 * @return the pivot angle in revolutions
+>>>>>>> Stashed changes
 	 */
 	public double getAngle() {
 		// return -collection.getIntegratedSensorPosition();

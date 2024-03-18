@@ -15,6 +15,9 @@ import frc.robot.commands.Intake.IntakeWaitPosition;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**
+ * A sequnetial command that stops intake, and moves it back to it's original position.
+ */
 public class IntakeAutoRetract extends SequentialCommandGroup {
   /** Creates a new IntakeAutoRetract. */
   public IntakeAutoRetract() {

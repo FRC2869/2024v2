@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.PositionsIntake;
 import frc.robot.subsystems.IntakePivotSubsystem;
-
+/**
+ * @author Mr. Gamman.
+ */
 public class IntakeClosePos extends Command {
   private IntakePivotSubsystem intakePivot;
 

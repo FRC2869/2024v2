@@ -8,7 +8,13 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * this is where i would put the code for the climber
+ * IF I HAD ONE
+ * @author Tong Boyle (8/10 functional fingers)
+ */
 public class ClimberSubsystem extends SubsystemBase {
+
   private static ClimberSubsystem instance;
   private TalonFX talon;
 
@@ -21,6 +27,10 @@ public class ClimberSubsystem extends SubsystemBase {
     // talon = new TalonFX(0);
   }
 
+  /**
+   * This is a function (runs when called)
+   * @param speed
+   */
   public void set(double speed) {
     // talon.set(speed);
   }

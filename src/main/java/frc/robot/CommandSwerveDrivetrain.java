@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem
  * so it can be used in command-based projects easily.
+ * @author The folks over at Rev 
  */
 public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
@@ -70,7 +71,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
      * @return angle between floor and speaker in degrees
      * MUST ADD Constants.PivotConstants.basePosition in set the encoder properly
      */
-    
     public double getAngle() {
         return 180 * Math.atan(Constants.FieldConstants.speakerHeight/(Constants.FieldConstants.fieldWidth - Constants.FieldConstants.distanceFromWallSpeaker - getState().Pose.getX())) / Math.PI;
     }

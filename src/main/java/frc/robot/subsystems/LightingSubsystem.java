@@ -10,6 +10,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Inputs;
 import frc.robot.Constants.ShooterConstants.LightingSetting;
 
+/**
+ * Controls the LED's.
+ * @author Johnny (Shi Huang Di) Chen
+ */
 public class LightingSubsystem extends SubsystemBase {
   private static LightingSubsystem instance;
   private AddressableLED m_led;
@@ -17,15 +21,25 @@ public class LightingSubsystem extends SubsystemBase {
   private AddressableLEDBuffer m_ledBuffer;
   private LightingSetting setting = LightingSetting.AUTO;
   private int millis;
+
+  /**
+   * The white LED in my game
+   * @author the white led in my game
+   */
   private int player = 0;
   private boolean c1 = true;
   private boolean c2 = true;
   private boolean aBool = true;
   private LightingSetting[] arrayOfc = {LightingSetting.Pattern1, LightingSetting.Pattern2, LightingSetting.Pattern3};
+  private static int numCalls;
   private int timer = 0;
 
   private int[][] level;
 
+  /**
+   * Gets an instance
+   * @return the instance!!!
+   */
   public static LightingSubsystem getInstance() {
     if (instance == null) instance = new LightingSubsystem();
     return instance;
@@ -44,10 +58,20 @@ public class LightingSubsystem extends SubsystemBase {
     m_led.start();
   }
 
+  /**
+   * Sets lights
+   * WARNING: DO NOT CALL 24 TIMES.  YOU CAN CALL MORE THAN 24 TIMES BUT NOT EXACTLY 24!
+   * @param lights sets the mode of the lights
+   */
   public void setLights(LightingSetting lights) {
     setting = lights;
+    numCalls++;
+    if (numCalls == 24) setting = LightingSetting.GAMEOVER;
   }
 
+  /**
+   * idk what this does...
+   */
   public void game() {
     timer = 0;
     player = 0;
@@ -208,10 +232,10 @@ public class LightingSubsystem extends SubsystemBase {
         }
         break;
       case Pattern2:
-        speed = 10;
+        speed = 1;
         for (int i = 0; i < m_ledBuffer.getLength(); i++) {
           if(Math.random() > .5)
-            m_ledBuffer.setRGB(i, 0, 0, millis / 50);
+            m_ledBuffer.setRGB(i, 0, 0, millis);
         }
         break;
       case Pattern3:
@@ -223,6 +247,17 @@ public class LightingSubsystem extends SubsystemBase {
             m_ledBuffer.setRGB(i, 75, 0, 255);
         }
         break;
+      case Pattern4:
+        speed = 10;
+        for (int i = 0; i < m_ledBuffer.getLength(); i++) {
+          if(i == millis % m_ledBuffer.getLength())
+            m_ledBuffer.setRGB(i, 255, 255, 255);
+          if(i == millis % m_ledBuffer.getLength())
+            m_ledBuffer.setRGB(i, 255, 255, 255);
+          else
+            m_ledBuffer.setRGB(i, 255, 0, 0);
+        }
+        break;
       case WIN:
         player = 0;
         speed = 1;
@@ -231,17 +266,26 @@ public class LightingSubsystem extends SubsystemBase {
             m_ledBuffer.setRGB(i, 0, 255, 0);
         }
         break;
+      case GAMEOVER:
+        speed = 0;
+        for (int i = 0; i < m_ledBuffer.getLength(); i++) {
+          if (millis % (550) < 270)
+            m_ledBuffer.setRGB(i, millis, 0, 0);
+          else
+            m_ledBuffer.setRGB(i, 255 - millis, 0, 0);
+        }
+        break;
       default:
         for (int i = 0; i < m_ledBuffer.getLength(); i++) {
-            m_ledBuffer.setRGB(i, 0, 0, 150);
-          }
+          m_ledBuffer.setRGB(i, 0, 0, 150);
+        }
   }
     m_led.setData(m_ledBuffer);
   }
 
-  public void move(int move) {
-    player += move;
-  }
+  /**
+   * This is a function (it runs when called)
+   */
   public void randomPat() {
     millis = 0;
     random = true;

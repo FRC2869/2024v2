@@ -12,6 +12,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.MotorConfiguration;
 
+/**
+ * Controls speed of shooter and measures if shooter
+ * has been fully revved in autonomous.
+ * @author on-core big raga(van) the opp stoppa
+ */
 public class ShooterSubsystem extends SubsystemBase {
   public static ShooterSubsystem instance;
   public static ShooterSubsystem getInstance(){

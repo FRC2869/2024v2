@@ -9,6 +9,9 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.PositionsIntake;
 import frc.robot.subsystems.IntakePivotSubsystem;
 
+/**
+ * @author 
+ */
 public class IntakeFloorPos extends Command {
   private IntakePivotSubsystem intakePivot;
   private boolean hasRun;

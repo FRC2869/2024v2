@@ -7,6 +7,7 @@ package frc.robot.commands.Shooter;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.CommandSwerveDrivetrain;
+import frc.robot.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
@@ -23,7 +24,7 @@ public class AimAtSpeaker extends InstantCommand {
 
   @Override
   public void execute() {
-    pivot.position(swerve.getAngle() - 30);
+    pivot.position(swerve.getAngle() - Constants.PivotConstants.startingAngle);
     intakePivot.setPivotPos(swerve.getIntakeAngle());
   }
 }

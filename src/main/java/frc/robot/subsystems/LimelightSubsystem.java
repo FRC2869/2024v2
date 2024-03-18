@@ -13,6 +13,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CommandSwerveDrivetrain;
 
+/**
+ * Recieves data from the limelight.
+ * @author Summer Singh
+ */
 public class LimelightSubsystem extends SubsystemBase {
   
   private static LimelightSubsystem instance;
@@ -21,23 +25,28 @@ public class LimelightSubsystem extends SubsystemBase {
   private NetworkTableEntry botPose;
   private CommandSwerveDrivetrain swerve;
 
+  /** Gets the limelight object. */
   public static LimelightSubsystem getInstance() {
     if (instance == null) instance = new LimelightSubsystem();
     return instance;
   }
 
-  //tid primary april tag
-  /** Creates a new LimelightSubsystem. */
+  /**
+   * Creates a new LimelightSubsystem.
+   */
   public LimelightSubsystem() {
     table = NetworkTableInstance.getDefault().getTable("Pipeline_Name");
     botPose = table.getEntry("botpose");
   }
 
+  /** @return double array containing x,y,z,roll,pitch,yaw */
   public double[] getArray() {
     return botPose.getDoubleArray(new double[6]);
   }
 
-  //0, 1, 4
+  /**
+   * @return position based on limelight
+   */
   public Pose2d getLimelightPose() {
     try {
       double[] array = getArray();
@@ -45,7 +54,6 @@ public class LimelightSubsystem extends SubsystemBase {
     }
     catch(Exception e) {return null;}
   }
-
 
   @Override
   public void periodic() {

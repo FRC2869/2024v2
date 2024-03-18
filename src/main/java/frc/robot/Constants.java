@@ -57,7 +57,7 @@ public class Constants {
 
     public static class ShooterConstants {
         public static enum LightingSetting {
-            TELEOP, ORANGEWHITEGREENWITHBLUESPECKSITUATION, CANSHOOT, AUTO, DISABLED, GAME, LOSE, WIN, Pattern1, Pattern2, Pattern3
+            TELEOP, ORANGEWHITEGREENWITHBLUESPECKSITUATION, CANSHOOT, AUTO, DISABLED, GAME, LOSE, WIN, Pattern1, Pattern2, Pattern3, Pattern4
           }
         public static final int id2 = 18;
         public static final int id1 = 19;
@@ -114,5 +114,6 @@ public class Constants {
         public static enum PositionsPivot{
             BASE, AMP, FAR, CLOSE,
         } //57, 13
+        public static double adjustment = 2;
     }
 }

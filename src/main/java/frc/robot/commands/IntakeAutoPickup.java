@@ -18,9 +18,8 @@ import frc.robot.commands.Intake.IntakeWaitPosition;
 /**
  *  Sequential Command for putting the intake down, 
  *  intaking the note, and then going back to base position. 
- *  This class will be used by autonomous commands
- *  @TODO Program this to work with a button?
- * 
+ *  This class will be used by autonomous commands.
+ * @author The Raghinator!!!
  */
 public class IntakeAutoPickup extends SequentialCommandGroup {
   /** Creates a new IntakeAutoPickup. */
