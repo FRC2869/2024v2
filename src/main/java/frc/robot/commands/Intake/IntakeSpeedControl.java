@@ -9,6 +9,11 @@ import frc.robot.Inputs;
 // import frc.robot.Inputs;
 import frc.robot.subsystems.IntakePivotSubsystem;
 
+/**
+ * Sets the intake to the Speed Control using Inputs.getIntakePivotSpeed()
+ * Never Ends
+ * On Interupt stays on speed control and sets speed to 0
+ */
 public class IntakeSpeedControl extends Command {
   private IntakePivotSubsystem intake;
 
@@ -33,7 +38,7 @@ public class IntakeSpeedControl extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setPivotPos(0);
+    intake.setPivotSpeed(0);
   }
 
   // Returns true when the command should end.

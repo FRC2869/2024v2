@@ -7,7 +7,10 @@ package frc.robot.commands.LEDs;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ShooterConstants.LightingSetting;
 import frc.robot.subsystems.LightingSubsystem;
-
+/**
+ * Controls the LEDs, construct with the enum that runs
+ * Instant Command
+ */ 
 public class LEDCommand extends InstantCommand {
   LightingSubsystem lights = LightingSubsystem.getInstance();
   LightingSetting light;

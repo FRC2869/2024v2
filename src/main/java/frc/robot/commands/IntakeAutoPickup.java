@@ -16,11 +16,8 @@ import frc.robot.commands.Intake.IntakeWaitPosition;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 
 /**
- *  Sequential Command for putting the intake down, 
- *  intaking the note, and then going back to base position. 
+ *  Sequential Command for putting the intake down and intaking the note. 
  *  This class will be used by autonomous commands
- *  @TODO Program this to work with a button?
- * 
  */
 public class IntakeAutoPickup extends SequentialCommandGroup {
   /** Creates a new IntakeAutoPickup. */

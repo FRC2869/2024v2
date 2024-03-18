@@ -7,6 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 
+/**
+ * Sets the climber to the Speed Control using the inputted speed
+ * Never Ends
+ * On Interupt sets speed to 0
+ */
 public class SetClimberSpeed extends Command {
   private ClimberSubsystem climber = ClimberSubsystem.getInstance();
   private double speed;

@@ -7,9 +7,11 @@ package frc.robot.commands.Shooter;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**
+ * Scores the note into the AMP
+ * Runs the Shooter at low power
+ * Instant Command
+ */
 public class ShooterAmpScore extends InstantCommand {
   private ShooterSubsystem shooter;
 

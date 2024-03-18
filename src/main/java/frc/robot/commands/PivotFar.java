@@ -9,9 +9,11 @@ import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
 import frc.robot.subsystems.PivotSubsystem;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/**
+ * Sets the shooter pivot to the Far Position
+ * Never Ends
+ * On Interupt switches to speed control and sets speed to 0
+ */
 public class PivotFar extends Command {
   private PivotSubsystem pivot;
 

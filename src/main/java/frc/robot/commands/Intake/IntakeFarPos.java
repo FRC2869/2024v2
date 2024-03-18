@@ -9,6 +9,11 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.PositionsIntake;
 import frc.robot.subsystems.IntakePivotSubsystem;
 
+/**
+ * Sets the intake to the Far Position
+ * Never Ends
+ * On Interupt switches to speed control and sets speed to 0
+ */
 public class IntakeFarPos extends Command {
   private IntakePivotSubsystem intakePivot;
 
