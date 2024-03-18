@@ -18,12 +18,12 @@ import frc.robot.commands.Intake.IntakeWaitPosition;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ShooterAutoShoot extends ParallelRaceGroup {
+public class ShooterAutoShootTeleop extends ParallelRaceGroup {
   /** Creates a new ShooterAutoShoot. */
-  public ShooterAutoShoot() {
+  public ShooterAutoShootTeleop() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new IntakeClosePos(), new PivotClose(), new SequentialCommandGroup(new ShooterShoot(), new IntakeSpinOut(), new WaitCommand(0.25), new IntakeSpinStop()));
+    addCommands(new IntakeClosePos(), new PivotClose(), new SequentialCommandGroup(new ShooterShoot(), new ParallelCommandGroup(new ShooterRevWait(), new WaitCommand(2)), new IntakeSpinOut(), new WaitCommand(1), new IntakeSpinStop(), new ShooterStop()));
     // addCommands(new AimAtSpeaker(), new WaitCommand(1),new ShooterShoot(), new WaitCommand(1), new IntakeSpinOut(), new WaitCommand(1), new ShooterStop(), new IntakeSpinStop());
   }
 }

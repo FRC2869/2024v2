@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -47,12 +45,14 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     public boolean isIntake() {
-        return (spinMotor.getSupplyCurrent().getValue() > 35);
+        //return (spinMotor.getSupplyCurrent().getValue() > 15);
+        return (spinMotor.getVelocity().getValue() < 3);
     }
 
     @Override
     public void periodic(){
         SmartDashboard.putNumber("intake current",spinMotor.getSupplyCurrent().getValue());
-        spinMotor.set(spinSpeed);;
+        SmartDashboard.putBoolean("Is intaked?", isIntake());
+        spinMotor.set(spinSpeed);
     }
 }

@@ -47,18 +47,20 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getRPM() {
-    return shooter2.getVelocity().getValueAsDouble();
+    return shooter1.getVelocity().getValueAsDouble();
   }
 
   public boolean isAtRPM() {
-    return Math.abs(getRPM()-speed2)<2;
+    return Math.abs(getRPM()-speed1)<2;
   }
 
   @Override
   public void periodic() {
     // var velo1 = new Diff_VelocityDutyCycle_Velocity(new VelocityDutyCycle(speed1, 3.0, true, 0, 0, false, false, false), new VelocityDutyCycle(speed1));
     // var velo2 = new Diff_VelocityDutyCycle_Velocity(new VelocityDutyCycle(speed2, 3.0, true, 0, 0, false, false, false), new VelocityDutyCycle(speed2));
-    SmartDashboard.putNumber("Shooter Speed", getRPM());
+    SmartDashboard.putNumber("Shooter Speed1", getRPM());
+    SmartDashboard.putNumber("Shooter Speed2", shooter2.getVelocity().getValueAsDouble());
+    SmartDashboard.putBoolean("Is at RPM", isAtRPM());
     if(stopped){
       shooter1.stopMotor();
       shooter2.stopMotor();

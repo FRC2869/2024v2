@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Intake.IntakeBasePos;
+import frc.robot.commands.Intake.IntakeClosePos;
 import frc.robot.commands.Intake.IntakeSpinStop;
 import frc.robot.commands.Intake.IntakeWaitPosition;
 
@@ -19,7 +20,7 @@ public class IntakeAutoRetract extends SequentialCommandGroup {
   public IntakeAutoRetract() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new IntakeSpinStop(), new ParallelRaceGroup(new IntakeBasePos(), new SequentialCommandGroup(new WaitCommand(.1), new IntakeWaitPosition()))
+    addCommands(new IntakeSpinStop(), new ParallelRaceGroup(new IntakeClosePos(), new SequentialCommandGroup(new WaitCommand(.1), new IntakeWaitPosition()))
       );
   }
 }

@@ -2,47 +2,40 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Intake;
+package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 
-public class IntakeWaitNote extends Command {
-  private IntakeSubsystem intake;
-  private Timer timer;
-  private boolean hasRun;
-
-  /** Creates a new IntakeWaitNote. */
-  public IntakeWaitNote() {
-    timer = new Timer();
-    intake = IntakeSubsystem.getInstance();
+public class SetClimberSpeed extends Command {
+  private ClimberSubsystem climber = ClimberSubsystem.getInstance();
+  private double speed;
+  /** Creates a new SetClimberSpeed. */
+  public SetClimberSpeed(double speed) {
+    addRequirements(climber);
+    this.speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    hasRun = false;
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!hasRun){
-      timer.start();  
-      timer.reset();
-    }
+    climber.set(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    climber.set(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // return intake.isIntake()||timer.get()>2;
-    return intake.isIntake()||timer.get()>.1;
+    return false;
   }
 }

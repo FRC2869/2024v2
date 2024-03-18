@@ -10,10 +10,10 @@ import frc.robot.subsystems.ShooterSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ShooterAmpLoad extends InstantCommand {
+public class ShooterShootSlow extends InstantCommand {
   private ShooterSubsystem shooter;
 
-  public ShooterAmpLoad() {
+  public ShooterShootSlow() {
     shooter = ShooterSubsystem.getInstance();
     addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -22,7 +22,6 @@ public class ShooterAmpLoad extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
-    System.err.println("AMPL");
-    shooter.setSpeed(15, 15);
+    shooter.setSpeed(35, -35);
   }
 }

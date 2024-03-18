@@ -5,27 +5,20 @@
 package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DefaultPivot;
 import frc.robot.commands.DrivetrainResetGyro;
 import frc.robot.commands.IntakeAutoPickup;
 import frc.robot.commands.IntakeAutoRetract;
-import frc.robot.commands.Move;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
@@ -37,12 +30,16 @@ import frc.robot.commands.Intake.IntakeSpinIn;
 import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
 import frc.robot.commands.Intake.IntakeWaitNote;
+import frc.robot.commands.Shooter.AimAtSpeaker;
 import frc.robot.commands.Shooter.ShooterAmpLoad;
 import frc.robot.commands.Shooter.ShooterAmpScore;
 import frc.robot.commands.Shooter.ShooterAutoShoot;
+import frc.robot.commands.Shooter.ShooterAutoShootStop;
+import frc.robot.commands.Shooter.ShooterAutoShootTeleop;
 import frc.robot.commands.Shooter.ShooterFarShoot;
 import frc.robot.commands.Shooter.ShooterRevWait;
 import frc.robot.commands.Shooter.ShooterShoot;
+import frc.robot.commands.Shooter.ShooterShootSlow;
 import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
@@ -73,6 +70,8 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
     swerve = Swerve.getInstance();
+    IntakePivotSubsystem.getInstance().setDefaultCommand(new IntakeSpeedControl());
+    PivotSubsystem.getInstance().setDefaultCommand(new DefaultPivot());
     // Map<String, Command> eventMap = new HashMap<>();
     // eventMap.put("IntakeAutoPickup", new IntakeAutoPickup());
     // eventMap.put("IntakeWaitNote", new IntakeWaitNote());
@@ -85,12 +84,15 @@ public class RobotContainer {
     NamedCommands.registerCommand("IntakeAutoRetract", new IntakeAutoRetract());
     NamedCommands.registerCommand("ShooterFarShoot", new ShooterFarShoot());
     NamedCommands.registerCommand("ShooterShoot", new ShooterShoot());
+    NamedCommands.registerCommand("ShooterShootSlow", new ShooterShootSlow());
+    NamedCommands.registerCommand("ShooterRevWait", new ShooterRevWait());
     NamedCommands.registerCommand("ShooterAutoShoot", new ShooterAutoShoot());
-    NamedCommands.registerCommand("ShooterAutoShootStop", new ShooterAutoShoot());
+    NamedCommands.registerCommand("ShooterAutoShootStop", new ShooterAutoShootStop());
     NamedCommands.registerCommand("PPath1", swerve.getPathPlannerTrajectory("PPath1"));
     NamedCommands.registerCommand("PPath2", swerve.getPathPlannerTrajectory("PPath2"));
     NamedCommands.registerCommand("PPath3", swerve.getPathPlannerTrajectory("PPath3"));
     NamedCommands.registerCommand("Rev", new ShooterRevWait());
+    NamedCommands.registerCommand("Nothing", new WaitCommand(0));
     newautopick = new SendableChooser<>();
 		newautopick.addOption("Nothing", Autos.Nothing);
 		newautopick.addOption("Forward", Autos.Forward);	//2m path
@@ -118,20 +120,34 @@ public class RobotContainer {
         ));
     Inputs.getResetGyro().onTrue(new DrivetrainResetGyro());
     Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());
-    Inputs.getIntakeBasePos().whileTrue(new IntakeBasePos());
-    Inputs.getIntakeFloorPos().whileTrue(new IntakeFloorPos());
     Inputs.getIntakeSpinOut().onTrue(new IntakeSpinOut());
     Inputs.getIntakeSpinStop().onTrue(new IntakeSpinStop());
     Inputs.getPivotAmp().whileTrue(new PivotAmp());
     Inputs.getPivotBase().whileTrue(new PivotBase());
-    Inputs.getPivotFar().onTrue(new PivotFar());
+    
+    //Operator board
+    // Inputs.getAutoIntakeDown().onTrue(new IntakeAutoPickup());
+    Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
+    Inputs.getAutoShootStop().onTrue(new ShooterAutoShootTeleop().andThen(new IntakeBasePos()));
+    Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeSpinOut(), new ShooterAmpLoad()));
+    Inputs.getIntakeFloorPos().whileTrue(new IntakeFloorPos());
+
+    Inputs.getIntakeBasePos().whileTrue(new IntakeBasePos());
     Inputs.getIntakeFar().onTrue(new IntakeFarPos());
-    IntakePivotSubsystem.getInstance().setDefaultCommand(new IntakeSpeedControl());
-    PivotSubsystem.getInstance().setDefaultCommand(new DefaultPivot());
+    Inputs.getIntakeSpinOut2().onTrue(new IntakeSpinOut());
+    Inputs.getIntakeSpinStop2().onTrue(new IntakeSpinStop());
+    Inputs.getIntakeSpinIn2().onTrue(new IntakeSpinIn());
+
+    Inputs.getPivotFar().onTrue(new PivotFar());
+    Inputs.getShooterShoot2().onTrue(new ShooterShoot());
+    Inputs.getPivotBase2().whileTrue(new PivotBase());
+    Inputs.getPivotAmp2().whileTrue(new PivotAmp());
+    Inputs.getShooterFarShoot().onTrue(new ShooterFarShoot());
+    
+    Inputs.getAimAtSpeaker().onTrue(new AimAtSpeaker());
+
     // LightingSubsystem.getInstance().setDefaultCommand(new LEDCommand(LightingSetting.CANSHOOT));
     Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeWaitNote(), new IntakeAutoRetract()));
-    Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
-    Inputs.getAutoShoot().onTrue(new ShooterAutoShoot());
     
     // Inputs.getLeft().onTrue(new Move(-1));
     // Inputs.getRight().onTrue(new SMove(1));
@@ -153,9 +169,11 @@ public class RobotContainer {
       case SubWooferAutoR:
         return Swerve.getInstance().getAuto("OnePiece(not)Mid (The One Piece is real)");
       case SubWooferAutoR2:
-        return Swerve.getInstance().getAuto("SUPER ULTIMATE PATH! (watch out, liberals)");
+        return Swerve.getInstance().getAuto("5PieceWingCenter");
       default: //Autos.Nothing
         return new WaitCommand(50000);
     }
   }
 }
+
+//Stop right there!  If you want to continue reading, a donation of, like, aa bajillion dollars is REQUIRED!  Thank you.

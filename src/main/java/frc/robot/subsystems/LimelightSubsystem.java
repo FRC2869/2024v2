@@ -29,7 +29,7 @@ public class LimelightSubsystem extends SubsystemBase {
   //tid primary april tag
   /** Creates a new LimelightSubsystem. */
   public LimelightSubsystem() {
-    table = NetworkTableInstance.getDefault().getTable("limelight");
+    table = NetworkTableInstance.getDefault().getTable("Pipeline_Name");
     botPose = table.getEntry("botpose");
   }
 

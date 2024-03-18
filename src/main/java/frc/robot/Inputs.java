@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -76,14 +75,6 @@ public class Inputs {
         return speed;
     }
 
-    public static Trigger getIntakeFloorPos() {
-        return operatorBoard.button(5);
-    }
-
-    public static Trigger getIntakeBasePos() {
-        return operatorBoard.button(6);
-    }
-
     public static Trigger getIntakeSpinIn() {
         return operator.x();
     }
@@ -108,12 +99,6 @@ public class Inputs {
         return operator.pov(270);
     }
 
-    public static Trigger getPivotFar(){
-        return operatorBoard.button(12);
-    }
-    public static Trigger getIntakeFar(){
-        return operatorBoard.button(7);
-    }
     
     public static Trigger getAutoIntakeDown(){
         return operatorBoard.button(1);
@@ -122,22 +107,75 @@ public class Inputs {
         return operatorBoard.button(2);
     }
 
-    public static Trigger getAutoShoot(){
+    public static Trigger getAutoShootStop(){
         return operatorBoard.button(3);
     }
 
+    public static Trigger getAmpTransfer(){
+        return operatorBoard.button(4);
+    }
+
+    public static Trigger getIntakeFloorPos() {
+        return operatorBoard.button(5);
+    }
+
+    public static Trigger getIntakeBasePos() {
+        return operatorBoard.button(6);
+    }
+
+    public static Trigger getIntakeFar(){
+        return operatorBoard.button(7);
+    }
+
+    public static Trigger getIntakeSpinOut2() {
+        return operatorBoard.button(8);
+    }
+
+    public static Trigger getIntakeSpinStop2() {
+        return operatorBoard.button(9);
+    }
+
+    public static Trigger getIntakeSpinIn2() {
+        return operatorBoard.button(10);
+    }
+
+    public static Trigger getShooterShoot2(){
+        return operatorBoard.button(11);
+    }
+
+    public static Trigger getPivotFar(){
+        return operatorBoard.button(12);
+    }
+
+    public static Trigger getPivotBase2(){
+        return operatorBoard.button(13);
+    }
+
+    public static Trigger getPivotAmp2(){
+        return operatorBoard.button(14);
+    }
+
+    public static Trigger getShooterFarShoot(){
+        return operatorBoard.button(15);
+    }
+    
+    public static Trigger getAimAtSpeaker(){
+        // return operatorBoard.button();
+        return null;
+    }
     // for auto-align calibration
     public static Trigger getAngles() {
         return null;
     }
 
     public static boolean getLeft() {
-        return driver1.povLeft().getAsBoolean();
+        return driver1.getHID().getPOV()==270;
     }
     public static boolean getRight() {
-        return driver1.povRight().getAsBoolean();
+        return driver1.getHID().getPOV()==90;
     }
-
-    
+    public static boolean getChange() {
+        return driver1.getHID().getRawButton(11);
+    }
 }
 

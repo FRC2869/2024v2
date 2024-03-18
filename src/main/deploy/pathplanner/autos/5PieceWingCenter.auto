@@ -5,12 +5,24 @@
       "x": 1.4,
       "y": 5.5
     },
-    "rotation": 3.0217247422956186e-27
+    "rotation": -7.449074311873801e-27
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterShootSlow"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterRevWait"
+          }
+        },
         {
           "type": "named",
           "data": {
@@ -52,7 +64,7 @@
         {
           "type": "named",
           "data": {
-            "name": "IntakeWaitNote"
+            "name": "Nothing"
           }
         },
         {
@@ -108,7 +120,7 @@
         {
           "type": "named",
           "data": {
-            "name": "IntakeWaitNote"
+            "name": "Nothing"
           }
         },
         {
@@ -164,7 +176,7 @@
         {
           "type": "named",
           "data": {
-            "name": "IntakeWaitNote"
+            "name": "Nothing"
           }
         },
         {
@@ -199,9 +211,72 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "ThreePieceMiddle (Alt 6)"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ThreePieceMiddle (Alt 6)"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeAutoPickup"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Nothing"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAutoRetract"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShooterShoot"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ThreePieceMiddle (Alt 7)"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShootStop"
           }
         }
       ]

@@ -57,7 +57,7 @@ public class Constants {
 
     public static class ShooterConstants {
         public static enum LightingSetting {
-            SCORING, ORANGEWHITEGREENWITHBLUESPECKSITUATION, CANSHOOT, INTAKE, DISABLED, GAME, LOSE, WIN
+            TELEOP, ORANGEWHITEGREENWITHBLUESPECKSITUATION, CANSHOOT, AUTO, DISABLED, GAME, LOSE, WIN, Pattern1, Pattern2, Pattern3
           }
         public static final int id2 = 18;
         public static final int id1 = 19;
@@ -66,17 +66,18 @@ public class Constants {
     }
 
     public static class IntakeConstants {
-        public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 20, true, false);
-        public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.4, -0.4,
+        public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 40, true, false);
+        public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.6, -0.6,
                 (5 * (50 / 16.0) * (32 / 16.0)), 0, 40, false, false, 0);
         public static final double kMinAngle = -770;
         public static final double kMaxAngle = 0;
-        public static final double floorPosition = -770;
+        public static final double floorPosition = -765;
         public static final double basePosition = 0;
+        public static final double closePosition = -50;
         public static final double farPosition = -30;//-30
 
         public static enum PositionsIntake {
-            BASE, FLOOR, FAR
+            BASE, FLOOR, FAR, CLOSE
         }
 
         public static double getTargetPos(PositionsIntake intakeEnum) {
@@ -98,8 +99,8 @@ public class Constants {
         public static final double kMinAngle = -200;
         public static final double kMaxAngle = 0;
         public static final double ampPosition = -170;//-170
-        public static final double farPosition = -22;//-22
-        public static final double closePosition = -7;
+        public static final double farPosition = -20;//-22
+        public static final double closePosition = 0;//-7
         /**inches */
         public static final double pivotRestingHeight = 25; // not good
         /**inches */
@@ -109,6 +110,7 @@ public class Constants {
         // public static final double intakeAngle = 180 - 140;
         /**degrees */
         public static final double intakeAngle = 67;
+        public static final double startingAngle = 30;
         public static enum PositionsPivot{
             BASE, AMP, FAR, CLOSE,
         } //57, 13
