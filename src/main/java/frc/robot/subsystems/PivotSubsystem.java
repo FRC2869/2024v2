@@ -4,23 +4,27 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
-
-import java.text.DecimalFormat;
-
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.MotorConfiguration;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
+import frc.robot.MotorConfiguration;
 
+/**
+ * Controls the Shooter Pivot
+ */
 public class PivotSubsystem extends SubsystemBase {
   public static PivotSubsystem instance;
+  /**
+     * Creates a singleton instance of the PivotSubsystem
+     * @return PivotSubsystem instance
+     */
   public static PivotSubsystem getInstance(){
     if (instance==null) instance = new PivotSubsystem();
     return instance;
@@ -46,49 +50,72 @@ public class PivotSubsystem extends SubsystemBase {
 		// this.pos = pos;
 	}
 
+	/**
+	 * Gets the current angle of the pivot
+	 * @return
+	 */
 	public double getAngle() {
 		// return -collection.getIntegratedSensorPosition();
 		return pivotMotor.getEncoder().getPosition();
 	}
 
+	/**
+     * Checks if the pivot is at the position
+     * if going to base, will be true 3 before the position
+     * if going to other positon will be +- .5
+     * @return true if at position
+     */
 	public boolean isAtPosition(){
 		if(currentPos != PositionsPivot.BASE)
 			return Math.abs(pos-getAngle())<.5;
 		else 
-			return pos<PivotConstants.basePosition;
+			return pos<PivotConstants.basePosition-3;
 	}
 
+	/**
+     * increases target angle by 2
+     */
 	public void adjustUp() {
 		pos += 2;
 	}
 
+	/**
+     * decreases target angle by 2
+     */
 	public void adjustDown() {
 		pos -= 2;
 	}
 
+	/**
+     * Sets the current position enum
+     * @param pos PositionsPivot of the target position
+     */
 	public void setCurrentPosition(PositionsPivot pos) {
 		currentPos = pos;
 	}
 
+	/**
+     * Sets the target speed of the pivot in percent output
+     * Only applies when isPosControl == false
+        * @param speed the speed of the pivot [-1, 1]
+     */
 	public void setSpeed(double speed) {
         this.speed = speed;
     }
 
-
+	/**
+     * Sets whether or not to use position control on the pivot
+     * @param isPosControl true = position, false = speed
+     */
 	public void setPositionControl(boolean isPosControl){
 		this.isPosControl = isPosControl;
 	}
 
-	private DecimalFormat rounder = new DecimalFormat("#.0");
 	private boolean isPosControl;
 	private double speed;
 
 	@Override
   public void periodic() {
-	// var angleString = rounder.format(getAngle());
-	// SmartDashboard.putString("Pivot Angle 1", angleString);
-	// SmartDashboard.putBoolean("pivotPos", isPosControl);
-	// SmartDashboard.putNumber("pos", pos);
 	if (isPosControl) {
 		if(currentPos!=PositionsPivot.BASE||getAngle()<PivotConstants.basePosition){
 			SmartDashboard.putBoolean("enabled", true);
@@ -102,17 +129,23 @@ public class PivotSubsystem extends SubsystemBase {
 		pivotMotor.set(speed);
 	}
 	
-	// SmartDashboard.putNumber("Angle Shooter", getAngle());
-	// SmartDashboard.putBoolean("Pivot At Pos", isAtPosition());
+	SmartDashboard.putNumber("Angle Shooter", getAngle());
+	SmartDashboard.putBoolean("Pivot At Pos", isAtPosition());
   }
 
-  public void toggleBrake(){
+  	/**
+     * toggles brake mode on the motor
+     */
+  	public void toggleBrake(){
         if(pivotMotor.getIdleMode()==IdleMode.kCoast)
             pivotMotor.setIdleMode(IdleMode.kBrake);
         else
             pivotMotor.setIdleMode(IdleMode.kCoast);
     }
 
+	/**
+     * sets the motor to brake mode
+     */
     public void setBrake(){
         pivotMotor.setIdleMode(IdleMode.kBrake);
     }
