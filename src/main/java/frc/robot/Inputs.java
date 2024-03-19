@@ -181,5 +181,12 @@ public class Inputs {
     public static boolean getChange() {
         return driver1.getHID().getRawButton(11);
     }
+
+    public static Trigger getClimberDown(){
+        return driver1.button(3);
+    }
+    public static Trigger getClimberUp(){
+        return driver1.button(4);
+    }
 }
 

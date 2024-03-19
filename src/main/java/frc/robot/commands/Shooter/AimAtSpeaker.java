@@ -13,7 +13,7 @@ import frc.robot.subsystems.IntakePivotSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 
 public class AimAtSpeaker extends InstantCommand {
-  private PivotSubsystem pivot = new PivotSubsystem();
+  private PivotSubsystem pivot = PivotSubsystem.getInstance();
   CommandSwerveDrivetrain swerve = TunerConstants.DriveTrain;
   private IntakePivotSubsystem intakePivot;
   /** Creates a new ShootAtSpeaker. */

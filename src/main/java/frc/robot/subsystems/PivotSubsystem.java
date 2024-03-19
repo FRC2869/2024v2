@@ -4,32 +4,33 @@
 
 package frc.robot.subsystems;
 
+// import java.text.DecimalFormat;
+
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
+
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.MotorConfiguration;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
-import frc.robot.MotorConfiguration;
 
 /**
-<<<<<<< Updated upstream
- * Controls the Shooter Pivot
-=======
  * Controls the pivot of the shooter.
  * @author VP
->>>>>>> Stashed changes
  */
 public class PivotSubsystem extends SubsystemBase {
   public static PivotSubsystem instance;
+
   /**
-     * Creates a singleton instance of the PivotSubsystem
-     * @return PivotSubsystem instance
-     */
+   * PivotSubsystems rather infamous get instance function
+   * @returns PivotSubsystem instance
+   */
   public static PivotSubsystem getInstance(){
     if (instance==null) instance = new PivotSubsystem();
     return instance;
@@ -38,8 +39,8 @@ public class PivotSubsystem extends SubsystemBase {
   private CANSparkMax pivotMotor;
   private double pos;
   private PositionsPivot currentPos; 
-  /** Creates a new PivotSubsystem. */
 
+  /** Creates a new PivotSubsystem. */
   public PivotSubsystem() {
     pivotMotor = new CANSparkMax(PivotConstants.id, MotorType.kBrushless);
     MotorConfiguration.configureMotor(pivotMotor, PivotConstants.config);
@@ -57,13 +58,7 @@ public class PivotSubsystem extends SubsystemBase {
 	}
 
 	/**
-<<<<<<< Updated upstream
-	 * Gets the current angle of the pivot
-	 * @return
-=======
-	 * 
 	 * @return the pivot angle in revolutions
->>>>>>> Stashed changes
 	 */
 	public double getAngle() {
 		// return -collection.getIntegratedSensorPosition();
@@ -71,62 +66,63 @@ public class PivotSubsystem extends SubsystemBase {
 	}
 
 	/**
-     * Checks if the pivot is at the position
-     * if going to base, will be true 3 before the position
-     * if going to other positon will be +- .5
-     * @return true if at position
-     */
+	 * @return boolean which is true when at the position it is trying to go
+	 */
 	public boolean isAtPosition(){
 		if(currentPos != PositionsPivot.BASE)
 			return Math.abs(pos-getAngle())<.5;
 		else 
-			return pos<PivotConstants.basePosition-3;
+			return pos<PivotConstants.basePosition;
 	}
 
 	/**
-     * increases target angle by 2
-     */
+	 * moves pivot up Constants.PivotConstants.adjustment
+	 */
 	public void adjustUp() {
-		pos += 2;
+		pos += Constants.PivotConstants.adjustment;
 	}
 
 	/**
-     * decreases target angle by 2
-     */
+	 * moves pivot down Constants.PivotConstants.adjustment
+	 */
 	public void adjustDown() {
-		pos -= 2;
+		pos -= Constants.PivotConstants.adjustment;
 	}
 
 	/**
-     * Sets the current position enum
-     * @param pos PositionsPivot of the target position
-     */
+	 * 
+	 * @param pos sets the position it is trying to go at.
+	 */
 	public void setCurrentPosition(PositionsPivot pos) {
 		currentPos = pos;
 	}
 
 	/**
-     * Sets the target speed of the pivot in percent output
-     * Only applies when isPosControl == false
-        * @param speed the speed of the pivot [-1, 1]
-     */
+	 * sets speed
+	 * @param speed percent
+	 */
 	public void setSpeed(double speed) {
         this.speed = speed;
     }
 
 	/**
-     * Sets whether or not to use position control on the pivot
-     * @param isPosControl true = position, false = speed
-     */
+	 * set the ability to move
+	 * @param isPosControl true when able to move
+	 */
 	public void setPositionControl(boolean isPosControl){
 		this.isPosControl = isPosControl;
 	}
 
+	// private DecimalFormat rounder = new DecimalFormat("#.0");
 	private boolean isPosControl;
 	private double speed;
 
 	@Override
   public void periodic() {
+	// var angleString = rounder.format(getAngle());
+	// SmartDashboard.putString("Pivot Angle 1", angleString);
+	// SmartDashboard.putBoolean("pivotPos", isPosControl);
+	// SmartDashboard.putNumber("pos", pos);
 	if (isPosControl) {
 		if(currentPos!=PositionsPivot.BASE||getAngle()<PivotConstants.basePosition){
 			SmartDashboard.putBoolean("enabled", true);
@@ -139,15 +135,16 @@ public class PivotSubsystem extends SubsystemBase {
 	}else{
 		pivotMotor.set(speed);
 	}
+	//lRDXFGRER
 	
-	SmartDashboard.putNumber("Angle Shooter", getAngle());
-	SmartDashboard.putBoolean("Pivot At Pos", isAtPosition());
+	// SmartDashboard.putNumber("Angle Shooter", getAngle());
+	// SmartDashboard.putBoolean("Pivot At Pos", isAtPosition());
   }
 
-  	/**
-     * toggles brake mode on the motor
-     */
-  	public void toggleBrake(){
+  /**
+   * Brakes
+   */
+  public void toggleBrake(){
         if(pivotMotor.getIdleMode()==IdleMode.kCoast)
             pivotMotor.setIdleMode(IdleMode.kBrake);
         else
@@ -155,8 +152,8 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
 	/**
-     * sets the motor to brake mode
-     */
+	 * Sets brakes
+	 */
     public void setBrake(){
         pivotMotor.setIdleMode(IdleMode.kBrake);
     }

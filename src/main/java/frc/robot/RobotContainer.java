@@ -16,12 +16,13 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DefaultPivot;
-import frc.robot.commands.DrivetrainResetGyro;
+import frc.robot.commands.SwerveResetGyro;
 import frc.robot.commands.IntakeAutoPickup;
 import frc.robot.commands.IntakeAutoRetract;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
+import frc.robot.commands.SetClimberSpeed;
 import frc.robot.commands.Intake.IntakeBasePos;
 import frc.robot.commands.Intake.IntakeFarPos;
 import frc.robot.commands.Intake.IntakeFloorPos;
@@ -118,7 +119,7 @@ public class RobotContainer {
             .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(Inputs.getRotation() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
-    Inputs.getResetGyro().onTrue(new DrivetrainResetGyro());
+    Inputs.getResetGyro().onTrue(new SwerveResetGyro());
     Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());
     Inputs.getIntakeSpinOut().onTrue(new IntakeSpinOut());
     Inputs.getIntakeSpinStop().onTrue(new IntakeSpinStop());
@@ -144,11 +145,12 @@ public class RobotContainer {
     Inputs.getPivotAmp2().whileTrue(new PivotAmp());
     Inputs.getShooterFarShoot().onTrue(new ShooterFarShoot());
     
-    Inputs.getAimAtSpeaker().onTrue(new AimAtSpeaker());
+    // Inputs.getAimAtSpeaker().onTrue(new AimAtSpeaker());
 
     // LightingSubsystem.getInstance().setDefaultCommand(new LEDCommand(LightingSetting.CANSHOOT));
     Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeWaitNote(), new IntakeAutoRetract()));
-    
+    Inputs.getClimberDown().whileTrue(new SetClimberSpeed(-.25));
+    Inputs.getClimberUp().whileTrue(new SetClimberSpeed(.25));
     // Inputs.getLeft().onTrue(new Move(-1));
     // Inputs.getRight().onTrue(new SMove(1));
   }
@@ -176,4 +178,4 @@ public class RobotContainer {
   }
 }
 
-//Stop right there!  If you want to continue reading, a donation of, like, aa bajillion dollars is REQUIRED!  Thank you.
+//Stop right there!  If you want to continue reading, a donation of, like, aa bajillion dollars is REQUIRED!  Thank yoou

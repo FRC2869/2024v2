@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
+// import com.ctre.phoenix6.hardware.TalonFX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
@@ -18,25 +20,23 @@ public class ClimberSubsystem extends SubsystemBase {
   private static ClimberSubsystem instance;
   private TalonFX talon;
 
+  /**
+   * @return An instance of ClimberSubsystem
+   */
   public static ClimberSubsystem getInstance() {
     if (instance == null) instance = new ClimberSubsystem();
     return instance;
   }
   /** Creates a new ClimberSubsystem. */
   public ClimberSubsystem() {
-    // talon = new TalonFX(0);
+    talon = new TalonFX(21);
   }
 
   /**
-   * This is a function (runs when called)
-   * @param speed
+   * Sets speed of climber
+   * @param speed speed (-1 to 1) in percent
    */
   public void set(double speed) {
-    // talon.set(speed);
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+    talon.set(speed);
   }
 }
