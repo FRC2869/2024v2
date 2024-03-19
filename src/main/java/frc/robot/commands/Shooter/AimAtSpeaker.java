@@ -5,7 +5,6 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
 import frc.robot.generated.TunerConstants;
@@ -14,8 +13,8 @@ import frc.robot.subsystems.PivotSubsystem;
 
 public class AimAtSpeaker extends InstantCommand {
   private PivotSubsystem pivot = PivotSubsystem.getInstance();
-  CommandSwerveDrivetrain swerve = TunerConstants.DriveTrain;
-  private IntakePivotSubsystem intakePivot;
+  private IntakePivotSubsystem intakePivot = IntakePivotSubsystem.getInstance();
+  private CommandSwerveDrivetrain swerve = TunerConstants.DriveTrain;
   /** Creates a new ShootAtSpeaker. */
   public AimAtSpeaker() {
     addRequirements(pivot, intakePivot);

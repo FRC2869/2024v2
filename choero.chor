@@ -12882,7 +12882,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "ThreePieceMiddle": {
             "waypoints": [
@@ -13177,7 +13177,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "ThreePieceMiddle (Alt1)": {
             "waypoints": [
@@ -13378,7 +13378,7 @@
                     }
                 }
             ],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "ThreePieceMiddle (Alt2)": {
             "waypoints": [
@@ -13621,7 +13621,7 @@
                     }
                 }
             ],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "ThreePieceMiddle (Alt3)": {
             "waypoints": [
@@ -13864,7 +13864,7 @@
                     }
                 }
             ],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "ThreePieceMiddle (Alt 4)": {
             "waypoints": [
@@ -14076,7 +14076,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "ThreePieceMiddle (Auto 5)": {
             "waypoints": [
@@ -14288,7 +14288,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "ThreePieceMiddle (Alt 6)": {
             "waypoints": [
@@ -14682,7 +14682,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "TwoPieceFar": {
             "waypoints": [
@@ -15074,7 +15074,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "TwoPieceFar (Alt 1)": {
             "waypoints": [
@@ -15466,7 +15466,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "ThreePieceMiddle (Alt 7)": {
             "waypoints": [
@@ -15860,7 +15860,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "50PieceMiddle1": {
             "waypoints": [
@@ -16162,7 +16162,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "50PieceMiddle2": {
             "waypoints": [
@@ -16464,7 +16464,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         }
     },
     "splitTrajectoriesAtStopPoints": false,

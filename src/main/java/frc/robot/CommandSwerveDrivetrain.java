@@ -77,8 +77,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     /**
      * Gets the angle between the intake and the shooter
-     * intake angle is already added
-     * @return
+     * Intake angle is already added
+     * @return a number
      */
     public double getIntakeAngle() {
         return 180*Math.atan((
