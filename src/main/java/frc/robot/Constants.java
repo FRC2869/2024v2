@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.pathplanner.lib.path.PathConstraints;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
@@ -115,5 +117,9 @@ public class Constants {
             BASE, AMP, FAR, CLOSE,
         } //57, 13
         public static double adjustment = 2;
+    }
+
+    public static class SwerveConstants {
+        public static PathConstraints constraints = new PathConstraints(3.783, 5.380, 10.151, 24.760);
     }
 }

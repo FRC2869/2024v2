@@ -6,9 +6,48 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * A class containing static functions for each of the inputs
+ * Driver1 (drives):
+ * 2: reset gyro
+ * 3: Climber Down
+ * 4: Climber Up
+ * 
+ * Driver2 (rotates):
+ * 
+ * Operator Controller (for pivot):
+ * A: Shoot in amp
+ * B: Stop intake
+ * X: Start intaking
+ * Y: Start outtake
+ * Up D-Pad: transition to amp
+ * Down D-Pad: Base position of pivot
+ * Left D-Pad: Pivot towards amp
+ * Right D-Pad: shoots (not fancy)
+ * Left-Bumper: stop shooter
+ * 
+ * Operator Board:
+ * 1: Intake note command (fancy)
+ * 2: Transfer for intake
+ * 3: Shoots (fancy)
+ * 4: Amp transfer
+ * 5: Brings pivot to floor
+ * 6: Base position of intake
+ * 7: Far position of intake
+ * 8: Intake spin out
+ * 9: Intake spin stop
+ * 10: Intake spin in
+ * 11: Shoots (not fancy)
+ * 12: Far position of shooter
+ * 13: Base position of shooter
+ * 14: Amp position of shooter
+ * 15: Shoots far
+ * 
  * @author ChatGPT
  */
 public class Inputs {
+    /**
+     * Start intake - XboxController X
+     * Start outtake - Xbox
+     */
     private static final CommandGenericHID driver1 = new CommandGenericHID(Constants.OperatorConstants.DriverController.port); 
     private static final CommandXboxController driver2 = new CommandXboxController(Constants.OperatorConstants.DriverController2.port); 
     private static final CommandXboxController operator = new CommandXboxController(Constants.OperatorConstants.OperatorController.port); 
@@ -16,6 +55,14 @@ public class Inputs {
 
     public static Trigger getResetGyro(){
         return driver1.button(2);
+    }
+    
+    public static Trigger getClimberDown(){
+        return driver1.button(3);
+    }
+
+    public static Trigger getClimberUp(){
+        return driver1.button(4);
     }
 
     public static Trigger getShooterShoot(){
@@ -165,7 +212,7 @@ public class Inputs {
     
     public static Trigger getAimAtSpeaker(){
         // return operatorBoard.button();
-        return null;
+        return operatorBoard.button(16);
     }
     // for auto-align calibration
     public static Trigger getAngles() {
@@ -182,11 +229,5 @@ public class Inputs {
         return driver1.getHID().getRawButton(11);
     }
 
-    public static Trigger getClimberDown(){
-        return driver1.button(3);
-    }
-    public static Trigger getClimberUp(){
-        return driver1.button(4);
-    }
 }
 

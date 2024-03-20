@@ -48,7 +48,7 @@ import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
-  private Swerve swerve;
+  private Swerve swerve = Swerve.getInstance();
   private enum Autos {
 		Nothing, Forward, ShootOne, ShootPickup, SubWooferAuto, BasicPath, SubWooferAutoR, SubWooferAutoR2
 	}
@@ -151,8 +151,7 @@ public class RobotContainer {
     Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeWaitNote(), new IntakeAutoRetract()));
     Inputs.getClimberDown().whileTrue(new SetClimberSpeed(-.25));
     Inputs.getClimberUp().whileTrue(new SetClimberSpeed(.25));
-    // Inputs.getLeft().onTrue(new Move(-1));
-    // Inputs.getRight().onTrue(new SMove(1));
+    Inputs.getAimAtSpeaker().onTrue(swerve.faceSpeaker());
   }
 
   public Command getAutonomousCommand() {

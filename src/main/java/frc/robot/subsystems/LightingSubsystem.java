@@ -30,7 +30,7 @@ public class LightingSubsystem extends SubsystemBase {
   private boolean c1 = true;
   private boolean c2 = true;
   private boolean aBool = true;
-  private LightingSetting[] arrayOfc = {LightingSetting.Pattern1, LightingSetting.Pattern2, LightingSetting.Pattern3};
+  private LightingSetting[] arrayOfc = {LightingSetting.Pattern1, LightingSetting.Pattern2, LightingSetting.Pattern3, LightingSetting.Pattern4};
   private static int numCalls;
   private int timer = 0;
 
@@ -73,7 +73,7 @@ public class LightingSubsystem extends SubsystemBase {
    * idk what this does...
    */
   public void game() {
-    timer = 0;
+    timer = -3;
     player = 0;
     millis = 0;
     setting = LightingSetting.GAME;
@@ -91,12 +91,15 @@ public class LightingSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     counter += 1;
-    if(counter%speed==0)
+    if(counter%speed == 0) {
       millis += 1;
+    }
     if (Math.random() == 0) setting = LightingSetting.ORANGEWHITEGREENWITHBLUESPECKSITUATION;
     if (random) {
-      if (millis > 100)
+      if (counter > 800) 
+      {
         randomPat();
+      }
       if (Inputs.getChange()  && aBool) {
         game();
         aBool = false;
@@ -105,7 +108,7 @@ public class LightingSubsystem extends SubsystemBase {
     }
     switch(setting){
       case TELEOP:
-        speed = 10;
+        speed = 10; 
         millis %= 2;
         for (int i = 0; i < m_ledBuffer.getLength(); i++) {
           if ((millis == 1 && (i % 4 == 0||i%4==1)) || (millis == 0 && (i % 4 == 2||i%4==3)))
@@ -173,7 +176,6 @@ public class LightingSubsystem extends SubsystemBase {
         if (Inputs.getChange() && aBool) {
           randomPat();
           aBool = false;
-          System.out.println("fish");
         }
         else if (!Inputs.getChange()) aBool = true;
         speed = 1;
@@ -206,14 +208,14 @@ public class LightingSubsystem extends SubsystemBase {
           millis = 0;
           setting = LightingSetting.WIN;
         }
-        for (int i = 0; i < timer - 3; i++) {
+        for (int i = 0; i < timer - 1; i++) {
           m_ledBuffer.setRGB(i, 255, 0, 0);
           if (player == i) {
             millis = 0;
             setting = LightingSetting.LOSE;
           }
         }
-        if (millis % 100 == 99 && timer + 1 != m_ledBuffer.getLength()) {
+        if (millis % 50 == 0 && timer != m_ledBuffer.getLength()) {
           timer++;
         }
         break;
@@ -228,18 +230,25 @@ public class LightingSubsystem extends SubsystemBase {
       case Pattern1:
         speed = 1;
         for (int i = 0; i < m_ledBuffer.getLength(); i++) {
-            m_ledBuffer.setRGB(i, millis / 50, 0, millis / 50);
+          if (millis % (510) < 255)
+            m_ledBuffer.setRGB(i, 0, 0, millis % 255);
+          else
+            m_ledBuffer.setRGB(i, 0, 0, 255 - (millis % 255));
         }
         break;
       case Pattern2:
         speed = 1;
-        for (int i = 0; i < m_ledBuffer.getLength(); i++) {
-          if(Math.random() > .5)
-            m_ledBuffer.setRGB(i, 0, 0, millis);
+        if (millis % 10 == 0) {
+          for (int i = 0; i < m_ledBuffer.getLength(); i++) {
+            if(Math.random() < .3)
+              m_ledBuffer.setRGB(i, 0, 0, 255);
+            else
+              m_ledBuffer.setRGB(i, 0, 0, 0);
+          }
         }
         break;
       case Pattern3:
-        speed = 10;
+        speed = 1;
         for (int i = 0; i < m_ledBuffer.getLength(); i++) {
           if(i == millis % m_ledBuffer.getLength() || i == (millis + 1) % m_ledBuffer.getLength() || i == (millis + 2) % m_ledBuffer.getLength())
             m_ledBuffer.setRGB(i, 0, 0, 255);
@@ -248,14 +257,16 @@ public class LightingSubsystem extends SubsystemBase {
         }
         break;
       case Pattern4:
-        speed = 10;
+        speed = 5;
         for (int i = 0; i < m_ledBuffer.getLength(); i++) {
-          if(i == millis % m_ledBuffer.getLength())
-            m_ledBuffer.setRGB(i, 255, 255, 255);
-          if(i == millis % m_ledBuffer.getLength())
-            m_ledBuffer.setRGB(i, 255, 255, 255);
+          if((i + millis) % 4 == 0)
+            m_ledBuffer.setRGB(i, 61, 161, 104;
+          else if((i + millis) % 4 == 1)
+            m_ledBuffer.setRGB(i, 0, 255, 255);
+          else if((i + millis) % 4 == 2)
+            m_ledBuffer.setRGB(i, 0, 0, 255);
           else
-            m_ledBuffer.setRGB(i, 255, 0, 0);
+            m_ledBuffer.setRGB(i, 101, 0, 184);
         }
         break;
       case WIN:
@@ -272,7 +283,7 @@ public class LightingSubsystem extends SubsystemBase {
           if (millis % (550) < 270)
             m_ledBuffer.setRGB(i, millis, 0, 0);
           else
-            m_ledBuffer.setRGB(i, 255 - millis, 0, 0);
+            m_ledBuffer.setRGB(i, 550 - millis, 0, 0);
         }
         break;
       default:
@@ -287,7 +298,7 @@ public class LightingSubsystem extends SubsystemBase {
    * This is a function (it runs when called)
    */
   public void randomPat() {
-    millis = 0;
+    counter = 0;
     random = true;
     setting = arrayOfc[(int)(Math.random() * arrayOfc.length)];
   }

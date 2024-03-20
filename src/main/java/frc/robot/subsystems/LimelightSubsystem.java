@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CommandSwerveDrivetrain;
 
@@ -50,13 +51,14 @@ public class LimelightSubsystem extends SubsystemBase {
   public Pose2d getLimelightPose() {
     try {
       double[] array = getArray();
-      return new Pose2d(new Translation2d(array[0], array[1]), new Rotation2d(array[4]));
+      return new Pose2d(new Translation2d(array[0], array[1]), new Rotation2d(array[5]));
     }
     catch(Exception e) {return null;}
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumberArray("limelight bot pose", getArray());
     swerve.addVisionMeasurement(getLimelightPose(), 0);
   }
 }
