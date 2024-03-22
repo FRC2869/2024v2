@@ -11,11 +11,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.ShooterConstants.LightingSetting;
 import frc.robot.commands.SwerveResetGyro;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
-import frc.robot.subsystems.LightingSubsystem;
+// import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.Swerve;
 
 public class Robot extends TimedRobot {
@@ -23,7 +22,7 @@ public class Robot extends TimedRobot {
 
   public static RobotContainer m_robotContainer;
   
-  private LightingSubsystem lights = LightingSubsystem.getInstance();
+  // private LightingSubsystem lights = LightingSubsystem.getInstance();
 
   private Field2d field;
 
@@ -53,7 +52,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     //lights.setLights(LightingSetting.DISABLED);
-    lights.game();
+    // lights.game();
     
     // Inputs.getLeft().onTrue(new Move(-10));
     // Inputs.getRight().onTrue(new Move(10));
@@ -67,7 +66,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    lights.setLights(LightingSetting.AUTO);
+    // lights.setLights(LightingSetting.AUTO);
     IntakePivotSubsystem.getInstance().setBrake();
     CommandScheduler.getInstance().cancelAll();
     TunerConstants.DriveTrain.getDefaultCommand().cancel();
@@ -86,7 +85,7 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopInit() {
-    lights.setLights(LightingSetting.TELEOP);
+    // lights.setLights(LightingSetting.TELEOP);
     IntakePivotSubsystem.getInstance().setBrake();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -106,7 +105,7 @@ public class Robot extends TimedRobot {
     //new IntakeSpeedControl().schedule();
     //new DefaultPivot().schedule();
 
-    lights.setLights(LightingSetting.GAME);
+    // lights.setLights(LightingSetting.GAME);
   }
 
   @Override
