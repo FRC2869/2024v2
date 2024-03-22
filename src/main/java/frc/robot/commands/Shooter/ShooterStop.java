@@ -5,6 +5,8 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants.ShooterConstants.LightingSetting;
+import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /**
@@ -23,6 +25,7 @@ public class ShooterStop extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
+    // new LEDCommand(LightingSetting.TELEOP).schedule();
     shooter.stop();
   }
 }

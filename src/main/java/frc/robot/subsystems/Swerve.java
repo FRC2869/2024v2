@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.ApplyChassisSpeeds;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -28,7 +28,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -45,7 +44,7 @@ public class Swerve extends SubsystemBase {
   private static Swerve instance;
   private CommandSwerveDrivetrain swerve;
   private ApplyChassisSpeeds speedsC;
-  
+
   public static Swerve getInstance() {
     if (instance == null) instance = new Swerve();
     return instance;
@@ -54,15 +53,28 @@ public class Swerve extends SubsystemBase {
   /** Creates a new Swerve. */
   public Swerve() {
     swerve = TunerConstants.DriveTrain;
-    
     speedsC = new ApplyChassisSpeeds();
     
     speedsC.withDriveRequestType(DriveRequestType.Velocity);
     speedsC.withSteerRequestType(SteerRequestType.MotionMagic);
     // SmartDashboard.putNumber("PosX", getPose().getX());
     // SmartDashboard.putNumber("PosY", getPose().getY());
-    AutoBuilder.configureHolonomic(this::getPose, this::resetOdometry, this::getRobotRelativeSpeeds, this::driveRobotRelative, new HolonomicPathFollowerConfig(3, Math.sqrt(2)*20.75, new ReplanningConfig()), () -> false, TunerConstants.DriveTrain);
-    
+    AutoBuilder.configureHolonomic(
+      this::getPose, 
+      this::resetOdometry, 
+      this::getRobotRelativeSpeeds, 
+      this::driveRobotRelative, 
+      new HolonomicPathFollowerConfig(3, Math.sqrt(2)*20.75, 
+      new ReplanningConfig()), 
+      () -> {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+      },
+      TunerConstants.DriveTrain
+    );
   }
 
   public Pose2d getPose() {
@@ -114,14 +126,8 @@ public class Swerve extends SubsystemBase {
    */
   public Command getTrajectory(String pathName) {
     PathPlannerPath traj = PathPlannerPath.fromChoreoTrajectory(pathName);
-    if(isRed()){
-    return new SequentialCommandGroup(new setOdometry(traj.flipPath().getPreviewStartingHolonomicPose()), 
-     AutoBuilder.followPath(traj.flipPath()));
-    }
-    else{
-      return new SequentialCommandGroup(new setOdometry(traj.getPreviewStartingHolonomicPose()), 
-     AutoBuilder.followPath(traj));
-    }
+    return new SequentialCommandGroup(new setOdometry(traj.getPreviewStartingHolonomicPose()), 
+    AutoBuilder.followPath(traj));
   }
   /**
    * @param pathName Name of pathplanner path
@@ -129,14 +135,8 @@ public class Swerve extends SubsystemBase {
    */
   public Command getPathPlannerTrajectory(String pathName) {
     PathPlannerPath traj = PathPlannerPath.fromPathFile(pathName);
-    if(isRed()){
-    return new SequentialCommandGroup(new setOdometry(traj.flipPath().getPreviewStartingHolonomicPose()), 
-     AutoBuilder.followPath(traj.flipPath()));
-    }
-    else{
-      return new SequentialCommandGroup(new setOdometry(traj.getPreviewStartingHolonomicPose()), 
-     AutoBuilder.followPath(traj));
-    }
+    return new SequentialCommandGroup(new setOdometry(traj.getPreviewStartingHolonomicPose()), 
+    AutoBuilder.followPath(traj));
   }
   
   /**
@@ -145,6 +145,8 @@ public class Swerve extends SubsystemBase {
    * @return PathPlannerAuto to run
    */
   public Command getAuto(String autoName){
+    
+    resetOdometry(PathPlannerAuto.getStaringPoseFromAutoFile(autoName));
     return new PathPlannerAuto(autoName);
   }
 
@@ -154,7 +156,6 @@ public class Swerve extends SubsystemBase {
   public boolean isRed(){
     var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
-          System.out.println(alliance.get());
           return alliance.get() == DriverStation.Alliance.Red;
         }
         return false;
@@ -189,9 +190,7 @@ public class Swerve extends SubsystemBase {
    * @return command that will send robot to the source
    */
   public Command moveToPlayerStation() {
-    List<Translation2d> list = new ArrayList<>();
-    list.add(getPose().getTranslation());
-    list.add(Constants.FieldConstants.humanPlayerStationPose.getTranslation());
+    List<Translation2d> list = PathPlannerPath.bezierFromPoses(getPose(), Constants.FieldConstants.humanPlayerStationPose);
     PathPlannerPath path = new PathPlannerPath(list, Constants.SwerveConstants.constraints, new GoalEndState(0, Constants.FieldConstants.humanPlayerStationPose.getRotation()));
     return AutoBuilder.followPath(path);
   }
@@ -217,11 +216,16 @@ public class Swerve extends SubsystemBase {
    * @return command that will face the robot towards the speaker
    */
   public Command faceSpeaker() {
-    List<Translation2d> list = new ArrayList<>();
-    list.add(getPose().getTranslation());
-    PathPlannerPath path = new PathPlannerPath(list, Constants.SwerveConstants.constraints, new GoalEndState(0, new Rotation2d(Math.atan((getPose().getX())/getPose().getY()))));
+    double theta = Math.atan((getPose().getX())/getPose().getY());
+    List<Translation2d> list = PathPlannerPath.bezierFromPoses(getPose(), new Pose2d(getPose().getTranslation(), new Rotation2d(theta)));
+    PathPlannerPath path = new PathPlannerPath(list, Constants.SwerveConstants.constraints, new GoalEndState(0, new Rotation2d(theta)));
     return AutoBuilder.followPath(path);
   }
 
+  public Command moveToAmp() {
+    List<Translation2d> list = PathPlannerPath.bezierFromPoses(getPose(), Constants.FieldConstants.ampLocation);
+    PathPlannerPath path = new PathPlannerPath(list, Constants.SwerveConstants.constraints, new GoalEndState(0, Constants.FieldConstants.humanPlayerStationPose.getRotation()));
+    return AutoBuilder.followPath(path);
+  }
   //Previous max speed of 4800 changed to 4000
 }

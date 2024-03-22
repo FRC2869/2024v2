@@ -5,6 +5,8 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants.ShooterConstants.LightingSetting;
+import frc.robot.commands.LEDs.LEDCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /**
@@ -19,10 +21,10 @@ public class ShooterShoot extends InstantCommand {
     addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
     shooter.setSpeed(45, -45);
+    // new LEDCommand(LightingSetting.AUTO).schedule();
   }
 }

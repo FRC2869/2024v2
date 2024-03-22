@@ -17,8 +17,10 @@ public class Constants {
 
         public static final double distanceFromWallSpeaker = 9;
         
-        //THIS NEEDS SET!!!!!!
+        
         public static final Pose2d humanPlayerStationPose = new Pose2d(15.326556205749512, 1.4545217752456665, new Rotation2d(-56.309925735));
+
+        public static final Pose2d ampLocation = new Pose2d(1.4101016521453857, 7.223808288574219, new Rotation2d(Math.PI/2));
         //except this, this is in meters!
         /**
          * meters
@@ -59,7 +61,7 @@ public class Constants {
 
     public static class ShooterConstants {
         public static enum LightingSetting {
-            TELEOP, ORANGEWHITEGREENWITHBLUESPECKSITUATION, CANSHOOT, AUTO, DISABLED, GAME, LOSE, WIN, Pattern1, Pattern2, Pattern3, Pattern4, GAMEOVER
+            TELEOP, ORANGEWHITEGREENWITHBLUESPECKSITUATION, CANSHOOT, AUTO, DISABLED, GAME, LOSE, WIN, Pattern1, Pattern2, Pattern3, Pattern4, GAMEOVER, INTAKING
           }
         public static final int id2 = 18;
         public static final int id1 = 19;

@@ -12,7 +12,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.CommandSwerveDrivetrain;
 
 /**
  * Recieves data from the limelight.
@@ -24,7 +23,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
   private NetworkTable table;
   private NetworkTableEntry botPose;
-  private CommandSwerveDrivetrain swerve;
+  // private CommandSwerveDrivetrain swerve;
 
   /** Gets the limelight object. */
   public static LimelightSubsystem getInstance() {
@@ -46,11 +45,13 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   /**
-   * @return position based on limelight
+   * @return position based on limelight or null if no point found
    */
   public Pose2d getLimelightPose() {
     try {
       double[] array = getArray();
+      if(array[0]==0)
+        return null;
       return new Pose2d(new Translation2d(array[0], array[1]), new Rotation2d(array[5]));
     }
     catch(Exception e) {return null;}
@@ -59,6 +60,10 @@ public class LimelightSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumberArray("limelight bot pose", getArray());
-    swerve.addVisionMeasurement(getLimelightPose(), 0);
+    try{
+    // swerve.addVisionMeasurement(getLimelightPose(), Timer.getFPGATimestamp());
+    }catch(Exception e){
+      
+    }
   }
 }

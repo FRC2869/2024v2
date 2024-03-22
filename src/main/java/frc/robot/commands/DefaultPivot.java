@@ -30,7 +30,7 @@ public class DefaultPivot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pivot.setSpeed(Inputs.getPivotOverride());
+    // pivot.setSpeed(Inputs.getPivotOverride());
     pivot.setPositionControl(false);
   }
 

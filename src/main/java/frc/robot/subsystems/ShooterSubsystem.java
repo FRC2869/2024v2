@@ -56,7 +56,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isAtRPM() {
-    return Math.abs(getRPM()-speed1)<2;
+    return Math.abs(getRPM()-speed1)<5;
   }
 
   @Override

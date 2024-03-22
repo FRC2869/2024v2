@@ -7,9 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.ShooterConstants.LightingSetting;
 import frc.robot.commands.Intake.IntakeClosePos;
 import frc.robot.commands.Intake.IntakeSpinStop;
 import frc.robot.commands.Intake.IntakeWaitPosition;
+import frc.robot.commands.LEDs.LEDCommand;
 
 /**
  *  Sequential Command for putting the intake up, 

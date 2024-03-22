@@ -157,6 +157,14 @@ public class LightingSubsystem extends SubsystemBase {
             }
           }
         break;
+      case INTAKING:
+        speed = 5;
+        for (int i = 0; i < m_ledBuffer.getLength(); i++) {
+          if ((millis == 1 && (i % 4 == 0||i%4==1)) || (millis == 0 && (i % 4 == 2||i%4==3)))
+            m_ledBuffer.setRGB(i, 255, 0, 0);
+          if ((millis == 0 && (i % 4 == 0||i%4==1)) || (millis == 1 && (i % 4 == 2||i%4==3)))
+            m_ledBuffer.setRGB(i, 200, 100, 100);
+        }
       case DISABLED:
         speed = 1;
         for (int i = 0; i < m_ledBuffer.getLength(); i++) {
@@ -238,7 +246,7 @@ public class LightingSubsystem extends SubsystemBase {
         break;
       case Pattern2:
         speed = 1;
-        if (millis % 10 == 0) {
+        if (millis % 100 == 0) {
           for (int i = 0; i < m_ledBuffer.getLength(); i++) {
             if(Math.random() < .3)
               m_ledBuffer.setRGB(i, 0, 0, 255);
@@ -260,7 +268,7 @@ public class LightingSubsystem extends SubsystemBase {
         speed = 5;
         for (int i = 0; i < m_ledBuffer.getLength(); i++) {
           if((i + millis) % 4 == 0)
-            m_ledBuffer.setRGB(i, 61, 161, 104;
+            m_ledBuffer.setRGB(i, 61, 161, 104);
           else if((i + millis) % 4 == 1)
             m_ledBuffer.setRGB(i, 0, 255, 255);
           else if((i + millis) % 4 == 2)
@@ -278,7 +286,7 @@ public class LightingSubsystem extends SubsystemBase {
         }
         break;
       case GAMEOVER:
-        speed = 0;
+        speed = 1;
         for (int i = 0; i < m_ledBuffer.getLength(); i++) {
           if (millis % (550) < 270)
             m_ledBuffer.setRGB(i, millis, 0, 0);
