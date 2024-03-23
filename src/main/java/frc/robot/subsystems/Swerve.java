@@ -27,6 +27,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -225,6 +226,12 @@ public class Swerve extends SubsystemBase {
     List<Translation2d> list = PathPlannerPath.bezierFromPoses(getPose(), Constants.FieldConstants.ampLocation);
     PathPlannerPath path = new PathPlannerPath(list, Constants.SwerveConstants.constraints, new GoalEndState(0, Constants.FieldConstants.humanPlayerStationPose.getRotation()));
     return AutoBuilder.followPath(path);
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Swerve Speed", getRobotRelativeSpeeds().vyMetersPerSecond);
+    SmartDashboard.putNumber("Swerve", TunerConstants.DriveTrain.getModule(0).getDriveMotor().getVelocity().getValue());
   }
   //Previous max speed of 4800 changed to 4000
 }

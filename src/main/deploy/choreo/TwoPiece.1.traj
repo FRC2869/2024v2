@@ -253,15 +253,5 @@
       "timestamp": 1.9170372268957745
     }
   ],
-  "eventMarkers": [
-    {
-      "timestamp": 1.0647283447702376,
-      "command": {
-        "type": "wait",
-        "data": {
-          "waitTime": 0
-        }
-      }
-    }
-  ]
+  "eventMarkers": []
 }

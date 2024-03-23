@@ -16,12 +16,14 @@ public class LoadAutoCommand extends InstantCommand {
 
   public LoadAutoCommand() {
     r = Robot.m_robotContainer;
+    runsWhenDisabled();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
-    r.generateAutoCommand();
+    r.generateAndLoad();
+    System.out.println("YAY");
   }
 }

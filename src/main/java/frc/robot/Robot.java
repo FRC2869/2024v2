@@ -4,13 +4,12 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.LoadAutoCommand;
 import frc.robot.commands.SwerveResetGyro;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
@@ -26,7 +25,7 @@ public class Robot extends TimedRobot {
 
   private Field2d field;
 
-  private UsbCamera camera;
+  // private UsbCamera camera;
   @Override
   public void robotInit() {
   //  System.out.println("INIT");
@@ -36,9 +35,9 @@ public class Robot extends TimedRobot {
     field = new Field2d();
 
     
-	  camera = CameraServer.startAutomaticCapture("cam0",0);
-    camera.setResolution(480, 360);
-    camera.setFPS(30);
+	  // camera = CameraServer.startAutomaticCapture("cam0",0);
+    // camera.setResolution(480, 360);
+    // camera.setFPS(30);
   }
 
   @Override
@@ -59,7 +58,12 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    if(Inputs.getLoadAuto()){
+      new LoadAutoCommand().ignoringDisable(true).schedule();
+      
+    }
+  }
 
   @Override
   public void disabledExit() {}

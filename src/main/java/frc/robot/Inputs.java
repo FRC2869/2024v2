@@ -246,6 +246,9 @@ public class Inputs {
     public static Trigger getAmpAutoOuttake(){
         return operatorBoard.button(21);
     }
+    public static boolean getLoadAuto(){
+        return operatorBoard.getHID().getRawButton(22);
+    }
     // for auto-align calibration
     public static Trigger getAngles() {
         return null;
