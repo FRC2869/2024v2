@@ -7,8 +7,10 @@ package frc.robot;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.RobotCentric;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AutoFollowPath;
 import frc.robot.commands.DefaultPivot;
 import frc.robot.commands.IntakeAutoPickup;
 import frc.robot.commands.IntakeAutoRetract;
@@ -24,6 +27,7 @@ import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
 import frc.robot.commands.SwerveResetGyro;
+import frc.robot.commands.ToggleFaceSpeaker;
 import frc.robot.commands.Intake.IntakeBasePos;
 import frc.robot.commands.Intake.IntakeFarPos;
 import frc.robot.commands.Intake.IntakeFloorPos;
@@ -32,6 +36,7 @@ import frc.robot.commands.Intake.IntakeSpinIn;
 import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
 import frc.robot.commands.Intake.IntakeWaitNote;
+import frc.robot.commands.Shooter.AimAtSpeaker;
 import frc.robot.commands.Shooter.ShooterAmpLoad;
 import frc.robot.commands.Shooter.ShooterAmpScore;
 import frc.robot.commands.Shooter.ShooterAutoShoot;
@@ -44,13 +49,15 @@ import frc.robot.commands.Shooter.ShooterShootSlow;
 import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
-  private Swerve swerve = Swerve.getInstance();
+  private SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  private LimelightSubsystem limelight = LimelightSubsystem.getInstance();
   private enum Autos {
-		Nothing, Forward, ShootOne, ShootPickup, SubWooferAuto, BasicPath, SubWooferAutoR, SubWooferAutoR2, SideAuto
+		Nothing, Forward, ShootOne, ShootPickup, SubWooferAuto, BasicPath, SubWooferAutoR, SubWooferAutoR2, SideAuto, OtherAuto
 	}
   // private double MaxSpeed = 5; // 6 meters per second desired top speed
   // private double MaxSpeed = 7;
@@ -65,14 +72,17 @@ public class RobotContainer {
       .withDeadband(MaxSpeed * 0.075).withRotationalDeadband(MaxAngularRate * 0.075) // Add a 5% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
-  // private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+  private final RobotCentric robotDrive = new SwerveRequest.RobotCentric()
+  .withDeadband(MaxSpeed * 0.075).withRotationalDeadband(MaxAngularRate * 0.075)
+  .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+                                                               // private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   // private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   // private final Telemetry logger = new Telemetry(MaxSpeed);
   private SendableChooser<Autos> newautopick;
 
   public RobotContainer() {
     configureBindings();
-    swerve = Swerve.getInstance();
+    swerve = SwerveSubsystem.getInstance();
     IntakePivotSubsystem.getInstance().setDefaultCommand(new IntakeSpeedControl());
     PivotSubsystem.getInstance().setDefaultCommand(new DefaultPivot());
     // Map<String, Command> eventMap = new HashMap<>();
@@ -106,6 +116,7 @@ public class RobotContainer {
 		newautopick.addOption("SubWooferAutoR", Autos.SubWooferAutoR);
 		newautopick.addOption("SubWooferAutoR2", Autos.SubWooferAutoR2);
 		newautopick.addOption("SideAuto", Autos.SideAuto);
+		newautopick.addOption("OtherAuto", Autos.OtherAuto);
     //SUPER ULTIMATE PATH!!!!!!! (WATCH OUT, LIBERALS)
 		Shuffleboard.getTab("auto").add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
     System.out.println("RC");
@@ -122,6 +133,13 @@ public class RobotContainer {
             .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(Inputs.getRotation() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
+    Inputs.getRobotCentric().whileTrue(drivetrain.applyRequest(()->robotDrive.withVelocityY(Inputs.getTranslationY() * MaxSpeed)
+            .withVelocityX(Inputs.getTranslationX() * MaxSpeed)
+            .withRotationalRate(Inputs.getRotation() * MaxAngularRate * SwerveSubsystem.getOverrideState()
+            + swerve.getTargetSlope(swerve.getPose().getX(), swerve.getPose().getY(), , ) * Math.abs(SwerveSubsystem.getOverrideState() - 1))
+            // for driver control
+            // for override
+            ));
     Inputs.getResetGyro().onTrue(new SwerveResetGyro());
     // Inputs.getIntakeSpinIn().onTrue(new IntakeSpinIn());
     // Inputs.getIntakeSpinOut().onTrue(new IntakeSpinOut());
@@ -158,8 +176,9 @@ public class RobotContainer {
     Inputs.getShooterStop2().onTrue(new ShooterStop());
     Inputs.getAmpAutoOuttake().onTrue(new SequentialCommandGroup(new ParallelRaceGroup(new PivotAmp(), new WaitCommand(1)), new ShooterAmpScore(), new WaitCommand(.5), new ShooterStop(), new ParallelRaceGroup(new PivotBase(), new WaitCommand(.5))));
     // Inputs.getAutoIntakeDown().onTrue(new LoadAutoCommand().runsWhenDisabled());
-    //Inputs.getAimAtSpeaker().onTrue(swerve.faceSpeaker());
+    Inputs.getAimAtSpeaker().whileTrue(new AimAtSpeaker());
     //Inputs.getMoveToAmp().onTrue(swerve.moveToAmp());
+    Inputs.getOverride().onTrue(new ToggleFaceSpeaker());
 
     
   }
@@ -173,22 +192,24 @@ public class RobotContainer {
   private Command generateAutoCommand(){
     switch(newautopick.getSelected()){
       case ShootPickup:
-        return new SequentialCommandGroup(new ShooterAutoShoot(), Swerve.getInstance().getTrajectory("TwoPiece"), new IntakeAutoPickup(), new ShooterAutoShoot());
+        return new SequentialCommandGroup(new ShooterAutoShoot(), SwerveSubsystem.getInstance().getTrajectory("TwoPiece"), new IntakeAutoPickup(), new ShooterAutoShoot());
       case ShootOne:
         return new SequentialCommandGroup(new ShooterAutoShootTeleop(), new WaitCommand(50000));
       case Forward:
-        return Swerve.getInstance().getTrajectory("2m");
+        return SwerveSubsystem.getInstance().getTrajectory("2m");
       case SubWooferAuto:
-        return new SequentialCommandGroup(new ShooterAutoShoot(), new ParallelCommandGroup(Swerve.getInstance().getTrajectory("TopBlueAutoPath"), 
+        return new SequentialCommandGroup(new ShooterAutoShoot(), new ParallelCommandGroup(SwerveSubsystem.getInstance().getTrajectory("TopBlueAutoPath"), 
         new SequentialCommandGroup(new WaitCommand(1), new IntakeAutoPickup())));
       case BasicPath:
-        return Swerve.getInstance().getAuto("TwoPieceMiddle");
+        return SwerveSubsystem.getInstance().getAuto("TwoPieceMiddle");
       case SubWooferAutoR:
-        return Swerve.getInstance().getAuto("OnePiece(not)Mid (The One Piece is real)");
+        return SwerveSubsystem.getInstance().getAuto("OnePiece(not)Mid (The One Piece is real)");
       case SubWooferAutoR2:
-        return Swerve.getInstance().getAuto("5PieceWingCenter");//5PieceWingCenter
+        return SwerveSubsystem.getInstance().getAuto("5PieceWingCenter");//5PieceWingCenter
       case SideAuto:
-        return Swerve.getInstance().getAuto("2PieceCenterFar");
+        return SwerveSubsystem.getInstance().getAuto("2PieceCenterFar");
+      case OtherAuto:
+        return new AutoFollowPath("KajillionNoteAuto1", "KajillionNoteAuto2", "KajillionNoteAuto3", "KajillionNoteAuto4", "KajillionNoteAuto5", "KajillionNoteAuto6");
       default: //Autos.Nothing
         return new WaitCommand(50000);
     }

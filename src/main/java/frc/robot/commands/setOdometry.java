@@ -6,17 +6,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.SwerveSubsystem;
 
 /**
  * sets the odometry to the given Pose2d
  */
 public class setOdometry extends InstantCommand {
-  private Swerve swerve;
+  private SwerveSubsystem swerve;
   private Pose2d pose;
 
   public setOdometry(Pose2d pose) {
-    swerve = Swerve.getInstance();
+    swerve = SwerveSubsystem.getInstance();
     this.pose = pose;
     addRequirements(swerve);
     // Use addRequirements() here to declare subsystem dependencies.

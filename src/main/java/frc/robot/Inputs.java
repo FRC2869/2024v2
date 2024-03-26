@@ -265,5 +265,9 @@ public class Inputs {
         // return driver1.getHID().getRawButton(11);
     }
 
+    public static Trigger getRobotCentric() {
+        return driver1.rightTrigger();
+    }
+
 }
 

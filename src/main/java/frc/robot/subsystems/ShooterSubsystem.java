@@ -35,7 +35,7 @@ public class ShooterSubsystem extends SubsystemBase {
     shooter1 = new TalonFX(ShooterConstants.id1);
     shooter2 = new TalonFX(ShooterConstants.id2);
     MotorConfiguration.configureMotor(shooter1, ShooterConstants.config);
-    MotorConfiguration.configureMotor(shooter2, ShooterConstants.config);
+    MotorConfiguration.configureMotor(shooter2, ShooterConstants.config2);
   }
 
   public void setSpeed(double speed1, double speed2){
@@ -56,7 +56,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isAtRPM() {
-    return Math.abs(getRPM()-speed1)<5;
+    return getRPM()-speed1>0;
   }
 
   @Override

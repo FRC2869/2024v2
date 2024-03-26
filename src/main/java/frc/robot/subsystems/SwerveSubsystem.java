@@ -40,18 +40,24 @@ import frc.robot.generated.TunerConstants;
  * Swerve drive.
  * @author Ankur "Rag(havan) to Riches"
  */
-public class Swerve extends SubsystemBase {
-  private static Swerve instance;
+public class SwerveSubsystem extends SubsystemBase {
+  private static SwerveSubsystem instance;
   private CommandSwerveDrivetrain swerve;
   private ApplyChassisSpeeds speedsC;
 
-  public static Swerve getInstance() {
-    if (instance == null) instance = new Swerve();
+  /**
+   * Determines if the driver has control over swerve rotation.
+   * @Values 1 = Driver control, 0 = Override
+   */
+  private static int rotationOverride = 1;
+
+  public static SwerveSubsystem getInstance() {
+    if (instance == null) instance = new SwerveSubsystem();
     return instance;
   }
 
   /** Creates a new Swerve. */
-  public Swerve() {
+  public SwerveSubsystem() {
     swerve = TunerConstants.DriveTrain;
     speedsC = new ApplyChassisSpeeds();
     
@@ -222,6 +228,14 @@ public class Swerve extends SubsystemBase {
     return AutoBuilder.followPath(path);
   }
 
+  public void switchOverrideState() {
+    rotationOverride = Math.abs(rotationOverride - 1);
+  }
+
+  public static int getOverrideState() {
+    return rotationOverride;
+  }
+
   public Command moveToAmp() {
     List<Translation2d> list = PathPlannerPath.bezierFromPoses(getPose(), Constants.FieldConstants.ampLocation);
     PathPlannerPath path = new PathPlannerPath(list, Constants.SwerveConstants.constraints, new GoalEndState(0, Constants.FieldConstants.humanPlayerStationPose.getRotation()));
@@ -234,4 +248,10 @@ public class Swerve extends SubsystemBase {
     SmartDashboard.putNumber("Swerve", TunerConstants.DriveTrain.getModule(0).getDriveMotor().getVelocity().getValue());
   }
   //Previous max speed of 4800 changed to 4000
+
+  public double getTargetSlope(double x1, double y1, double x2, double y2) {
+    double tAngle = Math.atan((y2-y1) / (x2-x1));
+    double cAngle = getPose().getRotation().getDegrees();
+    return (tAngle-cAngle)*.05;
+  }
 }

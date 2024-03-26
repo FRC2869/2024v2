@@ -1,0 +1,125 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.4,
+      "y": 5.5
+    },
+    "rotation": -3.4706253804439834e-23
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterShootSlow"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterRevWait"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ThreePieceMiddle (Alt2)"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.25
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeAutoPickup"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAutoRetract"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShooterShoot"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ThreePieceMiddle (Alt3)"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterShootSlow"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterRevWait"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "50PieceMiddle1"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": true
+}

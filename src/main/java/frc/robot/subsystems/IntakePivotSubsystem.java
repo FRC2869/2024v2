@@ -126,7 +126,7 @@ public class IntakePivotSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
-        SmartDashboard.putNumber("intake", getAngle());
+        // SmartDashboard.putNumber("intake", getAngle());
         if (isPosControl) {
             if((currentPos!=PositionsIntake.BASE||getAngle()<IntakeConstants.basePosition) &&
             (currentPos!=PositionsIntake.FLOOR||getAngle()>IntakeConstants.floorPosition)

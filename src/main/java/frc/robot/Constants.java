@@ -65,20 +65,22 @@ public class Constants {
           }
         public static final int id2 = 18;
         public static final int id1 = 19;
-        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 0, 0, 0, 1, -1, 0, 0, 40,
+        public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 2, 1, -1, 0, 0, 60,
+                true, false, 0);
+        public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, -2, 1, -1, 0, 0, 60,
                 true, false, 0);
     }
 
     public static class IntakeConstants {
         public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 40, true, false);
         public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.6, -0.6,
-                (5 * (50 / 16.0) * (32 / 16.0)), 0, 40, false, false, 0);
+                (5 * (50 / 16.0) * (32 / 16.0)), 0, 60, false, false, 0);
         public static final double kMinAngle = -770;
         public static final double kMaxAngle = 0;
         public static final double floorPosition = -765;
         public static final double basePosition = 0;
-        public static final double closePosition = -50;
-        public static final double farPosition = -30;//-30
+        public static final double closePosition = -40;
+        public static final double farPosition = -60;//-30
 
         public static enum PositionsIntake {
             BASE, FLOOR, FAR, CLOSE
@@ -103,7 +105,7 @@ public class Constants {
         public static final double kMinAngle = -200;
         public static final double kMaxAngle = 0;
         public static final double ampPosition = -170;//-170
-        public static final double farPosition = -20;//-22
+        public static final double farPosition = -40;//-22
         public static final double closePosition = 0;//-7
         /**inches */
         public static final double pivotRestingHeight = 25; // not good

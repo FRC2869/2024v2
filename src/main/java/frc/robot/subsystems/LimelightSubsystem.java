@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
@@ -59,7 +58,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumberArray("limelight bot pose", getArray());
+    // SmartDashboard.putNumberArray("limelight bot pose", getArray());
     try{
     // swerve.addVisionMeasurement(getLimelightPose(), Timer.getFPGATimestamp());
     }catch(Exception e){

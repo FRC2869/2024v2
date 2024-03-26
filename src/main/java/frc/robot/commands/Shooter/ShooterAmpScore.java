@@ -24,6 +24,6 @@ public class ShooterAmpScore extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
-    shooter.setSpeed(15, -15);
+    shooter.setSpeed(35, -35);
   }
 }

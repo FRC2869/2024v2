@@ -44,7 +44,7 @@ public class IntakeSubsystem extends SubsystemBase{
      * Sets speed to 50%, spinning notes into the robot
      */
     public void spinIn() {
-        spinSpeed = .5;
+        spinSpeed = 1;
     }
 
     /**
@@ -72,7 +72,7 @@ public class IntakeSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
-        SmartDashboard.putNumber("intake current",spinMotor.getSupplyCurrent().getValue());
+        // SmartDashboard.putNumber("intake current",spinMotor.getSupplyCurrent().getValue());
         SmartDashboard.putBoolean("Is intaked?", isIntake());
         spinMotor.set(spinSpeed);
     }

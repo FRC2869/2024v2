@@ -4,21 +4,20 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 // import java.text.DecimalFormat;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
-
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.MotorConfiguration;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
+import frc.robot.MotorConfiguration;
 
 /**
  * Controls the pivot of the shooter.
@@ -125,11 +124,11 @@ public class PivotSubsystem extends SubsystemBase {
 	// SmartDashboard.putNumber("pos", pos);
 	if (isPosControl) {
 		if(currentPos!=PositionsPivot.BASE||getAngle()<PivotConstants.basePosition){
-			SmartDashboard.putBoolean("enabled", true);
+			// SmartDashboard.putBoolean("enabled", true);
 			pivotMotor.getPIDController().setReference(pos, ControlType.kPosition);
 		}else{
 			pivotMotor.set(0);	
-			SmartDashboard.putBoolean("enabled", false);
+			// SmartDashboard.putBoolean("enabled", false);
 
 		}
 	}else{

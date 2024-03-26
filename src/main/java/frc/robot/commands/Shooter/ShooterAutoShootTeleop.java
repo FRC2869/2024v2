@@ -21,7 +21,7 @@ public class ShooterAutoShootTeleop extends ParallelRaceGroup {
   public ShooterAutoShootTeleop() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new IntakeClosePos(), new PivotClose(), new SequentialCommandGroup(new ShooterShoot(), new ParallelCommandGroup(new ShooterRevWait(), new WaitCommand(2)), new IntakeSpinOut(), new WaitCommand(1), new IntakeSpinStop(), new ShooterStop()));
+    addCommands(new IntakeClosePos(), new PivotClose(), new SequentialCommandGroup(new ShooterShoot(), new ParallelRaceGroup(new ShooterRevWait(), new WaitCommand(2)), new WaitCommand(.25), new IntakeSpinOut(), new WaitCommand(1), new IntakeSpinStop(), new ShooterStop()));
     // addCommands(new AimAtSpeaker(), new WaitCommand(1),new ShooterShoot(), new WaitCommand(1), new IntakeSpinOut(), new WaitCommand(1), new ShooterStop(), new IntakeSpinStop());
   }
 }
