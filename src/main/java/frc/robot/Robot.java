@@ -59,10 +59,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    if(Inputs.getLoadAuto()){
-      new LoadAutoCommand().ignoringDisable(true).schedule();
+    // if(Inputs.getLoadAuto()){
+    //   new LoadAutoCommand().ignoringDisable(true).schedule();
       
-    }
+    // }
   }
 
   @Override

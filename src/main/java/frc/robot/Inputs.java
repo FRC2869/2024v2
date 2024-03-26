@@ -6,23 +6,18 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * A class containing static functions for each of the inputs
- * Driver1 (drives):
- * 2: reset gyro
- * 3: Climber Down
- * 4: Climber Up
+ * Demo (only active when Operator A is pressed):
+ * Left X/Y - Translation
+ * Right X - Rotation
+ * A Button - Shoot
  * 
- * Driver2 (rotates):
- * 
- * Operator Controller (for pivot):
- * A: Shoot in amp
- * B: Stop intake
- * X: Start intaking
- * Y: Start outtake
- * Up D-Pad: transition to amp
- * Down D-Pad: Base position of pivot
- * Left D-Pad: Pivot towards amp
- * Right D-Pad: shoots (not fancy)
- * Left-Bumper: stop shooter
+ * Operator:
+ * Left X/Y - Translation
+ * Right X - Rotation
+ * A Button - Enable Demo Controller
+ * B Button - Intake Down
+ * X Button - Intake Up
+ * Y Button - Reset Gyro
  * 
  * Operator Board:
  * 1: Intake note command (fancy)
@@ -48,22 +43,22 @@ public class Inputs {
      * Start intake - XboxController X
      * Start outtake - Xbox
      */
-    private static final CommandXboxController driver1 = new CommandXboxController(Constants.OperatorConstants.DriverController.port); 
-    // private static final CommandXboxController driver2 = new CommandXboxController(Constants.OperatorConstants.DriverController2.port); 
+    private static final CommandXboxController demo = new CommandXboxController(Constants.OperatorConstants.DriverController.port); 
+    private static final CommandXboxController operator = new CommandXboxController(Constants.OperatorConstants.DriverController2.port); 
     // private static final CommandXboxController operator = new CommandXboxController(Constants.OperatorConstants.OperatorController.port); 
     private static final CommandGenericHID operatorBoard = new CommandGenericHID(Constants.OperatorConstants.OperatorButtonBoard.port); 
 
     public static Trigger getResetGyro(){
-        return driver1.button(2);
+        return operator.y();
     }
     
-    public static Trigger getClimberDown(){
-        return operatorBoard.button(1);
-    }
+    // public static Trigger getClimberDown(){
+    //     return operatorBoard.button(1);
+    // }
 
-    public static Trigger getClimberUp(){
-        return operatorBoard.button(2);
-    }
+    // public static Trigger getClimberUp(){
+    //     return operatorBoard.button(2);
+    // }
 
     // public static Trigger getShooterShoot(){
     //     return operator.pov(90);
@@ -81,43 +76,35 @@ public class Inputs {
     //     return operator.leftBumper();
     // }
 
-    public static boolean getSlowMode(){
-        return driver1.getHID().getRightBumper()||driver1.getHID().getLeftBumper();
-    }
+    // public static boolean getSlowMode(){
+    //     return demo.getHID().getRightBumper()||demo.getHID().getLeftBumper();
+    // }
 
     public static double getTranslationX() {
-        var speed = -driver1.getLeftY();
-        if(getSlowMode()){
-            return speed*.25;
-        }
+        var speed = -operator.getLeftY();
+        if (getDemoEnabled())
+            speed += -demo.getLeftY()*.25;
         return speed;
     }
 
+    private static boolean getDemoEnabled() {
+        return operator.getHID().getAButton();
+    }
+
     public static double getRotation() {
-        var speed =  -driver1.getRightX();
-        if(getSlowMode()){
-            return speed*.25;
-        }
+        var speed = -operator.getRightX();
+        if (getDemoEnabled())
+            speed += -demo.getRightX()*.25;
         return speed;
     }
 
     // private static LinkedList<Double> speedList = new LinkedList<>();
      
     public static double getTranslationY() {
-        var speed = -driver1.getLeftX(); 
-        if(getSlowMode()){
-            return speed*.25;
-        }
+        var speed = -operator.getLeftX();
+        if (getDemoEnabled())
+            speed += -demo.getLeftX()*.25;
         return speed;
-        // speedList.removeFirst();
-		// speedList.add(speed);
-
-        // doubl..................................e avg = 0;
-		// for (int i = 0; i < speedList.size(); i++) {
-		// 	avg += speedList.get(i);
-		// }
-		// avg /= speedList.size();
-		// return speed; 
         
     }
 
@@ -158,12 +145,29 @@ public class Inputs {
     public static Trigger getAutoIntakeDown(){
         return operatorBoard.button(1);
     }
+
+    public static Trigger getAutoIntakeDown2(){
+        return operator.b();
+    }
+
     public static Trigger getAutoIntakeUp(){
         return operatorBoard.button(2);
     }
 
+    public static Trigger getAutoIntakeUp2(){
+        return operator.x();
+    }
+
     public static Trigger getAutoShootStop(){
         return operatorBoard.button(3);
+    }
+
+    public static Trigger getAutoShootStop2(){
+        return demo.a();
+    }
+
+    public static Trigger getAutoShootStop3(){
+        return operator.pov(0);
     }
 
     public static Trigger getAmpTransfer(){
@@ -255,10 +259,10 @@ public class Inputs {
     }
 
     public static boolean getLeft() {
-        return driver1.getHID().getPOV()==270;
+        return demo.getHID().getPOV()==270;
     }
     public static boolean getRight() {
-        return driver1.getHID().getPOV()==90;
+        return demo.getHID().getPOV()==90;
     }
     public static boolean getChange() {
         return false;
@@ -266,7 +270,7 @@ public class Inputs {
     }
 
     public static Trigger getRobotCentric() {
-        return driver1.rightTrigger();
+        return demo.rightTrigger();
     }
 
 }
