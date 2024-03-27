@@ -14,7 +14,7 @@ import frc.robot.commands.SwerveResetGyro;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
 // import frc.robot.subsystems.LightingSubsystem;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -34,7 +34,6 @@ public class Robot extends TimedRobot {
     //new LEDCommand(LightingSetting.SCORING).schedule();
     field = new Field2d();
 
-    
 	  // camera = CameraServer.startAutomaticCapture("cam0",0);
     // camera.setResolution(480, 360);
     // camera.setFPS(30);
@@ -43,7 +42,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run(); 
-    SmartDashboard.putNumber("gyro", Swerve.getInstance().getHeading().getDegrees());
+    SmartDashboard.putNumber("gyro", SwerveSubsystem.getInstance().getHeading().getDegrees());
     field.setRobotPose(TunerConstants.DriveTrain.getPose());
     SmartDashboard.putData(field);
   }

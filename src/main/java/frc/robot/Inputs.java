@@ -269,5 +269,25 @@ public class Inputs {
         return driver1.rightTrigger();
     }
 
+    public static Trigger getAutoIntakeUp2() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAutoIntakeUp2'");
+    }
+
+    public static Trigger getAutoIntakeDown2() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAutoIntakeDown2'");
+    }
+
+    public static Trigger getAutoShootStop3() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAutoShootStop3'");
+    }
+
+    public static Trigger getAutoShootStop2() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAutoShootStop2'");
+    }
+
 }
 

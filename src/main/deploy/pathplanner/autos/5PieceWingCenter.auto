@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4,
-      "y": 5.5
+      "x": 1.5075558423995972,
+      "y": 5.489124298095703
     },
-    "rotation": -3.0127440282756435e-27
+    "rotation": 2.3861579393890293e-28
   },
   "command": {
     "type": "sequential",
@@ -52,7 +52,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "TwoPieceMiddle"
+                        "pathName": "DomainExpansionInfiniteNotes.1"
                       }
                     }
                   ]
@@ -86,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ThreePieceMiddle (Alt1)"
+                  "pathName": "DomainExpansionInfiniteNotes.2"
                 }
               }
             ]
@@ -111,7 +111,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ThreePieceMiddle (Alt2)"
+                  "pathName": "DomainExpansionInfiniteNotes.3"
                 }
               }
             ]
@@ -136,7 +136,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ThreePieceMiddle (Alt3)"
+                  "pathName": "DomainExpansionInfiniteNotes.4"
                 }
               },
               {
@@ -167,7 +167,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ThreePieceMiddle (Alt 4)"
+                  "pathName": "DomainExpansionInfiniteNotes.5"
                 }
               }
             ]
@@ -192,7 +192,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ThreePieceMiddle (Auto 5)"
+                  "pathName": "DomainExpansionInfiniteNotes.6"
                 }
               },
               {
@@ -217,7 +217,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ThreePieceMiddle (Alt 6)"
+                  "pathName": "DomainExpansionInfiniteNotes.7"
                 }
               },
               {
@@ -267,7 +267,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ThreePieceMiddle (Alt 7)"
+                  "pathName": "DomainExpansionInfiniteNotes.8"
                 }
               }
             ]
