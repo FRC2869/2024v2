@@ -10,7 +10,11 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.CommandSwerveDrivetrain;
+import frc.robot.generated.TunerConstants;
 
 /**
  * Recieves data from the limelight.
@@ -19,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LimelightSubsystem extends SubsystemBase {
   
   private static LimelightSubsystem instance;
+
+  private static CommandSwerveDrivetrain swerve;
 
   private NetworkTable table;
   private NetworkTableEntry botPose;
@@ -34,7 +40,8 @@ public class LimelightSubsystem extends SubsystemBase {
    * Creates a new LimelightSubsystem.
    */
   public LimelightSubsystem() {
-    table = NetworkTableInstance.getDefault().getTable("Pipeline_Name");
+    swerve = TunerConstants.DriveTrain;
+    table = NetworkTableInstance.getDefault().getTable("limelight-ankur");
     botPose = table.getEntry("botpose");
   }
 
@@ -49,8 +56,7 @@ public class LimelightSubsystem extends SubsystemBase {
   public Pose2d getLimelightPose() {
     try {
       double[] array = getArray();
-      if(array[0]==0)
-        return null;
+      if(array[0]==0) return null;
       return new Pose2d(new Translation2d(array[0], array[1]), new Rotation2d(array[5]));
     }
     catch(Exception e) {return null;}
@@ -58,11 +64,10 @@ public class LimelightSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SmartDashboard.putNumberArray("limelight bot pose", getArray());
+    SmartDashboard.putNumberArray("limelight bot pose", getArray());
     try{
-    // swerve.addVisionMeasurement(getLimelightPose(), Timer.getFPGATimestamp());
-    }catch(Exception e){
-      
+      swerve.addVisionMeasurement(getLimelightPose(), Timer.getFPGATimestamp());
     }
+    catch(Exception e) {}
   }
 }

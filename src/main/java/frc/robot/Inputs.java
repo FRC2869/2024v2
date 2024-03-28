@@ -288,6 +288,16 @@ public class Inputs {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getAutoShootStop2'");
     }
+    
+    public static Trigger getAutoAlignShooter() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAutoAlignShooter'");
+    }
+
+    public static Trigger getAutoAlignAmp() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAutoAlignAmp'");
+    }
 
 }
 
