@@ -5,17 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
+// import frc.robot.Robot;
+// import frc.robot.RobotContainer;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class LoadAutoCommand extends InstantCommand {
-  private RobotContainer r;
+  // private RobotContainer r;
 
   public LoadAutoCommand() {
-    r = Robot.m_robotContainer;
+    // r = Robot.m_robotContainer;
     runsWhenDisabled();
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -23,7 +23,7 @@ public class LoadAutoCommand extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
-    r.generateAndLoad();
+    //r.generateAndLoad();
     System.out.println("YAY");
   }
 }

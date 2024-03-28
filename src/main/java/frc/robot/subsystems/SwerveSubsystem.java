@@ -254,4 +254,20 @@ public class SwerveSubsystem extends SubsystemBase {
     double cAngle = getPose().getRotation().getDegrees();
     return (tAngle-cAngle)*.05;
   }
+
+  public double getSpeakerX() {
+    if (isRed()) {
+      return Constants.PivotConstants.redSpeakerX;
+    } else {
+      return Constants.PivotConstants.blueSpeakerX;
+    }
+  }
+
+  public double getSpeakerY() {
+    if (isRed()) {
+      return Constants.PivotConstants.redSpeakerY;
+    } else {
+      return Constants.PivotConstants.blueSpeakerY;
+    }
+  }
 }

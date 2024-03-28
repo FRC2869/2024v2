@@ -10,6 +10,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -72,6 +73,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
      * @return angle between floor and speaker in degrees
      */
     public double getAngle() {
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+            return 180 * Math.atan(Constants.FieldConstants.speakerHeight/(getState().Pose.getX() - Constants.FieldConstants.distanceFromWallSpeaker)) / Math.PI;
         return 180 * Math.atan(Constants.FieldConstants.speakerHeight/(Constants.FieldConstants.fieldWidth - Constants.FieldConstants.distanceFromWallSpeaker - getState().Pose.getX())) / Math.PI;
     }
 

@@ -24,6 +24,6 @@ public class AimAtSpeaker extends InstantCommand {
   @Override
   public void execute() {
     pivot.position(swerve.getAngle() - Constants.PivotConstants.startingAngle);
-    intakePivot.setPivotPos(swerve.getIntakeAngle());
+    //intakePivot.setPivotPos(swerve.getIntakeAngle());
   }
 }

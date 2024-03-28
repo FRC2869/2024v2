@@ -13,10 +13,10 @@ import frc.robot.subsystems.SwerveSubsystem;
  * Resets the pose of the robot to the same position but 0 rotation
  */
 public class SwerveResetGyro extends InstantCommand {
-  private Swerve swerve;
+  private SwerveSubsystem swerve;
 
   public SwerveResetGyro() {
-    swerve = Swerve.getInstance();
+    swerve = SwerveSubsystem.getInstance();
     addRequirements(swerve);
     // Use addRequirements() here to declare subsystem dependencies.
   }

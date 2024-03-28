@@ -5,16 +5,21 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class FaceSpeaker extends Command {
   /** Creates a new FaceSpeaker. */
+  SwerveSubsystem swerve = SwerveSubsystem.getInstance();
   public FaceSpeaker() {
+    addRequirements(swerve);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    swerve.switchOverrideState();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -27,6 +32,6 @@ public class FaceSpeaker extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

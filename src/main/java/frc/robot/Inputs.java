@@ -265,39 +265,48 @@ public class Inputs {
         // return driver1.getHID().getRawButton(11);
     }
 
+    public static Trigger getToggleFaceSpeaker() {
+        return driver1.povDown();
+    }
+
     public static Trigger getRobotCentric() {
         return driver1.rightTrigger();
     }
 
-    public static Trigger getAutoIntakeUp2() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAutoIntakeUp2'");
-    }
+    // public static Trigger getAutoIntakeUp2() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'getAutoIntakeUp2'");
+    // }
 
-    public static Trigger getAutoIntakeDown2() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAutoIntakeDown2'");
-    }
+    // public static Trigger getAutoIntakeDown2() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'getAutoIntakeDown2'");
+    // }
 
-    public static Trigger getAutoShootStop3() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAutoShootStop3'");
-    }
+    // public static Trigger getAutoShootStop3() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'getAutoShootStop3'");
+    // }
 
-    public static Trigger getAutoShootStop2() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAutoShootStop2'");
-    }
+    // public static Trigger getAutoShootStop2() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'getAutoShootStop2'");
+    // }
     
-    public static Trigger getAutoAlignShooter() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAutoAlignShooter'");
-    }
+    // public static Trigger getAutoAlignShooter() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'getAutoAlignShooter'");
+    // }
 
-    public static Trigger getAutoAlignAmp() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAutoAlignAmp'");
-    }
+    // public static Trigger getTurnToSpeaker() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'getTurnToSpeaker'");
+    // }
+
+    // public static Trigger goToAmp() {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'goToAmp'");
+    // }
 
 }
 

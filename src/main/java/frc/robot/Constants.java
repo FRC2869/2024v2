@@ -11,20 +11,24 @@ public class Constants {
 
     public static class FieldConstants {
         //ALL ARE SET TO INCHES
+        
+        /**inches */
         public static final double fieldWidth = 323.125;
 
+        /**inches */
         public static final double speakerHeight = 78;
 
+        /**inches */
         public static final double distanceFromWallSpeaker = 9;
         
-        
+        /**inches */
         public static final Pose2d humanPlayerStationPose = new Pose2d(15.326556205749512, 1.4545217752456665, new Rotation2d(-56.309925735));
 
+        /**inches */
         public static final Pose2d ampLocation = new Pose2d(1.4101016521453857, 7.223808288574219, new Rotation2d(Math.PI/2));
         //except this, this is in meters!
-        /**
-         * meters
-         */
+
+        /** meters */
         public static final double speakerToOriginDist = 291;
 
     }
@@ -121,9 +125,22 @@ public class Constants {
             BASE, AMP, FAR, CLOSE,
         } //57, 13
         public static double adjustment = 2;
+
+        public static final double blueSpeakerX = 0.365;
+        public static final double blueSpeakerY= 5.56;
+        public static final double redSpeakerX = 16.154;
+        public static final double redSpeakerY = 5.56;
     }
 
     public static class SwerveConstants {
         public static PathConstraints constraints = new PathConstraints(3.783, 5.380, 10.151, 24.760);
     }
 }
+
+// blue speaker
+// x = 15 in or 0.365 m
+// y = 218 in or 5.56 m
+
+// red speaker
+// x = 635 in or 16.155 m
+// y = 218 in or 5.56 m
