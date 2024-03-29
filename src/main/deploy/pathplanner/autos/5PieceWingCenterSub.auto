@@ -5,7 +5,7 @@
       "x": 1.5075558423995972,
       "y": 5.489124298095703
     },
-    "rotation": 3.696661700113942e-26
+    "rotation": 2.3861579393890293e-28
   },
   "command": {
     "type": "sequential",
@@ -46,12 +46,31 @@
                 }
               },
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "CenterYAY.1"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.25
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "DomainExpansionInfiniteNotes.1"
+                      }
+                    }
+                  ]
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Nothing"
           }
         },
         {
@@ -69,14 +88,14 @@
                 "data": {
                   "name": "ShooterShoot"
                 }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DomainExpansionInfiniteNotes.2"
+                }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IntakeWaitPosition"
           }
         },
         {
@@ -98,10 +117,16 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CenterYAY.2"
+                  "pathName": "DomainExpansionInfiniteNotes.3"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Nothing"
           }
         },
         {
@@ -115,18 +140,18 @@
                 }
               },
               {
+                "type": "path",
+                "data": {
+                  "pathName": "DomainExpansionInfiniteNotes.4"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "ShooterShoot"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IntakeWaitPosition"
           }
         },
         {
@@ -148,10 +173,16 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CenterYAY.3"
+                  "pathName": "DomainExpansionInfiniteNotes.5"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Nothing"
           }
         },
         {
@@ -165,18 +196,18 @@
                 }
               },
               {
+                "type": "path",
+                "data": {
+                  "pathName": "DomainExpansionInfiniteNotes.6"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "ShooterShoot"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IntakeWaitPosition"
           }
         },
         {
@@ -189,6 +220,12 @@
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DomainExpansionInfiniteNotes.7"
+                }
+              },
               {
                 "type": "sequential",
                 "data": {
@@ -213,14 +250,14 @@
                     }
                   ]
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CenterYAY.4"
-                }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Nothing"
           }
         },
         {
@@ -242,7 +279,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CenterYAY.5"
+                  "pathName": "DomainExpansionInfiniteNotes.8"
                 }
               }
             ]

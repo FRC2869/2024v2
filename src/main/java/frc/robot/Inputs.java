@@ -11,19 +11,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * 3: Climber Down
  * 4: Climber Up
  * 
- * Driver2 (rotates):
- * 
- * Operator Controller (for pivot):
- * A: Shoot in amp
- * B: Stop intake
- * X: Start intaking
- * Y: Start outtake
- * Up D-Pad: transition to amp
- * Down D-Pad: Base position of pivot
- * Left D-Pad: Pivot towards amp
- * Right D-Pad: shoots (not fancy)
- * Left-Bumper: stop shooter
- * 
  * Operator Board:
  * 1: Intake note command (fancy)
  * 2: Transfer for intake

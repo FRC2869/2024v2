@@ -70,9 +70,9 @@ public class Constants {
         public static final int id2 = 18;
         public static final int id1 = 19;
         public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 2, 1, -1, 0, 0, 60,
-                true, false, 0);
-        public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, -2, 1, -1, 0, 0, 60,
-                true, false, 0);
+                true, false, 0.5);
+        public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, 2, 1, -1, 0, 0, 60,
+                true, true, 0.5);
     }
 
     public static class IntakeConstants {

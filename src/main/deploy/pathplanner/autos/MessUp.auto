@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.669,
+      "y": 4.35
+    },
+    "rotation": -60.16056848873644
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterShootSlow"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterRevWait"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "InfiniteNotes.1"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": true
+}

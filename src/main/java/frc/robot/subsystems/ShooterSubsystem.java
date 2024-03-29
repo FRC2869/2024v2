@@ -38,12 +38,20 @@ public class ShooterSubsystem extends SubsystemBase {
     MotorConfiguration.configureMotor(shooter2, ShooterConstants.config2);
   }
 
+  /**
+   * Sets the speed in rotations per second of the motor
+   * @param speed1 speed of motor close to intake
+   * @param speed2 speed of motor far from intake
+   */
   public void setSpeed(double speed1, double speed2){
     this.speed1 = speed1;
     this.speed2 = speed2;
     stopped = false;
   }
 
+  /**
+   * stops both shooter motors
+   */
   public void stop(){
     this.speed1 = 0;
     this.speed2 = 0;
@@ -51,19 +59,25 @@ public class ShooterSubsystem extends SubsystemBase {
     
   }
 
-  public double getRPM() {
+  /**
+   * 
+   * @return rotations/second of the first shooter 
+   */
+  public double getRPS() {
     return shooter1.getVelocity().getValueAsDouble();
   }
 
+  /**
+   * 
+   * @return if the rps of the first shooter is more than the expected rps
+   */
   public boolean isAtRPM() {
-    return getRPM()-speed1>0;
+    return getRPS()-speed1>0;
   }
 
   @Override
   public void periodic() {
-    // var velo1 = new Diff_VelocityDutyCycle_Velocity(new VelocityDutyCycle(speed1, 3.0, true, 0, 0, false, false, false), new VelocityDutyCycle(speed1));
-    // var velo2 = new Diff_VelocityDutyCycle_Velocity(new VelocityDutyCycle(speed2, 3.0, true, 0, 0, false, false, false), new VelocityDutyCycle(speed2));
-    SmartDashboard.putNumber("Shooter Speed1", getRPM());
+    SmartDashboard.putNumber("Shooter Speed1", getRPS());
     SmartDashboard.putNumber("Shooter Speed2", shooter2.getVelocity().getValueAsDouble());
     SmartDashboard.putBoolean("Is at RPM", isAtRPM());
     if(stopped){
@@ -73,11 +87,7 @@ public class ShooterSubsystem extends SubsystemBase {
       var velo1 = new VelocityDutyCycle(speed1);
       var velo2 = new VelocityDutyCycle(speed2);
       shooter1.setControl(velo1);
-      
-      
       shooter2.setControl(velo2);
-      // shooter1.set(speed1);
-      // shooter2.set(speed2);
     }
   
     // This method will be called once per scheduler run

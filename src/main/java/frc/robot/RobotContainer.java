@@ -8,19 +8,17 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.RobotCentric;
+import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.AutoFollowPath;
 import frc.robot.commands.DefaultPivot;
-import frc.robot.commands.FaceSpeaker;
 import frc.robot.commands.IntakeAutoPickup;
 import frc.robot.commands.IntakeAutoRetract;
-import frc.robot.commands.PivotAdjustUp;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
@@ -33,14 +31,18 @@ import frc.robot.commands.Intake.IntakeSpinIn;
 import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
 import frc.robot.commands.Intake.IntakeWaitNote;
-import frc.robot.commands.Shooter.AimAtSpeaker;
+import frc.robot.commands.Intake.IntakeWaitPosition;
 import frc.robot.commands.Shooter.ShooterAmpLoad;
 import frc.robot.commands.Shooter.ShooterAmpScore;
 import frc.robot.commands.Shooter.ShooterAutoShoot;
+import frc.robot.commands.Shooter.ShooterAutoShootStop;
 import frc.robot.commands.Shooter.ShooterAutoShootTeleop;
 import frc.robot.commands.Shooter.ShooterFarShoot;
+import frc.robot.commands.Shooter.ShooterRevWait;
 import frc.robot.commands.Shooter.ShooterShoot;
+import frc.robot.commands.Shooter.ShooterShootSlow;
 import frc.robot.commands.Shooter.ShooterStop;
+import frc.robot.commands.Shooter.ShooterWaitPosition;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
@@ -49,12 +51,12 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class RobotContainer {
   private SwerveSubsystem swerve = SwerveSubsystem.getInstance();
   private enum Autos {
-		Nothing, Forward, ShootOne, ShootPickup, SubWooferAuto, BasicPath, SubWooferAutoR, SubWooferAutoR2, SideAuto, OtherAuto, BestAuto
+		Nothing, ShootOne, FivePieceWingCenterSub, ThreePieceSourceCenterSub, FourPieceAmpCenterSub, FourPieceAmpCenter, FivePieceWingCenter, MessUp
 	}
   // private double MaxSpeed = 5; // 6 meters per second desired top speed
   // private double MaxSpeed = 7;
-  private double MaxSpeed = 3;
-  private double MaxAngularRate = 1 * Math.PI; // 3/4 of a rotation per second max angular velocity
+  private double MaxSpeed = 5.5;
+  private double MaxAngularRate = 2 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   // private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
@@ -71,12 +73,37 @@ public class RobotContainer {
   // private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   // private final Telemetry logger = new Telemetry(MaxSpeed);
   private SendableChooser<Autos> newautopick;
+  private Command autoCommand;
 
   public RobotContainer() {
     configureBindings();
     swerve = SwerveSubsystem.getInstance();
     IntakePivotSubsystem.getInstance().setDefaultCommand(new IntakeSpeedControl());
     PivotSubsystem.getInstance().setDefaultCommand(new DefaultPivot());
+
+    NamedCommands.registerCommand("IntakeAutoPickup", new IntakeAutoPickup());
+    NamedCommands.registerCommand("IntakeWaitNote", new IntakeWaitNote());
+    NamedCommands.registerCommand("IntakeWaitPosition", new IntakeWaitPosition());
+    NamedCommands.registerCommand("IntakeAutoRetract", new IntakeAutoRetract());
+    NamedCommands.registerCommand("ShooterFarShoot", new ShooterFarShoot());
+    NamedCommands.registerCommand("ShooterShoot", new ShooterShoot());
+    NamedCommands.registerCommand("ShooterShootSlow", new ShooterShootSlow());
+    NamedCommands.registerCommand("ShooterRevWait", new ShooterRevWait());
+    NamedCommands.registerCommand("ShooterAutoShoot", new ShooterAutoShoot());
+    NamedCommands.registerCommand("ShooterAutoShootStop", new ShooterAutoShootStop());
+    NamedCommands.registerCommand("Nothing", new WaitCommand(0));
+    newautopick = new SendableChooser<>();
+		newautopick.addOption("Nothing", Autos.Nothing);
+		newautopick.addOption("ShootOne", Autos.ShootOne);	//shoots and waits
+		newautopick.addOption("MessUp", Autos.MessUp);
+		newautopick.addOption("3PieceSourceCenterSub", Autos.ThreePieceSourceCenterSub);
+    newautopick.addOption("4PieceAmpCenter", Autos.FourPieceAmpCenter);
+		newautopick.addOption("4PieceAmpCenterSub", Autos.FourPieceAmpCenterSub);
+    newautopick.addOption("5PieceWingCenter", Autos.FivePieceWingCenter);
+		newautopick.addOption("5PieceWingCenterSub", Autos.FivePieceWingCenterSub);
+    //SUPER ULTIMATE PATH!!!!!!! (WATCH OUT, LIBERALS)
+		Shuffleboard.getTab("auto").add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
+    System.out.println("RC");
   }
 
   private void configureBindings() {
@@ -84,17 +111,18 @@ public class RobotContainer {
         drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate((( Inputs.getRotation() * MaxAngularRate ) * SwerveSubsystem.getOverrideState()) + (swerve.getTargetSlope(
-              swerve.getPose().getX(),
-              swerve.getPose().getY(),
-              swerve.getSpeakerX(),
-              swerve.getSpeakerY()
-            ) * Math.abs(SwerveSubsystem.getOverrideState() - 1))) // Drive counterclockwise with negative X (left)
+            .withRotationalRate((( Inputs.getRotation() * MaxAngularRate))) // Drive counterclockwise with negative X (left)
+        ));
+
+    Inputs.getRobotCentric().whileTrue(drivetrain.applyRequest(() -> robotDrive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
+                                                                                           // negative Y (forward)
+            .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate((( Inputs.getRotation() * MaxAngularRate))) // Drive counterclockwise with negative X (left)
         ));
     Inputs.getResetGyro().onTrue(new SwerveResetGyro());
     Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
     // Inputs.getAutoIntakeUp2().onTrue(new IntakeAutoRetract());
-    Inputs.getAutoShootStop().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
+    Inputs.getAutoShootStop().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new ShooterWaitPosition())));
     Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeSpinOut(), new ShooterAmpLoad(), new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
     Inputs.getIntakeFloorPos().whileTrue(new IntakeFloorPos());
 
@@ -114,57 +142,65 @@ public class RobotContainer {
 
     // Inputs.getShooterAdjustUp().onTrue(new PivotAdjustUp());
     // Inputs.getShooterStop2().onTrue(new ShooterStop());
-    // Inputs.getAmpAutoOuttake().onTrue(new SequentialCommandGroup(new ParallelRaceGroup(new PivotAmp(), new WaitCommand(1)), new ShooterAmpScore(), new WaitCommand(.5), new ShooterStop(), new ParallelRaceGroup(new PivotBase(), new WaitCommand(.5))));
+    Inputs.getAmpAutoOuttake().onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new ParallelRaceGroup(new PivotAmp(), new ShooterWaitPosition()), 
+                                                                  new ShooterAmpScore(), 
+                                                                  new ParallelRaceGroup(new ShooterRevWait(), new WaitCommand(2)), 
+                                                                  new ShooterStop(), 
+                                                                  new ParallelRaceGroup(new PivotBase(), new ShooterWaitPosition())));
     // Inputs.getAutoShootStop3().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
     // Inputs.getAutoShootStop2().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
     // //getAutoAlignShooter
     // Inputs.getAutoAlignShooter().onTrue(new AimAtSpeaker());
     // Inputs.getTurnToSpeaker().onTrue(swerve.faceSpeaker());
     // Inputs.goToAmp().onTrue(swerve.moveToAmp());
-    Inputs.getToggleFaceSpeaker().onTrue(new FaceSpeaker());
+    Inputs.getToggleFaceSpeaker().whileTrue(drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
+                                                                                           // negative Y (forward)
+            .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(swerve.getTargetSlope(
+              swerve.getPose().getX(),
+              swerve.getPose().getY(),
+              swerve.getSpeakerX(),
+              swerve.getSpeakerY()
+            )) // Drive counterclockwise with negative X (left)
+        ));
 
     
   }
 
   
 
-  //  public void generateAndLoad(){
-  //    autoCommand = generateAutoCommand();
-  //  }
+   public void generateAndLoad(){
+     autoCommand = generateAutoCommand();
+   }
 
   private Command generateAutoCommand(){
     switch(newautopick.getSelected()){
-      case ShootPickup:
-        return new SequentialCommandGroup(new ShooterAutoShoot(), SwerveSubsystem.getInstance().getTrajectory("TwoPiece"), new IntakeAutoPickup(), new ShooterAutoShoot());
       case ShootOne:
         return new SequentialCommandGroup(new ShooterAutoShootTeleop(), new WaitCommand(50000));
-      case Forward:
-        return SwerveSubsystem.getInstance().getTrajectory("2m");
-      case SubWooferAuto:
-        return new SequentialCommandGroup(new ShooterAutoShoot(), new ParallelCommandGroup(SwerveSubsystem.getInstance().getTrajectory("TopBlueAutoPath"), 
-        new SequentialCommandGroup(new WaitCommand(1), new IntakeAutoPickup())));
-      case BasicPath:
-        return SwerveSubsystem.getInstance().getAuto("TwoPieceMiddle");
-      case SubWooferAutoR:
-        return SwerveSubsystem.getInstance().getAuto("OnePiece(not)Mid (The One Piece is real)");
-      case SubWooferAutoR2:
-        return SwerveSubsystem.getInstance().getAuto("5PieceWingCenter");//5PieceWingCenter
-      case SideAuto:
-        return SwerveSubsystem.getInstance().getAuto("2PieceCenterFar");
-      case BestAuto:
-        return SwerveSubsystem.getInstance().getAuto("2PieceCenterFar");
-      case OtherAuto:
-        return new AutoFollowPath("KajillionNote.1", "KajillionNote.2", "KajillionNote.3", "KajillionNote.4", "KajillionNote.5", "KajillionNote.6", "KajillionNote.7");
+      case FivePieceWingCenterSub:
+        return SwerveSubsystem.getInstance().getAuto("5PieceWingCenterSub");
+      case ThreePieceSourceCenterSub:
+        return SwerveSubsystem.getInstance().getAuto("3PieceSourceCenterSub");
+      case FourPieceAmpCenterSub:
+        return SwerveSubsystem.getInstance().getAuto("4PieceAmpCenterSub");
+      case FourPieceAmpCenter:
+        return SwerveSubsystem.getInstance().getAuto("4PieceAmpCenter");
+      case FivePieceWingCenter:
+        return SwerveSubsystem.getInstance().getAuto("5PieceWingCenter");
+      case MessUp:
+        return SwerveSubsystem.getInstance().getAuto("MessUp");
+      // case OtherAuto:
+      //   return new AutoFollowPath("KajillionNote.1", "KajillionNote.2", "KajillionNote.3", "KajillionNote.4", "KajillionNote.5", "KajillionNote.6", "KajillionNote.7");
       default: //Autos.Nothing
         return new WaitCommand(50000);
     }
   }
 
   public Command getAutonomousCommand() {
-    // if(autoCommand==null){
-    //   autoCommand = generateAutoCommand();
-    // }
-    return null;
+    if(autoCommand==null){
+      autoCommand = generateAutoCommand();
+    }
+    return autoCommand;
   }
 }
 

@@ -8,22 +8,21 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /**
- * Revs the shooter to a slower rpm for beginning of auto
+ * Revs the shooter to shoot to the speaker
  * Instant Command
  */
-public class ShooterShootSlow extends InstantCommand {
+public class ShooterIntake extends InstantCommand {
   private ShooterSubsystem shooter;
 
-  public ShooterShootSlow() {
+  public ShooterIntake() {
     shooter = ShooterSubsystem.getInstance();
     addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
+    shooter.setSpeed(-20, -20);
     // new LEDCommand(LightingSetting.AUTO).schedule();
-    shooter.setSpeed(35, 35);
   }
 }
