@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
@@ -26,11 +27,15 @@ public class IntakeSubsystem extends SubsystemBase{
     // private double pivotPos;
     // private double pivotSpeed;
     // private PositionsIntake currentPos = PositionsIntake.BASE;
+    private Timer time;
 
     public IntakeSubsystem() {
         spinMotor = new TalonFX(15);
         configureMotors();
         // System.out.println("ayya");
+        time = new Timer();
+        time.reset();
+        time.start();
     }
 
     /**
@@ -45,6 +50,7 @@ public class IntakeSubsystem extends SubsystemBase{
      */
     public void spinIn() {
         spinSpeed = 1;
+        time.reset();
     }
 
     /**
@@ -52,6 +58,7 @@ public class IntakeSubsystem extends SubsystemBase{
      */
     public void spinOut(){
         spinSpeed = -1;
+        time.reset();
     }
 
     /**
@@ -63,11 +70,11 @@ public class IntakeSubsystem extends SubsystemBase{
 
     /**
      * 
-     * @return a boolean stating true if the velocity decreases (signifying a note is inside the intake)
+     * @return a boolean stating true if the current spikes more than .25 seconds after the intake changes direction (signifying a note is inside the intake)
      */
     public boolean isIntake() {
-        //return (spinMotor.getSupplyCurrent().getValue() > 15);
-        return (spinMotor.getVelocity().getValue() < 3);
+        return (time.get()>0.25)&&(spinMotor.getSupplyCurrent().getValue() > 15);
+        // return (spinMotor.getVelocity().getValue() < 3);
     }
 
     @Override

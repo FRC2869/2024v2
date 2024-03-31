@@ -26,6 +26,6 @@ public class ShooterFarShoot extends SequentialCommandGroup {
       new ShooterShoot(), 
       new ShooterRevWait(), new IntakeSpinOut(), 
       new WaitCommand(0.5), new ShooterStop(), 
-      new IntakeSpinStop())), new ParallelRaceGroup(new IntakeBasePos(), new PivotBase(), new WaitCommand(.5)));
+      new IntakeSpinStop())), new ParallelRaceGroup(new IntakeBasePos(), new PivotBase()).withTimeout(.5));
   }
 }

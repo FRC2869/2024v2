@@ -67,19 +67,25 @@ public class ShooterSubsystem extends SubsystemBase {
     return shooter1.getVelocity().getValueAsDouble();
   }
 
+  boolean atRPS = false;
   /**
    * 
-   * @return if the rps of the first shooter is more than the expected rps
+   * @return if the rps of the first shooter is more than the target rps, locks on until rps is 10 under target
    */
-  public boolean isAtRPM() {
-    return getRPS()-speed1>0;
+  public boolean isAtRPS() {
+    if(getRPS()-speed1>0){
+      atRPS = true;
+    }else if(getRPS()-speed1<-10){
+      atRPS = false;
+    }
+    return atRPS;
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Shooter Speed1", getRPS());
     SmartDashboard.putNumber("Shooter Speed2", shooter2.getVelocity().getValueAsDouble());
-    SmartDashboard.putBoolean("Is at RPM", isAtRPM());
+    SmartDashboard.putBoolean("Is at RPM", isAtRPS());
     if(stopped){
       shooter1.stopMotor();
       shooter2.stopMotor();

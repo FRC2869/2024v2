@@ -14,11 +14,15 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultPivot;
 import frc.robot.commands.IntakeAutoPickup;
 import frc.robot.commands.IntakeAutoRetract;
+import frc.robot.commands.LimelightLEDsBlink;
+import frc.robot.commands.LimelightLightingDefault;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
@@ -45,7 +49,10 @@ import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Shooter.ShooterWaitPosition;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
@@ -63,7 +70,7 @@ public class RobotContainer {
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
   private final FieldCentric drive = new SwerveRequest.FieldCentric()
-      .withDeadband(MaxSpeed * 0.075).withRotationalDeadband(MaxAngularRate * 0.075) // Add a 5% deadband
+      .withDeadband(MaxSpeed * 0.075).withRotationalDeadband(MaxAngularRate * 0.075) // Add a 7.5% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
   private final RobotCentric robotDrive = new SwerveRequest.RobotCentric()
@@ -107,6 +114,9 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    LimelightSubsystem.getInstance().setDefaultCommand(new LimelightLightingDefault());
+    new Trigger(()-> IntakeSubsystem.getInstance().isIntake()).onTrue(new LimelightLEDsBlink().withTimeout(0.5));
+    new Trigger(()-> ShooterSubsystem.getInstance().isAtRPS()).onTrue(new LimelightLEDsBlink().withTimeout(0.5));
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
@@ -143,8 +153,8 @@ public class RobotContainer {
     // Inputs.getShooterAdjustUp().onTrue(new PivotAdjustUp());
     // Inputs.getShooterStop2().onTrue(new ShooterStop());
     Inputs.getAmpAutoOuttake().onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new ParallelRaceGroup(new PivotAmp(), new ShooterWaitPosition()), 
-                                                                  new ShooterAmpScore(), 
-                                                                  new ParallelRaceGroup(new ShooterRevWait(), new WaitCommand(2)), 
+                                                                  new ScheduleCommand(new ShooterAmpScore()), 
+                                                                  new ShooterRevWait().withTimeout(2), 
                                                                   new ShooterStop(), 
                                                                   new ParallelRaceGroup(new PivotBase(), new ShooterWaitPosition())));
     // Inputs.getAutoShootStop3().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
