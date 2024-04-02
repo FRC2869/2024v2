@@ -5,18 +5,18 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSpinSubsystem;
 
 /**
  * Stops the intake spinning
  * Instant Command
  */
 public class IntakeSpinStop extends InstantCommand {
-  private IntakeSubsystem intake;
+  private IntakeSpinSubsystem intake;
 
   public IntakeSpinStop() {
     // Use addRequirements() here to declare subsystem dependencies.
-    intake = IntakeSubsystem.getInstance();
+    intake = IntakeSpinSubsystem.getInstance();
     addRequirements(intake);
   }
 

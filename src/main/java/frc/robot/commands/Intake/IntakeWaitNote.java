@@ -5,17 +5,17 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSpinSubsystem;
 /**
  * Waits for the intake to stop spinning
  * Doesn't add requirements
  * Ends on Intake +- 3 rps
  */
 public class IntakeWaitNote extends Command {
-  private IntakeSubsystem intake;
+  private IntakeSpinSubsystem intake;
   /** Creates a new IntakeWaitNote. */
   public IntakeWaitNote() {
-    intake = IntakeSubsystem.getInstance();
+    intake = IntakeSpinSubsystem.getInstance();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

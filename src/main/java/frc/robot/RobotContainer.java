@@ -4,12 +4,17 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.RobotCentric;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -50,7 +55,7 @@ import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Shooter.ShooterWaitPosition;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSpinSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -117,7 +122,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     LimelightSubsystem.getInstance().setDefaultCommand(new LimelightLightingDefault());
-    new Trigger(()-> IntakeSubsystem.getInstance().isIntake()).onTrue(new LimelightLEDsBlink().withTimeout(0.5));
+    new Trigger(()-> IntakeSpinSubsystem.getInstance().isIntake()).onTrue(new LimelightLEDsBlink().withTimeout(0.5));
     new Trigger(()-> ShooterSubsystem.getInstance().isAtRPS()).onTrue(new LimelightLEDsBlink().withTimeout(0.5));
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
@@ -135,7 +140,7 @@ public class RobotContainer {
     Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
     // Inputs.getAutoIntakeUp2().onTrue(new IntakeAutoRetract());
     Inputs.getAutoShootStop().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new ShooterWaitPosition())));
-    Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new IntakeSpinOut(), new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
+    Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeBasePos().raceWith(new IntakeWaitPosition()), new IntakeSpinOut(), new ShooterAmpLoad(), new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
     Inputs.getIntakeFloorPos().whileTrue(new IntakeFloorPos());
 
     Inputs.getIntakeBasePos().whileTrue(new IntakeBasePos());
@@ -184,28 +189,57 @@ public class RobotContainer {
    public void generateAndLoad(){
      autoCommand = generateAutoCommand();
    }
-
+   List<List<Pose2d>> autoTraj = null;
   private Command generateAutoCommand(){
+    List<PathPlannerPath> paths;
     switch(newautopick.getSelected()){
       case ShootOne:
         return new SequentialCommandGroup(new ShooterAutoShootTeleop(), new WaitCommand(50000));
       case FivePieceWingCenterSub:
+        paths = PathPlannerAuto.getPathGroupFromAutoFile("5PieceWingCenterSub");
+        for(PathPlannerPath path:paths){
+          autoTraj.add(path.getPathPoses());
+        }
         return SwerveSubsystem.getInstance().getAuto("5PieceWingCenterSub");
       case ThreePieceSourceCenterSub:
+        paths = PathPlannerAuto.getPathGroupFromAutoFile("3PieceSourceCenterSub");
+        for(PathPlannerPath path:paths){
+          autoTraj.add(path.getPathPoses());
+        }
         return SwerveSubsystem.getInstance().getAuto("3PieceSourceCenterSub");
       case FourPieceAmpCenterSub:
+        paths = PathPlannerAuto.getPathGroupFromAutoFile("4PieceAmpCenterSub");
+        for(PathPlannerPath path:paths){
+          autoTraj.add(path.getPathPoses());
+        }
         return SwerveSubsystem.getInstance().getAuto("4PieceAmpCenterSub");
       case FourPieceAmpCenter:
+        paths = PathPlannerAuto.getPathGroupFromAutoFile("4PieceAmpCenter");
+        for(PathPlannerPath path:paths){
+          autoTraj.add(path.getPathPoses());
+        }
         return SwerveSubsystem.getInstance().getAuto("4PieceAmpCenter");
       case FivePieceWingCenter:
+        paths = PathPlannerAuto.getPathGroupFromAutoFile("5PieceWingCenter");
+        for(PathPlannerPath path:paths){
+          autoTraj.add(path.getPathPoses());
+        }
         return SwerveSubsystem.getInstance().getAuto("5PieceWingCenter");
       case MessUp:
+        paths = PathPlannerAuto.getPathGroupFromAutoFile("MessUp");
+        for(PathPlannerPath path:paths){
+          autoTraj.add(path.getPathPoses());
+        }
         return SwerveSubsystem.getInstance().getAuto("MessUp");
       // case OtherAuto:
       //   return new AutoFollowPath("KajillionNote.1", "KajillionNote.2", "KajillionNote.3", "KajillionNote.4", "KajillionNote.5", "KajillionNote.6", "KajillionNote.7");
       default: //Autos.Nothing
         return new WaitCommand(50000);
     }
+  }
+
+  public List<List<Pose2d>> getAutoTrajectory(){
+    return autoTraj;
   }
 
   public Command getAutonomousCommand() {
