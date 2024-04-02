@@ -13,6 +13,7 @@ import frc.robot.commands.LoadAutoCommand;
 import frc.robot.commands.SwerveResetGyro;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 // import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    LimelightSubsystem.getInstance().setLEDsOff();
     //lights.setLights(LightingSetting.DISABLED);
     // lights.game();
     

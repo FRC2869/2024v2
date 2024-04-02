@@ -232,7 +232,7 @@ public class SwerveSubsystem extends SubsystemBase {
     rotationOverride = Math.abs(rotationOverride - 1);
   }
 
-  public static int getOverrideState() {
+  public int getOverrideState() {
     return rotationOverride;
   }
 
@@ -246,13 +246,15 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Swerve Speed", getRobotRelativeSpeeds().vyMetersPerSecond);
     SmartDashboard.putNumber("Swerve", TunerConstants.DriveTrain.getModule(0).getDriveMotor().getVelocity().getValue());
+    SmartDashboard.putNumber("bot podse (fr)x", getPose().getX());
+    SmartDashboard.putNumber("bot podse (fr)y", getPose().getY());
   }
   //Previous max speed of 4800 changed to 4000
 
   public double getTargetSlope(double x1, double y1, double x2, double y2) {
     double tAngle = Math.atan((y2-y1) / (x2-x1));
-    double cAngle = getPose().getRotation().getDegrees();
-    return (tAngle-cAngle)*.05;
+    double cAngle = getPose().getRotation().getRadians();
+    return (tAngle-cAngle)*.2;
   }
 
   public double getSpeakerX() {

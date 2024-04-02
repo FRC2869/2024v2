@@ -5,7 +5,7 @@
       "x": 1.5075558423995972,
       "y": 5.489124298095703
     },
-    "rotation": 2.3861579393890293e-28
+    "rotation": 1.1571295188107289e-27
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShooterShootSlow"
+            "name": "ShooterShoot"
           }
         },
         {
@@ -26,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShooterAutoShoot"
+            "name": "ShooterAutoShootStop"
           }
         },
         {
@@ -37,12 +37,6 @@
                 "type": "named",
                 "data": {
                   "name": "IntakeAutoPickup"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ShooterShoot"
                 }
               },
               {
@@ -84,15 +78,28 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "ShooterShoot"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.25
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "DomainExpansionInfiniteNotes.2"
+                      }
+                    }
+                  ]
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "DomainExpansionInfiniteNotes.2"
+                  "name": "ShooterShoot"
                 }
               }
             ]
@@ -101,7 +108,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShooterAutoShoot"
+            "name": "ShooterAutoShootStop"
           }
         },
         {

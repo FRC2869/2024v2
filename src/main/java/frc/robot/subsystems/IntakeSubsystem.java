@@ -46,7 +46,7 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     /**
-     * Sets speed to 50%, spinning notes into the robot
+     * Sets speed to 100%, spinning notes into the robot
      */
     public void spinIn() {
         spinSpeed = 1;
@@ -73,13 +73,13 @@ public class IntakeSubsystem extends SubsystemBase{
      * @return a boolean stating true if the current spikes more than .25 seconds after the intake changes direction (signifying a note is inside the intake)
      */
     public boolean isIntake() {
-        return (time.get()>0.25)&&(spinMotor.getSupplyCurrent().getValue() > 15);
+        return (time.get()>0.25)&&(spinMotor.getSupplyCurrent().getValue() > 50);
         // return (spinMotor.getVelocity().getValue() < 3);
     }
 
     @Override
     public void periodic(){
-        // SmartDashboard.putNumber("intake current",spinMotor.getSupplyCurrent().getValue());
+        SmartDashboard.putNumber("intake current",spinMotor.getSupplyCurrent().getValue());
         SmartDashboard.putBoolean("Is intaked?", isIntake());
         spinMotor.set(spinSpeed);
     }

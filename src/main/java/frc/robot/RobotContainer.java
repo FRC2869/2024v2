@@ -36,6 +36,7 @@ import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
 import frc.robot.commands.Intake.IntakeWaitNote;
 import frc.robot.commands.Intake.IntakeWaitPosition;
+import frc.robot.commands.Shooter.AimAtSpeaker;
 import frc.robot.commands.Shooter.ShooterAmpLoad;
 import frc.robot.commands.Shooter.ShooterAmpScore;
 import frc.robot.commands.Shooter.ShooterAutoShoot;
@@ -85,6 +86,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
     swerve = SwerveSubsystem.getInstance();
+    LimelightSubsystem.getInstance();
     IntakePivotSubsystem.getInstance().setDefaultCommand(new IntakeSpeedControl());
     PivotSubsystem.getInstance().setDefaultCommand(new DefaultPivot());
 
@@ -127,13 +129,13 @@ public class RobotContainer {
     Inputs.getRobotCentric().whileTrue(drivetrain.applyRequest(() -> robotDrive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate((( Inputs.getRotation() * MaxAngularRate))) // Drive counterclockwise with negative X (left)
-        ));
+            .withRotationalRate((( Inputs.getRotation() * MaxAngularRate)))));
+            
     Inputs.getResetGyro().onTrue(new SwerveResetGyro());
     Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
     // Inputs.getAutoIntakeUp2().onTrue(new IntakeAutoRetract());
     Inputs.getAutoShootStop().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new ShooterWaitPosition())));
-    Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeSpinOut(), new ShooterAmpLoad(), new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
+    Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new IntakeSpinOut(), new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
     Inputs.getIntakeFloorPos().whileTrue(new IntakeFloorPos());
 
     Inputs.getIntakeBasePos().whileTrue(new IntakeBasePos());
@@ -151,18 +153,18 @@ public class RobotContainer {
     // Inputs.getAutoIntakeDown2().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeWaitNote(), new IntakeAutoRetract()));
 
     // Inputs.getShooterAdjustUp().onTrue(new PivotAdjustUp());
-    // Inputs.getShooterStop2().onTrue(new ShooterStop());
-    Inputs.getAmpAutoOuttake().onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new ParallelRaceGroup(new PivotAmp(), new ShooterWaitPosition()), 
-                                                                  new ScheduleCommand(new ShooterAmpScore()), 
-                                                                  new ShooterRevWait().withTimeout(2), 
+    Inputs.getShooterStop2().onTrue(new ShooterStop());
+    Inputs.getAmpAutoOuttake().onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new ParallelRaceGroup(new PivotAmp(), new SequentialCommandGroup(new WaitCommand(0.1), new ShooterWaitPosition())), 
+                                                                  new ShooterAmpScore(), 
+                                                                  new ShooterRevWait().withTimeout(1), 
                                                                   new ShooterStop(), 
                                                                   new ParallelRaceGroup(new PivotBase(), new ShooterWaitPosition())));
     // Inputs.getAutoShootStop3().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
     // Inputs.getAutoShootStop2().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
     // //getAutoAlignShooter
-    // Inputs.getAutoAlignShooter().onTrue(new AimAtSpeaker());
+    Inputs.getAutoAlignShooter().onTrue(new AimAtSpeaker());
     // Inputs.getTurnToSpeaker().onTrue(swerve.faceSpeaker());
-    // Inputs.goToAmp().onTrue(swerve.moveToAmp());
+    // Inputs.  0  goToAmp().onTrue(swerve.moveToAmp());
     Inputs.getToggleFaceSpeaker().whileTrue(drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)

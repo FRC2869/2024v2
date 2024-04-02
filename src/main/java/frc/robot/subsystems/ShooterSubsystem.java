@@ -46,6 +46,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setSpeed(double speed1, double speed2){
     this.speed1 = speed1;
     this.speed2 = speed2;
+    System.out.println(speed1+" "+speed2);
     stopped = false;
   }
 
@@ -73,9 +74,9 @@ public class ShooterSubsystem extends SubsystemBase {
    * @return if the rps of the first shooter is more than the target rps, locks on until rps is 10 under target
    */
   public boolean isAtRPS() {
-    if(getRPS()-speed1>0){
+    if(getRPS()-speed1>-10){
       atRPS = true;
-    }else if(getRPS()-speed1<-10){
+    }else if(getRPS()-speed1<-20){
       atRPS = false;
     }
     return atRPS;
@@ -86,6 +87,8 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Shooter Speed1", getRPS());
     SmartDashboard.putNumber("Shooter Speed2", shooter2.getVelocity().getValueAsDouble());
     SmartDashboard.putBoolean("Is at RPM", isAtRPS());
+    SmartDashboard.putNumber("ShooterTargetSpeed", speed2);
+    SmartDashboard.putNumber("Shooter % Power", shooter2.get());
     if(stopped){
       shooter1.stopMotor();
       shooter2.stopMotor();

@@ -26,7 +26,7 @@ public class LimelightLightingDefault extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(limelight.getCurrentLightingState()!=LightingState.OFF&&Timer.getMatchTime()<1){
+    if(Timer.getMatchTime()<1){
       limelight.setLEDsOff();
     }else if(limelight.getCurrentLightingState()!=LightingState.ON&&Timer.getMatchTime()<21){
       limelight.setLEDsOn();

@@ -55,7 +55,7 @@ public class LimelightSubsystem extends SubsystemBase {
     ll2 = "limelight-arsh";
     swerve = TunerConstants.DriveTrain;
     table = NetworkTableInstance.getDefault().getTable(ll1);
-    botPose = table.getEntry("botpose");
+    botPose = table.getEntry("botpose_wpiblue");
     setLEDsOff();
   }
 
@@ -71,7 +71,7 @@ public class LimelightSubsystem extends SubsystemBase {
     try {
       double[] array = getArray();
       if(array[0]==0) return null;
-      return new Pose2d(new Translation2d(array[0], array[1]), new Rotation2d(array[5]));
+      return new Pose2d(new Translation2d(array[0], array[1]), SwerveSubsystem.getInstance().getHeading());
     }
     catch(Exception e) {return null;}
   }
@@ -97,12 +97,19 @@ public class LimelightSubsystem extends SubsystemBase {
   public LightingState getCurrentLightingState(){
     return currentState;
   }
+  public double[] clean(double[] a) {
+    double[] array = new double[a.length];
+    for (int i = 0; i < a.length; i++)
+      array[i] = ((double)(int)(a[i] * 100 + .5)/100);
+    return array;
+  }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumberArray("limelight bot pose", getArray());
+    if (getArray()[0] != 0)SmartDashboard.putNumberArray("limelight bot pose", clean(getArray()));
     try{
-      swerve.addVisionMeasurement(getLimelightPose(), Timer.getFPGATimestamp());
+      if(SwerveSubsystem.getInstance().getRobotRelativeSpeeds().vxMetersPerSecond<0.25||SwerveSubsystem.getInstance().getRobotRelativeSpeeds().vyMetersPerSecond<0.25)
+        swerve.addVisionMeasurement(getLimelightPose(), Timer.getFPGATimestamp());
     }
     catch(Exception e) {}
   }

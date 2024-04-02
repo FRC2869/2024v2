@@ -71,7 +71,7 @@ public class Inputs {
     public static boolean getSlowMode(){
         return driver1.getHID().getRightBumper()||driver1.getHID().getLeftBumper();
     }
-
+    // DID YOU JUST UPDATE CTRE SWERVE? Remember to invert the drive motors in TunerConstants
     public static double getTranslationX() {
         var speed = -driver1.getLeftY();
         if(getSlowMode()){
@@ -280,10 +280,10 @@ public class Inputs {
     //     throw new UnsupportedOperationException("Unimplemented method 'getAutoShootStop2'");
     // }
     
-    // public static Trigger getAutoAlignShooter() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'getAutoAlignShooter'");
-    // }
+    public static Trigger getAutoAlignShooter() {
+        // TODO Auto-generated method stub
+        return driver1.povUp();
+    }
 
     // public static Trigger getTurnToSpeaker() {
     //     // TODO Auto-generated method stub

@@ -23,6 +23,7 @@ public class ShooterStop extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
+    
     // new LEDCommand(LightingSetting.TELEOP).schedule();
     shooter.stop();
   }

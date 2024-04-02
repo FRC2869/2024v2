@@ -12,19 +12,18 @@ public class Constants {
     public static class FieldConstants {
         //ALL ARE SET TO INCHES
         
-        /**inches */
-        public static final double fieldWidth = 323.125;
+        /** meters */
+        public static final double fieldWidth = 323.125/39.37;
+        /**meters */
+        public static final double speakerHeight = 78/39.37;
 
-        /**inches */
-        public static final double speakerHeight = 78;
-
-        /**inches */
-        public static final double distanceFromWallSpeaker = 9;
+        /**meters */
+        public static final double distanceFromWallSpeaker = 9/39.37;
         
-        /**inches */
+        
         public static final Pose2d humanPlayerStationPose = new Pose2d(15.326556205749512, 1.4545217752456665, new Rotation2d(-56.309925735));
 
-        /**inches */
+        
         public static final Pose2d ampLocation = new Pose2d(1.4101016521453857, 7.223808288574219, new Rotation2d(Math.PI/2));
         //except this, this is in meters!
 
@@ -69,25 +68,26 @@ public class Constants {
           }
         public static final int id2 = 18;
         public static final int id1 = 19;
-        public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 2, 1, -1, 0, 0, 60,
-                true, false, 0.5);
-        public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, 2, 1, -1, 0, 0, 60,
-                true, true, 0.5);
+        public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 0, 1, -1, 0, 0, 50,
+                true, false, 0);
+        public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, 0, 1, -1, 0, 0, 50,
+                true, true, 0);
     }
 
     public static class IntakeConstants {
-        public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 40, true, false);
+        public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 30, true, false);
         public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.6, -0.6,
                 (5 * (50 / 16.0) * (32 / 16.0)), 0, 60, false, false, 0);
-        public static final double kMinAngle = -770;
+        public static final double kMinAngle = -750;
         public static final double kMaxAngle = 0;
-        public static final double floorPosition = -765;
+        public static final double floorPosition = -730;
         public static final double basePosition = 0;
-        public static final double closePosition = -40;
-        public static final double farPosition = -60;//-30
+        public static final double closePosition = -35;
+        public static final double farPosition = -60;//-45
+        public static final double lobPosition = -60;//-30
 
         public static enum PositionsIntake {
-            BASE, FLOOR, FAR, CLOSE
+            BASE, FLOOR, FAR, CLOSE, LOB
         }
 
         public static double getTargetPos(PositionsIntake intakeEnum) {
@@ -104,12 +104,13 @@ public class Constants {
 
     public static class PivotConstants {
         public static final int id = 17;
-        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 2, 0, 0, .25, -.5, ((16/30.0)*(48.0/48.0)*(25.0)), 0, 40, false, false, 0);
+        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 3, 0, 0, .25, -.5, ((16/30.0)*(48.0/48.0)*(25.0)), 0, 40, false, false, 0);
         public static final int basePosition = -30;
         public static final double kMinAngle = -200;
         public static final double kMaxAngle = 0;
         public static final double ampPosition = -170;//-170
-        public static final double farPosition = -40;//-22
+        public static final double farPosition = -50;//-35
+        public static final double lobPosition = -40;//-22
         public static final double closePosition = 0;//-7
         /**inches */
         public static final double pivotRestingHeight = 25; // not good

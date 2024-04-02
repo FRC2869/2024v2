@@ -24,6 +24,6 @@ public class ShooterShootSlow extends InstantCommand {
   @Override
   public void execute() {
     // new LEDCommand(LightingSetting.AUTO).schedule();
-    shooter.setSpeed(35, 35);
+    shooter.setSpeed(45, 45);
   }
 }
