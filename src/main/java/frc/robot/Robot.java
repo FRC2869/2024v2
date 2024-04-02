@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +23,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   public static RobotContainer m_robotContainer;
-  
+
   // private LightingSubsystem lights = LightingSubsystem.getInstance();
 
   private Field2d field;
@@ -28,44 +31,51 @@ public class Robot extends TimedRobot {
   // private UsbCamera camera;
   @Override
   public void robotInit() {
-  //  System.out.println("INIT");
+    // System.out.println("INIT");
     m_robotContainer = new RobotContainer();
     new SwerveResetGyro().schedule();
-    //new LEDCommand(LightingSetting.SCORING).schedule();
+    // new LEDCommand(LightingSetting.SCORING).schedule();
     field = new Field2d();
 
-	  // camera = CameraServer.startAutomaticCapture("cam0",0);
+    // camera = CameraServer.startAutomaticCapture("cam0",0);
     // camera.setResolution(480, 360);
     // camera.setFPS(30);
   }
 
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run(); 
+    CommandScheduler.getInstance().run();
     SmartDashboard.putNumber("gyro", SwerveSubsystem.getInstance().getHeading().getDegrees());
     field.setRobotPose(TunerConstants.DriveTrain.getPose());
+
     SmartDashboard.putData(field);
   }
 
   @Override
   public void disabledInit() {
-    //lights.setLights(LightingSetting.DISABLED);
+    // lights.setLights(LightingSetting.DISABLED);
     // lights.game();
-    
+
     // Inputs.getLeft().onTrue(new Move(-10));
     // Inputs.getRight().onTrue(new Move(10));
   }
 
   @Override
   public void disabledPeriodic() {
-    if(Inputs.getLoadAuto()){
+    if (Inputs.getLoadAuto()) {
       new LoadAutoCommand().ignoringDisable(true).schedule();
-      
+      List<List<Pose2d>> poses = m_robotContainer.getAutoTrajectory();
+      var i = 0;
+      for (List<Pose2d> pose : poses) {
+        field.getObject("traj" + i).setPoses(pose);
+        i++;
+      }
     }
   }
 
   @Override
-  public void disabledExit() {}
+  public void disabledExit() {
+  }
 
   @Override
   public void autonomousInit() {
@@ -74,18 +84,20 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     TunerConstants.DriveTrain.getDefaultCommand().cancel();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
   }
-  
+
   @Override
-  public void autonomousPeriodic() {}
-  
+  public void autonomousPeriodic() {
+  }
+
   @Override
-  public void autonomousExit() {}
-  
+  public void autonomousExit() {
+  }
+
   @Override
   public void teleopInit() {
     // lights.setLights(LightingSetting.TELEOP);
@@ -94,34 +106,36 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
   }
-  
+
   @Override
   public void teleopPeriodic() {
-    
+
   }
-  
+
   @Override
-  public void teleopExit() {}
-  
+  public void teleopExit() {
+  }
+
   @Override
   public void testInit() {
-    //IntakePivotSubsystem.getInstance().setBrake();
-    //CommandScheduler.getInstance().cancelAll();
-    //new IntakeSpeedControl().schedule();
-    //new DefaultPivot().schedule();
+    // IntakePivotSubsystem.getInstance().setBrake();
+    // CommandScheduler.getInstance().cancelAll();
+    // new IntakeSpeedControl().schedule();
+    // new DefaultPivot().schedule();
 
     // lights.setLights(LightingSetting.GAME);
   }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   @Override
   public void testExit() {
     CommandScheduler.getInstance().cancelAll();
   }
 
-  /**OI BRUV HAVE YOU GOT A LICENSE FOR THAT*/
+  /** OI BRUV HAVE YOU GOT A LICENSE FOR THAT */
   public void itsTeaTimeInit() {
     System.out.println("OI BRUV HAVE YOU GOT A LICENSE FOR THAT");
   }

@@ -13,10 +13,10 @@ import frc.robot.MotorConfiguration;
  * measures if the note has been fully intaked in autonomous.
  * @author Encore "Raghavan"
  */
-public class IntakeSubsystem extends SubsystemBase{
-    private static IntakeSubsystem instance;
-    public static IntakeSubsystem getInstance(){
-        if (instance == null) instance = new IntakeSubsystem();
+public class IntakeSpinSubsystem extends SubsystemBase{
+    private static IntakeSpinSubsystem instance;
+    public static IntakeSpinSubsystem getInstance(){
+        if (instance == null) instance = new IntakeSpinSubsystem();
         return instance;
     }
 
@@ -29,7 +29,7 @@ public class IntakeSubsystem extends SubsystemBase{
     // private PositionsIntake currentPos = PositionsIntake.BASE;
     private Timer time;
 
-    public IntakeSubsystem() {
+    public IntakeSpinSubsystem() {
         spinMotor = new TalonFX(15);
         configureMotors();
         // System.out.println("ayya");
