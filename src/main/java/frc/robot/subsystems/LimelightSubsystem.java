@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -108,8 +107,10 @@ public class LimelightSubsystem extends SubsystemBase {
   public void periodic() {
     if (getArray()[0] != 0)SmartDashboard.putNumberArray("limelight bot pose", clean(getArray()));
     try{
-      if(SwerveSubsystem.getInstance().getRobotRelativeSpeeds().vxMetersPerSecond<0.25||SwerveSubsystem.getInstance().getRobotRelativeSpeeds().vyMetersPerSecond<0.25)
-        swerve.addVisionMeasurement(getLimelightPose(), Timer.getFPGATimestamp());
+      if(SwerveSubsystem.getInstance().getRobotRelativeSpeeds().vxMetersPerSecond<0.25||SwerveSubsystem.getInstance().getRobotRelativeSpeeds().vyMetersPerSecond<0.25){
+        // swerve.addVisionMeasurement(getLimelightPose(), Timer.getFPGATimestamp());
+
+      }
     }
     catch(Exception e) {}
   }

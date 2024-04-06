@@ -66,16 +66,22 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         return super.m_kinematics;
     }
     
-    
+    public static double distanceBetween(Pose2d pose1, Pose2d pose2) {
+        return Math.sqrt(
+            Math.pow(pose1.getX() - pose2.getX(), 2)
+            +
+            Math.pow(pose1.getY() - pose2.getY(), 2)
+        );
+    }
 
     /**
      * MUST ADD Constants.PivotConstants.basePosition in set the encoder properly
-     * @return angle between floor and speaker in degrees
+     * @return angle between floor and speaker in radians
      */
     public double getAngle() {
-        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
-            return 180 * Math.atan(Constants.FieldConstants.speakerHeight/(getState().Pose.getX() - Constants.FieldConstants.distanceFromWallSpeaker)) / Math.PI;
-        return 180 * Math.atan(Constants.FieldConstants.speakerHeight/(Constants.FieldConstants.fieldWidth - Constants.FieldConstants.distanceFromWallSpeaker - getState().Pose.getX())) / Math.PI;
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+            return Math.atan(Constants.FieldConstants.speakerHeight/(distanceBetween(Constants.FieldConstants.blueSpeakerPose, getPose())));
+        return Math.atan(Constants.FieldConstants.speakerHeight/(distanceBetween(Constants.FieldConstants.redSpeakerPose, getPose())));
     }
 
     /**
@@ -84,9 +90,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
      * @return a number
      */
     public double getIntakeAngle() {
-        return 180*Math.atan((
+        return Math.atan(
             (Constants.PivotConstants.pivotRestingHeight + (Constants.PivotConstants.shooterPivotLength * Math.sin(Math.PI * (getAngle())/180)))
-            /(Constants.PivotConstants.chassisWidth - (Constants.PivotConstants.shooterPivotLength * Math.cos(Math.PI * (getAngle())/180))))
-             / Math.PI) - Constants.PivotConstants.intakeAngle;
+            /(Constants.PivotConstants.chassisWidth - (Constants.PivotConstants.shooterPivotLength * Math.cos((getAngle())))))
+             - Constants.PivotConstants.intakeAngle;
     }
 }

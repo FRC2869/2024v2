@@ -27,6 +27,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * 13: Base position of shooter
  * 14: Amp position of shooter
  * 15: Shoots far
+ * 22: climb up
+ * 23: climb down
+ * 25: climb down
  * 
  * @author ChatGPT
  */
@@ -189,12 +192,21 @@ public class Inputs {
         return operatorBoard.button(12);
     }
 
+
     public static Trigger getPivotBase2(){
         return operatorBoard.button(13);
     }
 
     public static Trigger getPivotAmp2(){
         return operatorBoard.button(14);
+    }
+
+    public static Trigger getAutoAimShooter() {
+        return operatorBoard.button(29);
+    }
+
+    public static Trigger getAutoAimShooter2() {
+        return operatorBoard.button(26);
     }
 
     public static Trigger getShooterFarShoot(){
@@ -252,12 +264,32 @@ public class Inputs {
         // return driver1.getHID().getRawButton(11);
     }
 
+    public static Trigger getPivotReset(){
+        return operatorBoard.button(31);
+    }
+
     public static Trigger getToggleFaceSpeaker() {
         return driver1.povDown();
     }
 
     public static Trigger getRobotCentric() {
         return driver1.rightTrigger();
+    }
+
+    public static Trigger getClimberMovingUp(){
+        return operatorBoard.button(27);
+    }
+
+    public static Trigger getClimberMovingDown(){
+        return operatorBoard.button(23);
+    }
+
+    public static Trigger getSourceIntake() {
+        return operatorBoard.button(24);
+    }
+
+    public static Trigger getClimberStop() {
+        return operatorBoard.button(25);
     }
 
     // public static Trigger getAutoIntakeUp2() {

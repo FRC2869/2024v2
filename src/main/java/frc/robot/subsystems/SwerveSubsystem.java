@@ -20,6 +20,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -123,7 +124,7 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public Rotation2d getHeading()
   {
-    return swerve.getPigeon2().getRotation2d();
+    return swerve.getPose().getRotation();
   }
   
   /**
@@ -251,10 +252,13 @@ public class SwerveSubsystem extends SubsystemBase {
   }
   //Previous max speed of 4800 changed to 4000
 
+  private PIDController speakerAnglePID = new PIDController(2.5, 0, 0.15);
+
   public double getTargetSlope(double x1, double y1, double x2, double y2) {
     double tAngle = Math.atan((y2-y1) / (x2-x1));
     double cAngle = getPose().getRotation().getRadians();
-    return (tAngle-cAngle)*.2;
+    System.out.println(tAngle-cAngle);
+    return MathUtil.clamp(speakerAnglePID.calculate(cAngle, tAngle), -1, 1);
   }
 
   public double getSpeakerX() {
@@ -271,5 +275,11 @@ public class SwerveSubsystem extends SubsystemBase {
     } else {
       return Constants.PivotConstants.blueSpeakerY;
     }
+  }
+  
+
+  public double getDistance() {
+    double distance = Math.pow(getPose().getX() - getSpeakerX(), 2) + Math.pow(getSpeakerY()  - getPose().getY(), 2);
+    return distance;
   }
 }

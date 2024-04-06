@@ -5,27 +5,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Robot;
-// import frc.robot.Robot;
-// import frc.robot.RobotContainer;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.PivotSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class LoadAutoCommand extends InstantCommand {
-  private RobotContainer r;
+public class PivotReset extends InstantCommand {
+  private PivotSubsystem pivot;
 
-  public LoadAutoCommand() {
-    r = Robot.m_robotContainer;
-    runsWhenDisabled();
+  public PivotReset() {
+    pivot = PivotSubsystem.getInstance();
+    addRequirements(pivot);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
-    r.generateAndLoad();
-    System.out.println("YAY");
+    pivot.resetAngle();
   }
 }

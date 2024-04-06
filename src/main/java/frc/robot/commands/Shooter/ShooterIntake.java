@@ -22,7 +22,8 @@ public class ShooterIntake extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void execute() {
-    shooter.setSpeed(-20, -20);
+    shooter.setSpeed(-.5, -.5);
+    shooter.setVeloControl(false);
     // new LEDCommand(LightingSetting.AUTO).schedule();
   }
 }

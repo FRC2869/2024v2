@@ -4,10 +4,9 @@
 
 package frc.robot;
 
-import java.util.List;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+// import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,6 +15,7 @@ import frc.robot.commands.LoadAutoCommand;
 import frc.robot.commands.SwerveResetGyro;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
+// import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 // import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -45,6 +45,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Timer", Timer.getMatchTime());
     CommandScheduler.getInstance().run();
     SmartDashboard.putNumber("gyro", SwerveSubsystem.getInstance().getHeading().getDegrees());
     field.setRobotPose(TunerConstants.DriveTrain.getPose());
@@ -55,8 +56,8 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     LimelightSubsystem.getInstance().setLEDsOff();
+    // lights.candle.setLEDs(0, 0, 100);
     //lights.setLights(LightingSetting.DISABLED);
-    // lights.setLights(LightingSetting.DISABLED);
     // lights.game();
 
     // Inputs.getLeft().onTrue(new Move(-10));
@@ -67,12 +68,15 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
     if (Inputs.getLoadAuto()) {
       new LoadAutoCommand().ignoringDisable(true).schedule();
-      List<List<Pose2d>> poses = m_robotContainer.getAutoTrajectory();
-      var i = 0;
-      for (List<Pose2d> pose : poses) {
-        field.getObject("traj" + i).setPoses(pose);
-        i++;
-      }
+      // List<List<Pose2d>> poses = m_robotContainer.getAutoTrajectory();
+      // var i = 0;
+      // if(poses==null){
+      //   return;
+      // }
+      // for (List<Pose2d> pose : poses) {
+      //   field.getObject("traj" + i).setPoses(pose);
+      //   i++;
+      // }
     }
   }
 

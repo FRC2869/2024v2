@@ -26,5 +26,6 @@ public class ShooterAmpLoad extends InstantCommand {
   public void execute() {
     System.err.println("AMPL");
     shooter.setSpeed(15, -15);
+    shooter.setVeloControl(true);
   }
 }

@@ -10,6 +10,9 @@ public class Constants {
     public static Timer timer = new Timer();
 
     public static class FieldConstants {
+
+        public static final Pose2d redSpeakerPose = new Pose2d(16.36, 5.528, new Rotation2d(0));
+        public static final Pose2d blueSpeakerPose = new Pose2d(.2, 5.528, new Rotation2d(0));
         //ALL ARE SET TO INCHES
         
         /** meters */
@@ -19,6 +22,9 @@ public class Constants {
 
         /**meters */
         public static final double distanceFromWallSpeaker = 9/39.37;
+        
+        /**meters */
+        public static final double distYSpeaker = 5.56;
         
         
         public static final Pose2d humanPlayerStationPose = new Pose2d(15.326556205749512, 1.4545217752456665, new Rotation2d(-56.309925735));
@@ -68,9 +74,9 @@ public class Constants {
           }
         public static final int id2 = 18;
         public static final int id1 = 19;
-        public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 0, 1, -1, 0, 0, 50,
+        public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 0, 1, -1, 0, 0, 60,
                 true, false, 0);
-        public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, 0, 1, -1, 0, 0, 50,
+        public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, 0, 1, -1, 0, 0, 40,
                 true, true, 0);
     }
 
@@ -80,10 +86,10 @@ public class Constants {
                 (5 * (50 / 16.0) * (32 / 16.0)), 0, 60, false, false, 0);
         public static final double kMinAngle = -750;
         public static final double kMaxAngle = 0;
-        public static final double floorPosition = -730;
+        public static final double floorPosition = -715;
         public static final double basePosition = 0;
-        public static final double closePosition = -35;
-        public static final double farPosition = -60;//-45
+        public static final double closePosition = -15;
+        public static final double farPosition = -70;//-45
         public static final double lobPosition = -60;//-30
 
         public static enum PositionsIntake {
@@ -103,15 +109,17 @@ public class Constants {
     }
 
     public static class PivotConstants {
+        public static final double intakeGearMultiplier = 3 * 3 * 2 * 360 * 32 / 18.0;
+        
         public static final int id = 17;
-        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 3, 0, 0, .25, -.5, ((16/30.0)*(48.0/48.0)*(25.0)), 0, 40, false, false, 0);
-        public static final int basePosition = -30;
-        public static final double kMinAngle = -200;
-        public static final double kMaxAngle = 0;
-        public static final double ampPosition = -170;//-170
-        public static final double farPosition = -50;//-35
-        public static final double lobPosition = -40;//-22
-        public static final double closePosition = 0;//-7
+        public static final MotorConfiguration config = new MotorConfiguration(1.0, 0, 5, 0, -3, .3, -.5, ((18.0/30.0)*(1.0/25.0))*360, 38, 40, false, false, 0);
+        public static final int basePosition = 30;//-30
+        public static final double kMinAngle = -70;
+        public static final double kMaxAngle = 38;
+        public static final double ampPosition = -50;//-170
+        public static final double farPosition = 30;//-35
+        public static final double lobPosition = 5;//-22
+        public static final double closePosition = 38;//-7
         /**inches */
         public static final double pivotRestingHeight = 25; // not good
         /**inches */
@@ -121,7 +129,8 @@ public class Constants {
         // public static final double intakeAngle = 180 - 140;
         /**degrees */
         public static final double intakeAngle = 67;
-        public static final double startingAngle = 30;
+        public static final double startingAngle = 38;
+        public static final double shooterHeight = 23.4;
         public static enum PositionsPivot{
             BASE, AMP, FAR, CLOSE,
         } //57, 13
@@ -131,6 +140,8 @@ public class Constants {
         public static final double blueSpeakerY= 5.56;
         public static final double redSpeakerX = 16.154;
         public static final double redSpeakerY = 5.56;
+
+        public static final double speakerHeight = 2.05;
     }
 
     public static class SwerveConstants {

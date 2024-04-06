@@ -5,8 +5,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkBase;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkAbsoluteEncoder;
 
 public class MotorConfiguration {
     private double P;
@@ -168,6 +169,24 @@ public class MotorConfiguration {
         motor.setIdleMode(config.isIdleCoast() ? IdleMode.kCoast : IdleMode.kBrake);
         motor.setOpenLoopRampRate(config.getOpenLoopRampRate());
         motor.burnFlash();
+        return encoder;
+    }
+    public static SparkAbsoluteEncoder configureMotorAbsolute(CANSparkBase motor, MotorConfiguration config){
+        motor.restoreFactoryDefaults();
+        var pid = motor.getPIDController();
+        pid.setP(config.getP());
+        pid.setI(config.getI());
+        pid.setD(config.getD());
+        pid.setIZone(config.getIz());
+        pid.setFF(config.getF());
+        pid.setOutputRange(config.getMinOutput(), config.getMaxOutput());
+        motor.setSmartCurrentLimit(config.getCurrentLimit());
+        motor.setInverted(config.isInverted());
+        motor.setIdleMode(config.isIdleCoast() ? IdleMode.kCoast : IdleMode.kBrake);
+        motor.setOpenLoopRampRate(config.getOpenLoopRampRate());
+        motor.burnFlash();
+        var encoder = motor.getAbsoluteEncoder();
+        encoder.setPositionConversionFactor(config.getGearRatio());
         return encoder;
     }
 

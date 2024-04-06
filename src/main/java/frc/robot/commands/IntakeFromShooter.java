@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Intake.IntakeSpinIn;
 import frc.robot.commands.Shooter.ShooterIntake;
 
@@ -16,6 +17,6 @@ public class IntakeFromShooter extends ParallelCommandGroup {
   public IntakeFromShooter() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new ShooterIntake(), new IntakeSpinIn());
+    addCommands(new ShooterIntake(), new IntakeSpinIn(), new WaitCommand(500));
   }
 }

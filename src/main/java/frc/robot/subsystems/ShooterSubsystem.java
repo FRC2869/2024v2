@@ -69,6 +69,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   boolean atRPS = false;
+  private boolean veloControl;
   /**
    * 
    * @return if the rps of the first shooter is more than the target rps, locks on until rps is 10 under target
@@ -82,6 +83,10 @@ public class ShooterSubsystem extends SubsystemBase {
     return atRPS;
   }
 
+  public void setVeloControl(boolean isVeloControl){
+    this.veloControl = isVeloControl;
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Shooter Speed1", getRPS());
@@ -92,11 +97,14 @@ public class ShooterSubsystem extends SubsystemBase {
     if(stopped){
       shooter1.stopMotor();
       shooter2.stopMotor();
-    }else{
+    }else if(veloControl){
       var velo1 = new VelocityDutyCycle(speed1);
       var velo2 = new VelocityDutyCycle(speed2);
       shooter1.setControl(velo1);
       shooter2.setControl(velo2);
+    }else{
+      shooter1.set(speed1);
+      shooter2.set(speed1);
     }
   
     // This method will be called once per scheduler run

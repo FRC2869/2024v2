@@ -110,11 +110,11 @@ public class PivotSubsystem extends SubsystemBase {
 	 * @param isPosControl true when able to move
 	 */
 	public void setPositionControl(boolean isPosControl){
-		this.isPosControl = isPosControl;
+		this.ytrewq = isPosControl;
 	}
 
 	// private DecimalFormat rounder = new DecimalFormat("#.0");
-	private boolean isPosControl;
+	private boolean ytrewq;
 	private double speed;
 
 	@Override
@@ -123,7 +123,7 @@ public class PivotSubsystem extends SubsystemBase {
 	// SmartDashboard.putString("Pivot Angle 1", angleString);
 	// SmartDashboard.putBoolean("pivotPos", isPosControl);
 	// SmartDashboard.putNumber("pos", pos);
-	if (isPosControl) {
+	if (ytrewq) {
 		if(currentPos!=PositionsPivot.BASE||getAngle()<PivotConstants.basePosition){
 			// SmartDashboard.putBoolean("enabled", true);
 			pivotMotor.getPIDController().setReference(pos, ControlType.kPosition);
@@ -159,9 +159,13 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
 	public void autoAim(double distance) {
-		double theta = Math.atan((PivotConstants.speakerHeight - PivotConstants.shooterHeight) / (distance));
-		position(PivotConstants.basePosition + theta);
-		isPosControl = true;
+		double theta = Math.atan((PivotConstants.speakerHeight - PivotConstants.shooterHeight) / (distance)) / (2*Math.PI) * 360;
+		position(theta);
+		ytrewq = true;
+	}
+
+	public void resetAngle() {
+		pivotMotor.getEncoder().setPosition(PivotConstants.config.getPosition());
 	}
 }
 

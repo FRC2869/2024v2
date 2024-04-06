@@ -19,20 +19,23 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultPivot;
 import frc.robot.commands.IntakeAutoPickup;
 import frc.robot.commands.IntakeAutoRetract;
+import frc.robot.commands.IntakeFromShooter;
 import frc.robot.commands.LimelightLEDsBlink;
 import frc.robot.commands.LimelightLightingDefault;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotFar;
+import frc.robot.commands.PivotReset;
+import frc.robot.commands.SetClimberSpeed;
 import frc.robot.commands.SwerveResetGyro;
 import frc.robot.commands.Intake.IntakeBasePos;
+import frc.robot.commands.Intake.IntakeClosePos;
 import frc.robot.commands.Intake.IntakeFarPos;
 import frc.robot.commands.Intake.IntakeFloorPos;
 import frc.robot.commands.Intake.IntakeSpeedControl;
@@ -42,6 +45,7 @@ import frc.robot.commands.Intake.IntakeSpinStop;
 import frc.robot.commands.Intake.IntakeWaitNote;
 import frc.robot.commands.Intake.IntakeWaitPosition;
 import frc.robot.commands.Shooter.AimAtSpeaker;
+import frc.robot.commands.Shooter.AutoAimShooter;
 import frc.robot.commands.Shooter.ShooterAmpLoad;
 import frc.robot.commands.Shooter.ShooterAmpScore;
 import frc.robot.commands.Shooter.ShooterAutoShoot;
@@ -54,8 +58,10 @@ import frc.robot.commands.Shooter.ShooterShootSlow;
 import frc.robot.commands.Shooter.ShooterStop;
 import frc.robot.commands.Shooter.ShooterWaitPosition;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakePivotSubsystem;
 import frc.robot.subsystems.IntakeSpinSubsystem;
+import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -94,6 +100,7 @@ public class RobotContainer {
     LimelightSubsystem.getInstance();
     IntakePivotSubsystem.getInstance().setDefaultCommand(new IntakeSpeedControl());
     PivotSubsystem.getInstance().setDefaultCommand(new DefaultPivot());
+    ClimberSubsystem.getInstance().setDefaultCommand(new SetClimberSpeed(0));
 
     NamedCommands.registerCommand("IntakeAutoPickup", new IntakeAutoPickup());
     NamedCommands.registerCommand("IntakeWaitNote", new IntakeWaitNote());
@@ -118,12 +125,14 @@ public class RobotContainer {
     //SUPER ULTIMATE PATH!!!!!!! (WATCH OUT, LIBERALS)
 		Shuffleboard.getTab("auto").add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
     System.out.println("RC");
+    LightingSubsystem.getInstance();
   }
 
   private void configureBindings() {
     LimelightSubsystem.getInstance().setDefaultCommand(new LimelightLightingDefault());
     new Trigger(()-> IntakeSpinSubsystem.getInstance().isIntake()).onTrue(new LimelightLEDsBlink().withTimeout(0.5));
     new Trigger(()-> ShooterSubsystem.getInstance().isAtRPS()).onTrue(new LimelightLEDsBlink().withTimeout(0.5));
+    // new Trigger(()-> Timer.getMatchTime()<30).whileTrue(new LEDCommand(LightingSetting.AUTO));
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
@@ -140,7 +149,7 @@ public class RobotContainer {
     Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
     // Inputs.getAutoIntakeUp2().onTrue(new IntakeAutoRetract());
     Inputs.getAutoShootStop().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new ShooterWaitPosition())));
-    Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeBasePos().raceWith(new IntakeWaitPosition()), new IntakeSpinOut(), new ShooterAmpLoad(), new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
+    Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeClosePos().raceWith(new IntakeWaitPosition()), new IntakeSpinOut(), new ShooterAmpLoad(), new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
     Inputs.getIntakeFloorPos().whileTrue(new IntakeFloorPos());
 
     Inputs.getIntakeBasePos().whileTrue(new IntakeBasePos());
@@ -153,22 +162,28 @@ public class RobotContainer {
     Inputs.getShooterShoot2().onTrue(new ShooterShoot());
     Inputs.getPivotBase2().whileTrue(new PivotBase());
     Inputs.getPivotAmp2().whileTrue(new PivotAmp());
+    // Inputs.getShooterFarShoot().onTrue(new ShooterFarShoot());
     Inputs.getShooterFarShoot().onTrue(new ShooterFarShoot());
-    Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeWaitNote(), new IntakeAutoRetract()));
+    Inputs.getSourceIntake().whileTrue(new IntakeFromShooter().andThen(new ShooterStop()).andThen(new IntakeSpinStop()));
+    Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new ParallelRaceGroup(new IntakeFloorPos(), new IntakeWaitNote()), new IntakeAutoRetract()));
     // Inputs.getAutoIntakeDown2().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeWaitNote(), new IntakeAutoRetract()));
 
     // Inputs.getShooterAdjustUp().onTrue(new PivotAdjustUp());
     Inputs.getShooterStop2().onTrue(new ShooterStop());
-    Inputs.getAmpAutoOuttake().onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new ParallelRaceGroup(new PivotAmp(), new SequentialCommandGroup(new WaitCommand(0.1), new ShooterWaitPosition())), 
-                                                                  new ShooterAmpScore(), 
-                                                                  new ShooterRevWait().withTimeout(1), 
-                                                                  new ShooterStop(), 
-                                                                  new ParallelRaceGroup(new PivotBase(), new ShooterWaitPosition())));
-    // Inputs.getAutoShootStop3().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
+    Inputs.getClimberMovingUp().whileTrue(new SetClimberSpeed(1));
+    Inputs.getClimberMovingDown().whileTrue(new SetClimberSpeed(-1));
+    Inputs.getAmpAutoOuttake().onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new IntakeSpinOut(), new ParallelRaceGroup(new PivotAmp(), new IntakeClosePos(), new SequentialCommandGroup(new WaitCommand(0.1), new ShooterWaitPosition(), new IntakeSpinStop(),new ShooterAmpScore(), 
+                                                                  new WaitCommand(2), 
+                                                                  new ShooterStop())), 
+                                                                  new ParallelRaceGroup(new PivotBase(), new IntakeBasePos(), new SequentialCommandGroup(new WaitCommand(.1), new ShooterWaitPosition())).withTimeout(1.25)).andThen(new PivotReset()));
+    
+    Inputs.getPivotReset().onTrue(new PivotReset());                                                              // Inputs.getAutoShootStop3().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
     // Inputs.getAutoShootStop2().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
     // //getAutoAlignShooter
-    Inputs.getAutoAlignShooter().onTrue(new AimAtSpeaker());
+    Inputs.getAutoAlignShooter().onTrue(new SequentialCommandGroup(new AimAtSpeaker(), new ShooterWaitPosition()));
     // Inputs.getTurnToSpeaker().onTrue(swerve.faceSpeaker());
+    Inputs.getAutoAimShooter().whileTrue(new AutoAimShooter());
+    Inputs.getAutoAimShooter2().whileTrue(new AutoAimShooter());
     // Inputs.  0  goToAmp().onTrue(swerve.moveToAmp());
     Inputs.getToggleFaceSpeaker().whileTrue(drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
@@ -178,7 +193,7 @@ public class RobotContainer {
               swerve.getPose().getY(),
               swerve.getSpeakerX(),
               swerve.getSpeakerY()
-            )) // Drive counterclockwise with negative X (left)
+            )*MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
     
@@ -189,7 +204,7 @@ public class RobotContainer {
    public void generateAndLoad(){
      autoCommand = generateAutoCommand();
    }
-   List<List<Pose2d>> autoTraj = null;
+  //  List<List<Pose2d>> autoTraj = new Lis;
   private Command generateAutoCommand(){
     List<PathPlannerPath> paths;
     switch(newautopick.getSelected()){
@@ -198,37 +213,37 @@ public class RobotContainer {
       case FivePieceWingCenterSub:
         paths = PathPlannerAuto.getPathGroupFromAutoFile("5PieceWingCenterSub");
         for(PathPlannerPath path:paths){
-          autoTraj.add(path.getPathPoses());
+          // autoTraj.add(path.getPathPoses());   
         }
         return SwerveSubsystem.getInstance().getAuto("5PieceWingCenterSub");
       case ThreePieceSourceCenterSub:
         paths = PathPlannerAuto.getPathGroupFromAutoFile("3PieceSourceCenterSub");
         for(PathPlannerPath path:paths){
-          autoTraj.add(path.getPathPoses());
+          // autoTraj.add(path.getPathPoses());
         }
         return SwerveSubsystem.getInstance().getAuto("3PieceSourceCenterSub");
       case FourPieceAmpCenterSub:
         paths = PathPlannerAuto.getPathGroupFromAutoFile("4PieceAmpCenterSub");
         for(PathPlannerPath path:paths){
-          autoTraj.add(path.getPathPoses());
+          // autoTraj.add(path.getPathPoses());
         }
         return SwerveSubsystem.getInstance().getAuto("4PieceAmpCenterSub");
       case FourPieceAmpCenter:
         paths = PathPlannerAuto.getPathGroupFromAutoFile("4PieceAmpCenter");
         for(PathPlannerPath path:paths){
-          autoTraj.add(path.getPathPoses());
+          // autoTraj.add(path.getPathPoses());
         }
         return SwerveSubsystem.getInstance().getAuto("4PieceAmpCenter");
       case FivePieceWingCenter:
         paths = PathPlannerAuto.getPathGroupFromAutoFile("5PieceWingCenter");
         for(PathPlannerPath path:paths){
-          autoTraj.add(path.getPathPoses());
+          // autoTraj.add(path.getPathPoses());
         }
         return SwerveSubsystem.getInstance().getAuto("5PieceWingCenter");
       case MessUp:
         paths = PathPlannerAuto.getPathGroupFromAutoFile("MessUp");
         for(PathPlannerPath path:paths){
-          autoTraj.add(path.getPathPoses());
+          // autoTraj.add(path.getPathPoses());
         }
         return SwerveSubsystem.getInstance().getAuto("MessUp");
       // case OtherAuto:
@@ -239,7 +254,8 @@ public class RobotContainer {
   }
 
   public List<List<Pose2d>> getAutoTrajectory(){
-    return autoTraj;
+    // return autoTraj;
+    return null;
   }
 
   public Command getAutonomousCommand() {
