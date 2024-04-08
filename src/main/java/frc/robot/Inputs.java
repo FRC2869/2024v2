@@ -317,6 +317,10 @@ public class Inputs {
         return driver1.povUp();
     }
 
+    public static Trigger getPivotClimbPosition() {
+        return operatorBoard.button(28);
+    }
+
     // public static Trigger getTurnToSpeaker() {
     //     // TODO Auto-generated method stub
     //     throw new UnsupportedOperationException("Unimplemented method 'getTurnToSpeaker'");

@@ -74,7 +74,7 @@ public class Constants {
           }
         public static final int id2 = 18;
         public static final int id1 = 19;
-        public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 0, 1, -1, 0, 0, 60,
+        public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 1, 1, -1, 0, 0, 60,
                 true, false, 0);
         public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, 0, 1, -1, 0, 0, 40,
                 true, true, 0);
@@ -86,7 +86,7 @@ public class Constants {
                 (5 * (50 / 16.0) * (32 / 16.0)), 0, 60, false, false, 0);
         public static final double kMinAngle = -750;
         public static final double kMaxAngle = 0;
-        public static final double floorPosition = -715;
+        public static final double floorPosition = -700;
         public static final double basePosition = 0;
         public static final double closePosition = -15;
         public static final double farPosition = -70;//-45
@@ -120,6 +120,7 @@ public class Constants {
         public static final double farPosition = 30;//-35
         public static final double lobPosition = 5;//-22
         public static final double closePosition = 38;//-7
+        public static final double climbPosition = -70;
         /**inches */
         public static final double pivotRestingHeight = 25; // not good
         /**inches */
@@ -132,7 +133,7 @@ public class Constants {
         public static final double startingAngle = 38;
         public static final double shooterHeight = 23.4;
         public static enum PositionsPivot{
-            BASE, AMP, FAR, CLOSE,
+            BASE, AMP, FAR, CLOSE, CLIMB,
         } //57, 13
         public static double adjustment = 2;
 

@@ -25,7 +25,7 @@ public class ShooterAmpScore extends InstantCommand {
   @Override
   public void execute() {
     System.out.println("AMPS");
-    shooter.setSpeed(1, 1);
+    shooter.setSpeed(1, .5);
     shooter.setVeloControl(false);
   }
 }

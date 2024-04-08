@@ -22,14 +22,21 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AmpWaitScore;
 import frc.robot.commands.DefaultPivot;
+import frc.robot.commands.IntakeAdjustDown;
+import frc.robot.commands.IntakeAdjustUp;
 import frc.robot.commands.IntakeAutoPickup;
 import frc.robot.commands.IntakeAutoRetract;
+import frc.robot.commands.IntakeAutoRetractAuton;
 import frc.robot.commands.IntakeFromShooter;
 import frc.robot.commands.LimelightLEDsBlink;
 import frc.robot.commands.LimelightLightingDefault;
+import frc.robot.commands.PivotAdjustDown;
+import frc.robot.commands.PivotAdjustUp;
 import frc.robot.commands.PivotAmp;
 import frc.robot.commands.PivotBase;
+import frc.robot.commands.PivotClimb;
 import frc.robot.commands.PivotFar;
 import frc.robot.commands.PivotReset;
 import frc.robot.commands.SetClimberSpeed;
@@ -105,13 +112,14 @@ public class RobotContainer {
     NamedCommands.registerCommand("IntakeAutoPickup", new IntakeAutoPickup());
     NamedCommands.registerCommand("IntakeWaitNote", new IntakeWaitNote());
     NamedCommands.registerCommand("IntakeWaitPosition", new IntakeWaitPosition());
-    NamedCommands.registerCommand("IntakeAutoRetract", new IntakeAutoRetract());
+    NamedCommands.registerCommand("IntakeAutoRetract", new IntakeAutoRetractAuton());
     NamedCommands.registerCommand("ShooterFarShoot", new ShooterFarShoot());
     NamedCommands.registerCommand("ShooterShoot", new ShooterShoot());
     NamedCommands.registerCommand("ShooterShootSlow", new ShooterShootSlow());
     NamedCommands.registerCommand("ShooterRevWait", new ShooterRevWait());
     NamedCommands.registerCommand("ShooterAutoShoot", new ShooterAutoShoot());
     NamedCommands.registerCommand("ShooterAutoShootStop", new ShooterAutoShootStop());
+    NamedCommands.registerCommand("IntakeFloorPos", new IntakeFloorPos());
     NamedCommands.registerCommand("Nothing", new WaitCommand(0));
     newautopick = new SendableChooser<>();
 		newautopick.addOption("Nothing", Autos.Nothing);
@@ -173,17 +181,24 @@ public class RobotContainer {
     Inputs.getClimberMovingUp().whileTrue(new SetClimberSpeed(1));
     Inputs.getClimberMovingDown().whileTrue(new SetClimberSpeed(-1));
     Inputs.getAmpAutoOuttake().onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new IntakeSpinOut(), new ParallelRaceGroup(new PivotAmp(), new IntakeClosePos(), new SequentialCommandGroup(new WaitCommand(0.1), new ShooterWaitPosition(), new IntakeSpinStop(),new ShooterAmpScore(), 
-                                                                  new WaitCommand(2), 
+                                                                  new AmpWaitScore().withTimeout(2), 
                                                                   new ShooterStop())), 
                                                                   new ParallelRaceGroup(new PivotBase(), new IntakeBasePos(), new SequentialCommandGroup(new WaitCommand(.1), new ShooterWaitPosition())).withTimeout(1.25)).andThen(new PivotReset()));
     
     Inputs.getPivotReset().onTrue(new PivotReset());                                                              // Inputs.getAutoShootStop3().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
+    
+    Inputs.getShooterAdjustDown().onTrue(new PivotAdjustDown());
+    Inputs.getShooterAdjustUp().onTrue(new PivotAdjustUp());
+    Inputs.getIntakeAdjustDown().onTrue(new IntakeAdjustDown());
+    Inputs.getIntakeAdjustUp().onTrue(new IntakeAdjustUp());
     // Inputs.getAutoShootStop2().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
     // //getAutoAlignShooter
     Inputs.getAutoAlignShooter().onTrue(new SequentialCommandGroup(new AimAtSpeaker(), new ShooterWaitPosition()));
     // Inputs.getTurnToSpeaker().onTrue(swerve.faceSpeaker());
     Inputs.getAutoAimShooter().whileTrue(new AutoAimShooter());
     Inputs.getAutoAimShooter2().whileTrue(new AutoAimShooter());
+
+    Inputs.getPivotClimbPosition().whileTrue(new PivotClimb());
     // Inputs.  0  goToAmp().onTrue(swerve.moveToAmp());
     Inputs.getToggleFaceSpeaker().whileTrue(drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)

@@ -23,5 +23,6 @@ public class PivotAdjustDown extends InstantCommand {
   @Override
   public void execute() {
     pivot.adjustDown();
+    pivot.setPositionControl(true);
   }
 }

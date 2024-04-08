@@ -93,7 +93,8 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Shooter Speed2", shooter2.getVelocity().getValueAsDouble());
     SmartDashboard.putBoolean("Is at RPM", isAtRPS());
     SmartDashboard.putNumber("ShooterTargetSpeed", speed2);
-    SmartDashboard.putNumber("Shooter % Power", shooter2.get());
+    SmartDashboard.putNumber("Shooter % Power2", shooter2.get());
+    SmartDashboard.putNumber("Shooter % Power1", shooter1.get());
     if(stopped){
       shooter1.stopMotor();
       shooter2.stopMotor();
@@ -104,7 +105,8 @@ public class ShooterSubsystem extends SubsystemBase {
       shooter2.setControl(velo2);
     }else{
       shooter1.set(speed1);
-      shooter2.set(speed1);
+      shooter2.set(speed2);
+      System.out.println(speed2);
     }
   
     // This method will be called once per scheduler run
