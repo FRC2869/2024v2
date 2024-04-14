@@ -8,6 +8,10 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class Constants {
     public static Timer timer = new Timer();
+    public enum RobotState {
+        DISABLED, TELEOP, AUTON, TEST
+    }
+    public static RobotState currentRobotState = RobotState.DISABLED;
 
     public static class FieldConstants {
 

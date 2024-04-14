@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
 import frc.robot.subsystems.PivotSubsystem;
@@ -23,8 +24,14 @@ public class PivotClimb extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+boolean hasRun = false;
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(!hasRun){
+      hasRun = true;
+      System.out.println(this.getName()+ " Start:"+Constants.timer.get());
+    }
     pivot.setPositionControl(true);
     pivot.setCurrentPosition(PositionsPivot.CLIMB);
     pivot.position(PivotConstants.climbPosition);
@@ -32,6 +39,7 @@ public class PivotClimb extends Command {
   }
   @Override
   public void end(boolean i){
+    System.out.println(this.getName()+ " End:"+Constants.timer.get());
     pivot.setPositionControl(false);
     pivot.setSpeed(0);
   }

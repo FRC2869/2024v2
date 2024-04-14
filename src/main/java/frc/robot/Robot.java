@@ -4,20 +4,21 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-// import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.RobotState;
 import frc.robot.commands.LoadAutoCommand;
 import frc.robot.commands.SwerveResetGyro;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
-// import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
-// import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class Robot extends TimedRobot {
@@ -35,6 +36,10 @@ public class Robot extends TimedRobot {
     // System.out.println("INIT");
     m_robotContainer = new RobotContainer();
     new SwerveResetGyro().schedule();
+
+    Constants.timer.start();
+    Constants.timer.reset();
+
     // new LEDCommand(LightingSetting.SCORING).schedule();
     field = new Field2d();
 
@@ -49,12 +54,22 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     SmartDashboard.putNumber("gyro", SwerveSubsystem.getInstance().getHeading().getDegrees());
     field.setRobotPose(TunerConstants.DriveTrain.getPose());
-
+    if(Constants.currentRobotState==RobotState.DISABLED){
+      ArrayList<Trajectory> trajs = m_robotContainer.getAutoTrajectory();
+      if(trajs.size()>0){
+        var i=0;
+        for(Trajectory traj:trajs){
+          i++;
+          field.getObject("traj-"+i).setTrajectory(traj);
+        }
+      } 
+    }
     SmartDashboard.putData(field);
   }
 
   @Override
   public void disabledInit() {
+    Constants.currentRobotState = RobotState.DISABLED;
     LimelightSubsystem.getInstance().setLEDsOff();
     // lights.candle.setLEDs(0, 0, 100);
     //lights.setLights(LightingSetting.DISABLED);
@@ -86,6 +101,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    Constants.currentRobotState = RobotState.AUTON;
+
     // lights.setLights(LightingSetting.AUTO);
     IntakePivotSubsystem.getInstance().setBrake();
     CommandScheduler.getInstance().cancelAll();
@@ -107,6 +124,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    Constants.currentRobotState = RobotState.TELEOP;
     // lights.setLights(LightingSetting.TELEOP);
     IntakePivotSubsystem.getInstance().setBrake();
     if (m_autonomousCommand != null) {
@@ -125,6 +143,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+    Constants.currentRobotState = RobotState.TEST;
     // IntakePivotSubsystem.getInstance().setBrake();
     // CommandScheduler.getInstance().cancelAll();
     // new IntakeSpeedControl().schedule();

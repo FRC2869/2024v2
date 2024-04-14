@@ -5,6 +5,7 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.PositionsIntake;
 import frc.robot.subsystems.IntakePivotSubsystem;
@@ -27,10 +28,14 @@ public class IntakeBasePos extends Command {
   @Override
   public void initialize() {
   }
-
+  boolean hasRun = false;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(!hasRun){
+      hasRun = true;
+      System.out.println("IntakeBasePos Start:"+Constants.timer.get());
+    }
     intakePivot.setPositionControl(true);
     intakePivot.setPivotPos(IntakeConstants.basePosition);
     intakePivot.setCurrentPosition(PositionsIntake.BASE);
@@ -38,6 +43,7 @@ public class IntakeBasePos extends Command {
 
   @Override
   public void end(boolean i){
+    System.out.println("IntakeBasePos End:"+Constants.timer.get());
     intakePivot.setPositionControl(false);
     intakePivot.setPivotSpeed(0);
   }

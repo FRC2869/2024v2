@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ShooterConstants.LightingSetting;
+import frc.robot.Constants;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.LimelightSubsystem.LightingState;
 
@@ -24,9 +24,14 @@ public class LimelightLightingDefault extends Command {
   @Override
   public void initialize() {}
 
+boolean hasRun = false;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(!hasRun){
+      hasRun = true;
+      System.out.println(this.getName()+ " Start:"+Constants.timer.get());
+    }
     if(Timer.getMatchTime()<1){
       limelight.setLEDsOff();
     }else if(limelight.getCurrentLightingState()!=LightingState.ON&&Timer.getMatchTime()<21){
@@ -40,7 +45,9 @@ public class LimelightLightingDefault extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    System.out.println(this.getName()+ " End:"+Constants.timer.get());
+  }
 
   // Returns true when the command should end.
   @Override

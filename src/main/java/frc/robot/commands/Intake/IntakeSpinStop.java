@@ -5,6 +5,7 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSpinSubsystem;
 
 /**
@@ -19,9 +20,14 @@ public class IntakeSpinStop extends InstantCommand {
     intake = IntakeSpinSubsystem.getInstance();
     addRequirements(intake);
   }
-
+boolean hasRun = false;
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(!hasRun){
+      hasRun = true;
+      System.out.println(this.getName()+ " Start:"+Constants.timer.get());
+    }
     intake.spinStop();
   }
 }
