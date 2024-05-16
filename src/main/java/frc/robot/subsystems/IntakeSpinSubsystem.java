@@ -49,7 +49,7 @@ public class IntakeSpinSubsystem extends SubsystemBase{
      * Sets speed to 100%, spinning notes into the robot
      */
     public void spinIn() {
-        spinSpeed = 1;
+        spinSpeed = .8;
         time.reset();
     }
 
@@ -73,7 +73,7 @@ public class IntakeSpinSubsystem extends SubsystemBase{
      * @return a boolean stating true if the current spikes more than .25 seconds after the intake changes direction (signifying a note is inside the intake)
      */
     public boolean isIntake() {
-        return (time.get()>0.25)&&(spinMotor.getSupplyCurrent().getValue() > 50);
+        return (time.get()>0.25)&&(spinMotor.getSupplyCurrent().getValue() > 25);
         // return (spinMotor.getVelocity().getValue() < 3);
     }
 

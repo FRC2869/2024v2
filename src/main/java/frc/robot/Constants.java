@@ -74,22 +74,22 @@ public class Constants {
           }
         public static final int id2 = 18;
         public static final int id1 = 19;
-        public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 1, 1, -1, 0, 0, 60,
+        public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 2, 1, -1, 0, 0, 60,
                 true, false, 0);
-        public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, 0, 1, -1, 0, 0, 40,
+        public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, 2, 1, -1, 0, 0, 40,
                 true, true, 0);
     }
 
     public static class IntakeConstants {
-        public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 30, true, false);
+        public static final MotorConfiguration spinMotorConfig = new MotorConfiguration(1, -1, 40, true, false);
         public static final MotorConfiguration pivotMotorConfig = new MotorConfiguration(1.0, 0, 10, 0, 0, 0.6, -0.6,
                 (5 * (50 / 16.0) * (32 / 16.0)), 0, 60, false, false, 0);
         public static final double kMinAngle = -750;
         public static final double kMaxAngle = 0;
-        public static final double floorPosition = -700;
+        public static final double floorPosition = -710;
         public static final double basePosition = 0;
-        public static final double closePosition = -15;
-        public static final double farPosition = -70;//-45
+        public static final double closePosition = -17;
+        public static final double farPosition = -80;//-45
         public static final double lobPosition = -60;//-30
 
         public static enum PositionsIntake {
@@ -117,7 +117,7 @@ public class Constants {
         public static final double kMinAngle = -70;
         public static final double kMaxAngle = 38;
         public static final double ampPosition = -50;//-170
-        public static final double farPosition = 30;//-35
+        public static final double farPosition = 5;//-35
         public static final double lobPosition = 5;//-22
         public static final double closePosition = 38;//-7
         public static final double climbPosition = -70;

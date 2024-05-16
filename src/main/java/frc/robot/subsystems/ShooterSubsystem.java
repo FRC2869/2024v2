@@ -64,23 +64,33 @@ public class ShooterSubsystem extends SubsystemBase {
    * 
    * @return rotations/second of the first shooter 
    */
-  public double getRPS() {
+  public double getRPS1() {
     return shooter1.getVelocity().getValueAsDouble();
   }
+  public double getRPS2() {
+    return shooter2.getVelocity().getValueAsDouble();
+  }
 
-  boolean atRPS = false;
+  boolean atRPS1 = false;
+  boolean atRPS2 = false;
   private boolean veloControl;
   /**
    * 
    * @return if the rps of the first shooter is more than the target rps, locks on until rps is 10 under target
    */
   public boolean isAtRPS() {
-    if(getRPS()-speed1>-10){
-      atRPS = true;
-    }else if(getRPS()-speed1<-20){
-      atRPS = false;
+    if(getRPS1()-speed1>-15){
+      atRPS1 = true;
+    }else if(getRPS1()-speed1<-25){
+      atRPS1 = false;
     }
-    return atRPS;
+    if(getRPS2()-speed2>-15){
+      atRPS2 = true;
+    }else if(getRPS1()-speed2<-25){
+      atRPS2 = false;
+    } 
+
+    return atRPS1 && atRPS2 ;
   }
 
   public void setVeloControl(boolean isVeloControl){
@@ -89,7 +99,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Shooter Speed1", getRPS());
+    SmartDashboard.putNumber("Shooter Speed1", getRPS1());
     SmartDashboard.putNumber("Shooter Speed2", shooter2.getVelocity().getValueAsDouble());
     SmartDashboard.putBoolean("Is at RPM", isAtRPS());
     SmartDashboard.putNumber("ShooterTargetSpeed", speed2);

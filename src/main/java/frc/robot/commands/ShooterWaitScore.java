@@ -34,6 +34,6 @@ public class ShooterWaitScore extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooter.getRPS()>50;
+    return shooter.getRPS1()>50;
   }
 }

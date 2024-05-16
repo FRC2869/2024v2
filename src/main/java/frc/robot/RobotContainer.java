@@ -56,6 +56,7 @@ import frc.robot.commands.Shooter.AutoAimShooter;
 import frc.robot.commands.Shooter.ShooterAmpLoad;
 import frc.robot.commands.Shooter.ShooterAmpScore;
 import frc.robot.commands.Shooter.ShooterAutoShoot;
+import frc.robot.commands.Shooter.ShooterAutoShootAuton;
 import frc.robot.commands.Shooter.ShooterAutoShootStop;
 import frc.robot.commands.Shooter.ShooterAutoShootTeleop;
 import frc.robot.commands.Shooter.ShooterFarShoot;
@@ -112,12 +113,13 @@ public class RobotContainer {
     NamedCommands.registerCommand("IntakeAutoPickup", new IntakeAutoPickup());
     NamedCommands.registerCommand("IntakeWaitNote", new IntakeWaitNote());
     NamedCommands.registerCommand("IntakeWaitPosition", new IntakeWaitPosition());
-    NamedCommands.registerCommand("IntakeAutoRetract", new IntakeAutoRetractAuton());
+    NamedCommands.registerCommand("IntakeAutoRetract", new IntakeAutoRetract());
     NamedCommands.registerCommand("ShooterFarShoot", new ShooterFarShoot());
     NamedCommands.registerCommand("ShooterShoot", new ShooterShoot());
     NamedCommands.registerCommand("ShooterShootSlow", new ShooterShootSlow());
     NamedCommands.registerCommand("ShooterRevWait", new ShooterRevWait());
     NamedCommands.registerCommand("ShooterAutoShoot", new ShooterAutoShoot());
+    NamedCommands.registerCommand("ShooterAutoShootAuton", new ShooterAutoShootAuton());
     NamedCommands.registerCommand("ShooterAutoShootStop", new ShooterAutoShootStop());
     NamedCommands.registerCommand("IntakeFloorPos", new IntakeFloorPos());
     NamedCommands.registerCommand("Nothing", new WaitCommand(0));
@@ -173,7 +175,8 @@ public class RobotContainer {
     // Inputs.getShooterFarShoot().onTrue(new ShooterFarShoot());
     Inputs.getShooterFarShoot().onTrue(new ShooterFarShoot());
     Inputs.getSourceIntake().whileTrue(new IntakeFromShooter().andThen(new ShooterStop()).andThen(new IntakeSpinStop()));
-    Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new ParallelRaceGroup(new IntakeFloorPos(), new IntakeWaitNote()), new IntakeAutoRetract()));
+    Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeFloorPos()));
+    // Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new ParallelRaceGroup(new IntakeFloorPos(), new IntakeWaitNote()), new IntakeAutoRetract()));
     // Inputs.getAutoIntakeDown2().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeWaitNote(), new IntakeAutoRetract()));
 
     // Inputs.getShooterAdjustUp().onTrue(new PivotAdjustUp());
