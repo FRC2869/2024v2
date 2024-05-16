@@ -20,9 +20,14 @@ public class AimAtSpeaker extends InstantCommand {
     addRequirements(pivot, intakePivot);
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
+  boolean hasRun = false;
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(!hasRun){
+      hasRun = true;
+      System.out.println(this.getName()+ " Start:"+Constants.timer.get());
+    }
     pivot.setPositionControl(true);
     pivot.position((180 * (swerve.getAngle()/Math.PI)));
     intakePivot.setPivotPos(180 * swerve.getIntakeAngle()/Math.PI/Constants.PivotConstants.intakeGearMultiplier);

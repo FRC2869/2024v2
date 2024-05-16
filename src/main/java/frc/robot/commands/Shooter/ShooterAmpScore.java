@@ -5,6 +5,7 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /**
@@ -21,10 +22,14 @@ public class ShooterAmpScore extends InstantCommand {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  // Called when the command is initially scheduled.
+boolean hasRun = false;
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("AMPS");
+    if(!hasRun){
+      hasRun = true;
+      System.out.println(this.getName()+ " Start:"+Constants.timer.get());
+    }
     shooter.setSpeed(1, .5);
     shooter.setVeloControl(false);
   }

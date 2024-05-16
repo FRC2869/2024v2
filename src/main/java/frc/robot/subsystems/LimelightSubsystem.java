@@ -4,15 +4,17 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CommandSwerveDrivetrain;
+import frc.robot.Constants;
+import frc.robot.Constants.RobotState;
 import frc.robot.LimelightHelpers;
 import frc.robot.generated.TunerConstants;
 
@@ -103,13 +105,29 @@ public class LimelightSubsystem extends SubsystemBase {
     return array;
   }
 
+  public void updateVisionOdometry(){
+    boolean rejectUpdate = false;
+    LimelightHelpers.SetRobotOrientation(ll1,swerve.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+    LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(ll1);
+    if(Math.abs(swerve.getPigeon2().getRate()) > 360){ // if our angular velocity is greater than 360 degrees per second, ignore vision updates
+      rejectUpdate = true;
+    }
+    if(limelightMeasurement.tagCount == 0){
+      rejectUpdate = true;
+    }
+    if(!rejectUpdate){
+      swerve.addVisionMeasurement(limelightMeasurement.pose, limelightMeasurement.timestampSeconds, VecBuilder.fill(.7,.7,9999999));
+    }
+  }
+
   @Override
   public void periodic() {
     if (getArray()[0] != 0)SmartDashboard.putNumberArray("limelight bot pose", clean(getArray()));
     try{
       if(SwerveSubsystem.getInstance().getRobotRelativeSpeeds().vxMetersPerSecond<0.25||SwerveSubsystem.getInstance().getRobotRelativeSpeeds().vyMetersPerSecond<0.25){
-        // swerve.addVisionMeasurement(getLimelightPose(), Timer.getFPGATimestamp());
-
+        if(Constants.currentRobotState != RobotState.AUTON){
+          updateVisionOdometry();
+        }
       }
     }
     catch(Exception e) {}

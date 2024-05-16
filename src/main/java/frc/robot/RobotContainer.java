@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
@@ -14,7 +15,9 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -77,16 +80,20 @@ import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
   private SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+
   private enum Autos {
-		Nothing, ShootOne, FivePieceWingCenterSub, ThreePieceSourceCenterSub, FourPieceAmpCenterSub, FourPieceAmpCenter, FivePieceWingCenter, MessUp
-	}
+    Nothing, ShootOne, FivePieceWingCenterSub, ThreePieceSourceCenterSub, FourPieceAmpCenterSub, FourPieceAmpCenter,
+    FivePieceWingCenter, MessUp
+  }
+
   // private double MaxSpeed = 5; // 6 meters per second desired top speed
   // private double MaxSpeed = 7;
   private double MaxSpeed = 5.5;
   private double MaxAngularRate = 2 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
-  // private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
+  // private final CommandXboxController joystick = new CommandXboxController(0);
+  // // My joystick
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
   private final FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -94,10 +101,12 @@ public class RobotContainer {
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
   private final RobotCentric robotDrive = new SwerveRequest.RobotCentric()
-  .withDeadband(MaxSpeed * 0.075).withRotationalDeadband(MaxAngularRate * 0.075)
-  .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-                                                               // private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-  // private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+      .withDeadband(MaxSpeed * 0.075).withRotationalDeadband(MaxAngularRate * 0.075)
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+  // private final SwerveRequest.SwerveDriveBrake brake = new
+  // SwerveRequest.SwerveDriveBrake();
+  // private final SwerveRequest.PointWheelsAt point = new
+  // SwerveRequest.PointWheelsAt();
   // private final Telemetry logger = new Telemetry(MaxSpeed);
   private SendableChooser<Autos> newautopick;
   private Command autoCommand;
@@ -124,42 +133,49 @@ public class RobotContainer {
     NamedCommands.registerCommand("IntakeFloorPos", new IntakeFloorPos());
     NamedCommands.registerCommand("Nothing", new WaitCommand(0));
     newautopick = new SendableChooser<>();
-		newautopick.addOption("Nothing", Autos.Nothing);
-		newautopick.addOption("ShootOne", Autos.ShootOne);	//shoots and waits
-		newautopick.addOption("MessUp", Autos.MessUp);
-		newautopick.addOption("3PieceSourceCenterSub", Autos.ThreePieceSourceCenterSub);
+    newautopick.addOption("Nothing", Autos.Nothing);
+    newautopick.addOption("ShootOne", Autos.ShootOne); // shoots and waits
+    newautopick.addOption("MessUp", Autos.MessUp);
+    newautopick.addOption("3PieceSourceCenterSub", Autos.ThreePieceSourceCenterSub);
     newautopick.addOption("4PieceAmpCenter", Autos.FourPieceAmpCenter);
-		newautopick.addOption("4PieceAmpCenterSub", Autos.FourPieceAmpCenterSub);
+    newautopick.addOption("4PieceAmpCenterSub", Autos.FourPieceAmpCenterSub);
     newautopick.addOption("5PieceWingCenter", Autos.FivePieceWingCenter);
-		newautopick.addOption("5PieceWingCenterSub", Autos.FivePieceWingCenterSub);
-    //SUPER ULTIMATE PATH!!!!!!! (WATCH OUT, LIBERALS)
-		Shuffleboard.getTab("auto").add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
+    newautopick.addOption("5PieceWingCenterSub", Autos.FivePieceWingCenterSub);
+    // SUPER ULTIMATE PATH!!!!!!! (WATCH OUT, LIBERALS)
+    Shuffleboard.getTab("auto").add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
     System.out.println("RC");
     LightingSubsystem.getInstance();
   }
 
   private void configureBindings() {
     LimelightSubsystem.getInstance().setDefaultCommand(new LimelightLightingDefault());
-    new Trigger(()-> IntakeSpinSubsystem.getInstance().isIntake()).onTrue(new LimelightLEDsBlink().withTimeout(0.5));
-    new Trigger(()-> ShooterSubsystem.getInstance().isAtRPS()).onTrue(new LimelightLEDsBlink().withTimeout(0.5));
-    // new Trigger(()-> Timer.getMatchTime()<30).whileTrue(new LEDCommand(LightingSetting.AUTO));
+    new Trigger(() -> IntakeSpinSubsystem.getInstance().isIntake()).onTrue(new LimelightLEDsBlink().withTimeout(0.5));
+    new Trigger(() -> ShooterSubsystem.getInstance().isAtRPS()).onTrue(new LimelightLEDsBlink().withTimeout(0.5));
+    // new Trigger(()-> Timer.getMatchTime()<30).whileTrue(new
+    // LEDCommand(LightingSetting.AUTO));
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
-                                                                                           // negative Y (forward)
+            // negative Y (forward)
             .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate((( Inputs.getRotation() * MaxAngularRate))) // Drive counterclockwise with negative X (left)
+            .withRotationalRate(((Inputs.getRotation() * MaxAngularRate))) // Drive counterclockwise with negative X
+                                                                           // (left)
         ));
 
-    Inputs.getRobotCentric().whileTrue(drivetrain.applyRequest(() -> robotDrive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
-                                                                                           // negative Y (forward)
+    Inputs.getRobotCentric()
+        .whileTrue(drivetrain.applyRequest(() -> robotDrive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive
+                                                                                                               // forward
+                                                                                                               // with
+            // negative Y (forward)
             .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate((( Inputs.getRotation() * MaxAngularRate)))));
-            
+            .withRotationalRate(((Inputs.getRotation() * MaxAngularRate)))));
+
     Inputs.getResetGyro().onTrue(new SwerveResetGyro());
     Inputs.getAutoIntakeUp().onTrue(new IntakeAutoRetract());
     // Inputs.getAutoIntakeUp2().onTrue(new IntakeAutoRetract());
-    Inputs.getAutoShootStop().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new ShooterWaitPosition())));
-    Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeClosePos().raceWith(new IntakeWaitPosition()), new IntakeSpinOut(), new ShooterAmpLoad(), new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
+    Inputs.getAutoShootStop().onTrue(
+        new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new ShooterWaitPosition())));
+    Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeClosePos().raceWith(new IntakeWaitPosition()),
+        new IntakeSpinOut(), new ShooterAmpLoad(), new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
     Inputs.getIntakeFloorPos().whileTrue(new IntakeFloorPos());
 
     Inputs.getIntakeBasePos().whileTrue(new IntakeBasePos());
@@ -183,18 +199,27 @@ public class RobotContainer {
     Inputs.getShooterStop2().onTrue(new ShooterStop());
     Inputs.getClimberMovingUp().whileTrue(new SetClimberSpeed(1));
     Inputs.getClimberMovingDown().whileTrue(new SetClimberSpeed(-1));
-    Inputs.getAmpAutoOuttake().onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new IntakeSpinOut(), new ParallelRaceGroup(new PivotAmp(), new IntakeClosePos(), new SequentialCommandGroup(new WaitCommand(0.1), new ShooterWaitPosition(), new IntakeSpinStop(),new ShooterAmpScore(), 
-                                                                  new AmpWaitScore().withTimeout(2), 
-                                                                  new ShooterStop())), 
-                                                                  new ParallelRaceGroup(new PivotBase(), new IntakeBasePos(), new SequentialCommandGroup(new WaitCommand(.1), new ShooterWaitPosition())).withTimeout(1.25)).andThen(new PivotReset()));
-    
-    Inputs.getPivotReset().onTrue(new PivotReset());                                                              // Inputs.getAutoShootStop3().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
-    
+    Inputs.getAmpAutoOuttake()
+        .onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new IntakeSpinOut(),
+            new ParallelRaceGroup(new PivotAmp(), new IntakeClosePos(),
+                new SequentialCommandGroup(new WaitCommand(0.1), new ShooterWaitPosition(), new IntakeSpinStop(),
+                    new ShooterAmpScore(),
+                    new AmpWaitScore().withTimeout(2),
+                    new ShooterStop())),
+            new ParallelRaceGroup(new PivotBase(), new IntakeBasePos(),
+                new SequentialCommandGroup(new WaitCommand(.1), new ShooterWaitPosition())).withTimeout(1.25))
+            .andThen(new PivotReset()));
+
+    Inputs.getPivotReset().onTrue(new PivotReset()); // Inputs.getAutoShootStop3().onTrue(new
+                                                     // ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new
+                                                     // IntakeBasePos(), new WaitCommand(0.5))));
+
     Inputs.getShooterAdjustDown().onTrue(new PivotAdjustDown());
     Inputs.getShooterAdjustUp().onTrue(new PivotAdjustUp());
     Inputs.getIntakeAdjustDown().onTrue(new IntakeAdjustDown());
     Inputs.getIntakeAdjustUp().onTrue(new IntakeAdjustUp());
-    // Inputs.getAutoShootStop2().onTrue(new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
+    // Inputs.getAutoShootStop2().onTrue(new ShooterAutoShootTeleop().andThen(new
+    // ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
     // //getAutoAlignShooter
     Inputs.getAutoAlignShooter().onTrue(new SequentialCommandGroup(new AimAtSpeaker(), new ShooterWaitPosition()));
     // Inputs.getTurnToSpeaker().onTrue(swerve.faceSpeaker());
@@ -202,67 +227,58 @@ public class RobotContainer {
     Inputs.getAutoAimShooter2().whileTrue(new AutoAimShooter());
 
     Inputs.getPivotClimbPosition().whileTrue(new PivotClimb());
-    // Inputs.  0  goToAmp().onTrue(swerve.moveToAmp());
-    Inputs.getToggleFaceSpeaker().whileTrue(drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
-                                                                                           // negative Y (forward)
+    // Inputs. 0 goToAmp().onTrue(swerve.moveToAmp());
+    Inputs.getToggleFaceSpeaker()
+        .whileTrue(drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive
+                                                                                                          // forward
+                                                                                                          // with
+            // negative Y (forward)
             .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(swerve.getTargetSlope(
-              swerve.getPose().getX(),
-              swerve.getPose().getY(),
-              swerve.getSpeakerX(),
-              swerve.getSpeakerY()
-            )*MaxAngularRate) // Drive counterclockwise with negative X (left)
+                swerve.getPose().getX(),
+                swerve.getPose().getY(),
+                swerve.getSpeakerX(),
+                swerve.getSpeakerY()) * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
-    
   }
 
-  
+  public void generateAndLoad() {
+    autoCommand = generateAutoCommand();
+  }
 
-   public void generateAndLoad(){
-     autoCommand = generateAutoCommand();
-   }
-  //  List<List<Pose2d>> autoTraj = new Lis;
+  public void generateTrajectories(String name){
+    List<PathPlannerPath> paths = PathPlannerAuto.getPathGroupFromAutoFile("5PieceWingCenterSub");
+    for(PathPlannerPath path:paths){
+      autoTraj.add(TrajectoryGenerator.generateTrajectory(path.getPathPoses(), new TrajectoryConfig(MaxSpeed, MaxAngularRate)));
+      // autoTraj.add(path.getPathPoses());   
+    }
+  }
+
+  // List<List<Pose2d>> autoTraj = new List<List<Pose2d>>();
+  ArrayList<Trajectory> autoTraj = new ArrayList<>();
+
   private Command generateAutoCommand(){
-    List<PathPlannerPath> paths;
     switch(newautopick.getSelected()){
       case ShootOne:
         return new SequentialCommandGroup(new ShooterAutoShootTeleop(), new WaitCommand(50000));
       case FivePieceWingCenterSub:
-        paths = PathPlannerAuto.getPathGroupFromAutoFile("5PieceWingCenterSub");
-        for(PathPlannerPath path:paths){
-          // autoTraj.add(path.getPathPoses());   
-        }
+        generateTrajectories("5PieceWingCenterSub");
         return SwerveSubsystem.getInstance().getAuto("5PieceWingCenterSub");
       case ThreePieceSourceCenterSub:
-        paths = PathPlannerAuto.getPathGroupFromAutoFile("3PieceSourceCenterSub");
-        for(PathPlannerPath path:paths){
-          // autoTraj.add(path.getPathPoses());
-        }
+        generateTrajectories("3PieceSourceCenterSub");
         return SwerveSubsystem.getInstance().getAuto("3PieceSourceCenterSub");
       case FourPieceAmpCenterSub:
-        paths = PathPlannerAuto.getPathGroupFromAutoFile("4PieceAmpCenterSub");
-        for(PathPlannerPath path:paths){
-          // autoTraj.add(path.getPathPoses());
-        }
+        generateTrajectories("4PieceAmpCenterSub");
         return SwerveSubsystem.getInstance().getAuto("4PieceAmpCenterSub");
       case FourPieceAmpCenter:
-        paths = PathPlannerAuto.getPathGroupFromAutoFile("4PieceAmpCenter");
-        for(PathPlannerPath path:paths){
-          // autoTraj.add(path.getPathPoses());
-        }
+        generateTrajectories("4PieceAmpCenter");
         return SwerveSubsystem.getInstance().getAuto("4PieceAmpCenter");
       case FivePieceWingCenter:
-        paths = PathPlannerAuto.getPathGroupFromAutoFile("5PieceWingCenter");
-        for(PathPlannerPath path:paths){
-          // autoTraj.add(path.getPathPoses());
-        }
+        generateTrajectories("5PieceWingCenter");
         return SwerveSubsystem.getInstance().getAuto("5PieceWingCenter");
       case MessUp:
-        paths = PathPlannerAuto.getPathGroupFromAutoFile("MessUp");
-        for(PathPlannerPath path:paths){
-          // autoTraj.add(path.getPathPoses());
-        }
+        generateTrajectories("MessUp");
         return SwerveSubsystem.getInstance().getAuto("MessUp");
       // case OtherAuto:
       //   return new AutoFollowPath("KajillionNote.1", "KajillionNote.2", "KajillionNote.3", "KajillionNote.4", "KajillionNote.5", "KajillionNote.6", "KajillionNote.7");
@@ -271,18 +287,19 @@ public class RobotContainer {
     }
   }
 
-  public List<List<Pose2d>> getAutoTrajectory(){
-    // return autoTraj;
-    return null;
+  public ArrayList<Trajectory> getAutoTrajectory() {
+    return autoTraj;
+    // return null;
   }
 
   public Command getAutonomousCommand() {
-    if(autoCommand==null){
+    if (autoCommand == null) {
       autoCommand = generateAutoCommand();
     }
     return autoCommand;
   }
 }
 
-//STOP!
-//This is the end of the robot container section of the SAT.  Please do not move on until prompted to do so.
+// STOP!
+// This is the end of the robot container section of the SAT. Please do not move
+// on until prompted to do so.

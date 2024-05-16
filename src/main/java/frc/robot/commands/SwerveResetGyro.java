@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
@@ -21,9 +22,14 @@ public class SwerveResetGyro extends InstantCommand {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  // Called when the command is initially scheduled.
+boolean hasRun = false;
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(!hasRun){
+      hasRun = true;
+      System.out.println(this.getName()+ " Start:"+Constants.timer.get());
+    }
     swerve.resetOdometry(new Pose2d(swerve.getPose().getTranslation(), new Rotation2d()));;
   }
 }

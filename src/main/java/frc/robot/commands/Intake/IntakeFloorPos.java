@@ -5,6 +5,7 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.IntakeConstants.PositionsIntake;
 import frc.robot.subsystems.IntakePivotSubsystem;
@@ -34,6 +35,7 @@ public class IntakeFloorPos extends Command {
   @Override
   public void execute() {
     if(!hasRun){
+      System.out.println("IntakeFloorPos Start:"+Constants.timer.get());
     intakePivot.setPositionControl(true);
     intakePivot.setPivotPos(IntakeConstants.floorPosition);
     intakePivot.setCurrentPosition(PositionsIntake.FLOOR);
@@ -43,6 +45,7 @@ public class IntakeFloorPos extends Command {
 
   @Override
   public void end(boolean i){
+    System.out.println("IntakeFloorPos End:"+Constants.timer.get());
     intakePivot.setPositionControl(false);
     intakePivot.setPivotSpeed(0);
   }
