@@ -10,6 +10,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants;
 import frc.robot.MotorConfiguration;
 
 /**
@@ -18,6 +19,8 @@ import frc.robot.MotorConfiguration;
  * @author on-core big raga(van) the opp stoppa
  */
 public class ShooterSubsystem extends SubsystemBase {
+  private SwerveSubsystem swerve;
+  private PivotSubsystem pivot;
   public static ShooterSubsystem instance;
   public static ShooterSubsystem getInstance(){
     if(instance == null) instance = new ShooterSubsystem();
@@ -32,6 +35,8 @@ public class ShooterSubsystem extends SubsystemBase {
   
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
+    swerve = SwerveSubsystem.getInstance();
+    pivot = PivotSubsystem.getInstance();
     shooter1 = new TalonFX(ShooterConstants.id1);
     shooter2 = new TalonFX(ShooterConstants.id2);
     MotorConfiguration.configureMotor(shooter1, ShooterConstants.config);
@@ -95,6 +100,26 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void setVeloControl(boolean isVeloControl){
     this.veloControl = isVeloControl;
+  }
+
+  public double getAngle() {
+    return pivot.getAngle();
+  }
+
+  public double getChassisSpeed() {
+    return Math.sqrt(Math.pow(swerve.getRobotRelativeSpeeds().vxMetersPerSecond, 2) + Math.pow(swerve.getRobotRelativeSpeeds().vyMetersPerSecond, 2));
+  }
+
+  public double getDistFromSpeaker() {
+    return swerve.getDistanceFromSpeaker();
+  }
+
+  public double getSpeedOfNote() {
+    return quadraticFormula(2 * 9.81 * Constants.FieldConstants.speakerHeight * Math.cos(getAngle())*Math.cos(getAngle()) - Math.sin(2*getAngle()), 4 * 9.81 * Constants.FieldConstants.speakerHeight * getChassisSpeed() * Math.cos(getAngle()) - 2 * getChassisSpeed() * Math.sin(getAngle()), 2 * 9.81 * Math.pow(getChassisSpeed(), 2) - Math.pow(swerve.getDistanceFromSpeaker()*9.81, 2));
+  }
+
+  public double quadraticFormula(double a, double b, double c) {
+    return (-b + Math.sqrt(b*b - 4 * a * c))/(2 * a);
   }
 
   @Override

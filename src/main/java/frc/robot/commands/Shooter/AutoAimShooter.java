@@ -31,7 +31,7 @@ boolean hasRun = false;
       hasRun = true;
       System.out.println(this.getName()+ " Start:"+Constants.timer.get());
     }
-    pivot.autoAim(swerve.getDistance());
+    pivot.autoAim(swerve.getDistanceFromSpeaker());
   }
 
   // Called once the command ends or is interrupted.

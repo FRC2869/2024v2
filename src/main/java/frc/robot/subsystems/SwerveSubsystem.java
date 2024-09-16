@@ -278,7 +278,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
   
 
-  public double getDistance() {
+  public double getDistanceFromSpeaker() {
     double distance = Math.pow(getPose().getX() - getSpeakerX(), 2) + Math.pow(getSpeakerY()  - getPose().getY(), 2);
     return distance;
   }
