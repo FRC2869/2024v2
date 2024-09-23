@@ -97,11 +97,11 @@ public class RobotContainer {
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
   private final FieldCentric drive = new SwerveRequest.FieldCentric()
-      .withDeadband(MaxSpeed * 0.075).withRotationalDeadband(MaxAngularRate * 0.075) // Add a 7.5% deadband
+      .withDeadband(MaxSpeed * 0.075).withRotationalDeadband(MaxAngularRate * Constants.OperatorConstants.deadBandMove) // Add a 7.5% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
   private final RobotCentric robotDrive = new SwerveRequest.RobotCentric()
-      .withDeadband(MaxSpeed * 0.075).withRotationalDeadband(MaxAngularRate * 0.075)
+      .withDeadband(MaxSpeed * 0.075).withRotationalDeadband(MaxAngularRate * Constants.OperatorConstants.deadBandRot)
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
   // private final SwerveRequest.SwerveDriveBrake brake = new
   // SwerveRequest.SwerveDriveBrake();
@@ -154,9 +154,9 @@ public class RobotContainer {
     // new Trigger(()-> Timer.getMatchTime()<30).whileTrue(new
     // LEDCommand(LightingSetting.AUTO));
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive forward with
+        drivetrain.applyRequest(() -> drive.withVelocityY(-Inputs.getTranslationY() * MaxSpeed) // Drive forward with
             // negative Y (forward)
-            .withVelocityX(Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
+            .withVelocityX(-Inputs.getTranslationX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(((Inputs.getRotation() * MaxAngularRate))) // Drive counterclockwise with negative X
                                                                            // (left)
         ));

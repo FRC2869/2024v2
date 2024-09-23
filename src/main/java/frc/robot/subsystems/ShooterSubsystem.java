@@ -118,6 +118,10 @@ public class ShooterSubsystem extends SubsystemBase {
     return quadraticFormula(2 * 9.81 * Constants.FieldConstants.speakerHeight * Math.cos(getAngle())*Math.cos(getAngle()) - Math.sin(2*getAngle()), 4 * 9.81 * Constants.FieldConstants.speakerHeight * getChassisSpeed() * Math.cos(getAngle()) - 2 * getChassisSpeed() * Math.sin(getAngle()), 2 * 9.81 * Math.pow(getChassisSpeed(), 2) - Math.pow(swerve.getDistanceFromSpeaker()*9.81, 2));
   }
 
+  public void setSpeedShootOnMove() {
+    setSpeed(getSpeedOfNote(), getSpeedOfNote());
+  }
+
   public double quadraticFormula(double a, double b, double c) {
     return (-b + Math.sqrt(b*b - 4 * a * c))/(2 * a);
   }

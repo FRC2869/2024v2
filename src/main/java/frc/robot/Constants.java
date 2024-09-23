@@ -43,6 +43,9 @@ public class Constants {
     }
 
     public static class OperatorConstants {
+        //was 7.5 before
+        public static final double deadBandMove = .15;
+        public static final double deadBandRot = .15;
         public static interface DriverController {
             public static final int port = 0;
             public static final double leftXDeadband = .01;
