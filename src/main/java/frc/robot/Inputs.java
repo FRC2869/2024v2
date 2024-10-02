@@ -292,6 +292,10 @@ public class Inputs {
         return operatorBoard.button(25);
     }
 
+    public static Trigger getShooterIntake() {
+        return operatorBoard.button(26);
+    }
+
     // public static Trigger getAutoIntakeUp2() {
     //     // TODO Auto-generated method stub
     //     throw new UnsupportedOperationException("Unimplemented method 'getAutoIntakeUp2'");

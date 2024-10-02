@@ -93,7 +93,8 @@ public class Constants {
                 (5 * (50 / 16.0) * (32 / 16.0)), 0, 60, false, false, 0);
         public static final double kMinAngle = -750;
         public static final double kMaxAngle = 0;
-        public static final double floorPosition = -710;
+        // public static final double floorPosition = -710;
+        public static final double floorPosition = -650;
         public static final double basePosition = 0;
         public static final double closePosition = -17;
         public static final double farPosition = -80;//-45

@@ -48,6 +48,7 @@ import frc.robot.commands.Intake.IntakeBasePos;
 import frc.robot.commands.Intake.IntakeClosePos;
 import frc.robot.commands.Intake.IntakeFarPos;
 import frc.robot.commands.Intake.IntakeFloorPos;
+import frc.robot.commands.Intake.IntakeFromSource;
 import frc.robot.commands.Intake.IntakeSpeedControl;
 import frc.robot.commands.Intake.IntakeSpinIn;
 import frc.robot.commands.Intake.IntakeSpinOut;
@@ -174,8 +175,9 @@ public class RobotContainer {
     // Inputs.getAutoIntakeUp2().onTrue(new IntakeAutoRetract());
     Inputs.getAutoShootStop().onTrue(
         new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new ShooterWaitPosition())));
-    Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeClosePos().raceWith(new IntakeWaitPosition()),
+    /*Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeClosePos().raceWith(new IntakeWaitPosition()),
         new IntakeSpinOut(), new ShooterAmpLoad(), new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
+    */
     Inputs.getIntakeFloorPos().whileTrue(new IntakeFloorPos());
 
     Inputs.getIntakeBasePos().whileTrue(new IntakeBasePos());
@@ -240,6 +242,7 @@ public class RobotContainer {
                 swerve.getSpeakerX(),
                 swerve.getSpeakerY()) * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
+    Inputs.getAmpTransfer().whileTrue(new IntakeFromSource());
 
   }
 
