@@ -18,7 +18,7 @@ public class ShooterAutoAngleShoot extends ParallelRaceGroup {
   /** Creates a new ShooterAutoShoot. */
   public ShooterAutoAngleShoot() {
 
-    addCommands(new AimAtSpeaker(), new SequentialCommandGroup(new ShooterShoot(), new IntakeSpinOut(), new WaitCommand(0.25), new IntakeSpinStop()));
+    addCommands(new AutoAimIntake(), new SequentialCommandGroup(new ShooterShoot(), new IntakeSpinOut(), new WaitCommand(0.25), new IntakeSpinStop()));
     // addCommands(new AimAtSpeaker(), new WaitCommand(1),new ShooterShoot(), new WaitCommand(1), new IntakeSpinOut(), new WaitCommand(1), new ShooterStop(), new IntakeSpinStop());
   }
 }

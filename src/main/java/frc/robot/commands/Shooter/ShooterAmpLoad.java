@@ -29,7 +29,7 @@ boolean hasRun = false;
       hasRun = true;
       System.out.println(this.getName()+ " Start:"+Constants.timer.get());
     }
-    shooter.setSpeed(15, -15);
+    shooter.setSpeed(15, -5);
     shooter.setVeloControl(true);
   }
 }

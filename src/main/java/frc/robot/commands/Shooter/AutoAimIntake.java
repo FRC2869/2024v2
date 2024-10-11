@@ -11,12 +11,12 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 
-public class AimAtSpeaker extends InstantCommand {
+public class AutoAimIntake extends InstantCommand {
   private PivotSubsystem pivot = PivotSubsystem.getInstance();
   private IntakePivotSubsystem intakePivot = IntakePivotSubsystem.getInstance();
   private CommandSwerveDrivetrain swerve = TunerConstants.DriveTrain;
   /** Creates a new ShootAtSpeaker. */
-  public AimAtSpeaker() {
+  public AutoAimIntake() {
     addRequirements(pivot, intakePivot);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -28,7 +28,7 @@ public class AimAtSpeaker extends InstantCommand {
       hasRun = true;
       System.out.println(this.getName()+ " Start:"+Constants.timer.get());
     }
-    pivot.setPositionControl(true);
+    //pivot.setPositionControl(true);
     pivot.position((180 * (swerve.getAngle()/Math.PI)));
     intakePivot.setPivotPos(180 * swerve.getIntakeAngle()/Math.PI/Constants.PivotConstants.intakeGearMultiplier);
   }

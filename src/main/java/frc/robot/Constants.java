@@ -83,7 +83,7 @@ public class Constants {
         public static final int id1 = 19;
         public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 2, 1, -1, 0, 0, 60,
                 true, false, 0);
-        public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, 2, 1, -1, 0, 0, 40,
+        public static final MotorConfiguration config2 = new MotorConfiguration(0.075, 0, 0, 0, 0, 1, -1, 0, 0, 40,
                 true, true, 0);
     }
 
@@ -124,7 +124,7 @@ public class Constants {
         public static final int basePosition = 30;//-30
         public static final double kMinAngle = -70;
         public static final double kMaxAngle = 38;
-        public static final double ampPosition = -50;//-170
+        public static final double ampPosition = -50;//-50
         public static final double farPosition = 5;//-35
         public static final double lobPosition = 5;//-22
         public static final double closePosition = 38;//-7

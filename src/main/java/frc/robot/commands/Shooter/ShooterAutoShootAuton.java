@@ -5,11 +5,9 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.PivotClose;
 import frc.robot.commands.Intake.IntakeClosePos;
 import frc.robot.commands.Intake.IntakeSpinOut;
-import frc.robot.commands.Intake.IntakeSpinStop;
 
 /**
  * Shoots the note to the speaker automatically, Stops it after

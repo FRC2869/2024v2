@@ -43,6 +43,7 @@ import frc.robot.commands.PivotClimb;
 import frc.robot.commands.PivotFar;
 import frc.robot.commands.PivotReset;
 import frc.robot.commands.SetClimberSpeed;
+import frc.robot.commands.SetPosition;
 import frc.robot.commands.SwerveResetGyro;
 import frc.robot.commands.Intake.IntakeBasePos;
 import frc.robot.commands.Intake.IntakeClosePos;
@@ -55,7 +56,7 @@ import frc.robot.commands.Intake.IntakeSpinOut;
 import frc.robot.commands.Intake.IntakeSpinStop;
 import frc.robot.commands.Intake.IntakeWaitNote;
 import frc.robot.commands.Intake.IntakeWaitPosition;
-import frc.robot.commands.Shooter.AimAtSpeaker;
+import frc.robot.commands.Shooter.AutoAimIntake;
 import frc.robot.commands.Shooter.AutoAimShooter;
 import frc.robot.commands.Shooter.ShooterAmpLoad;
 import frc.robot.commands.Shooter.ShooterAmpScore;
@@ -132,7 +133,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("ShooterAutoShootAuton", new ShooterAutoShootAuton());
     NamedCommands.registerCommand("ShooterAutoShootStop", new ShooterAutoShootStop());
     NamedCommands.registerCommand("IntakeFloorPos", new IntakeFloorPos());
-    NamedCommands.registerCommand("Nothing", new WaitCommand(0));
+    NamedCommands.registerCommand("Nothing", new SetPosition());
     newautopick = new SendableChooser<>();
     newautopick.addOption("Nothing", Autos.Nothing);
     newautopick.addOption("ShootOne", Autos.ShootOne); // shoots and waits
@@ -175,9 +176,9 @@ public class RobotContainer {
     // Inputs.getAutoIntakeUp2().onTrue(new IntakeAutoRetract());
     Inputs.getAutoShootStop().onTrue(
         new ShooterAutoShootTeleop().andThen(new ParallelRaceGroup(new IntakeBasePos(), new ShooterWaitPosition())));
-    /*Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeClosePos().raceWith(new IntakeWaitPosition()),
-        new IntakeSpinOut(), new ShooterAmpLoad(), new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
-    */
+    Inputs.getAmpTransfer().onTrue(new SequentialCommandGroup(new IntakeClosePos().raceWith(new IntakeWaitPosition()),
+        new ShooterAmpLoad(), new WaitCommand(0.2), new IntakeSpinOut(),  new WaitCommand(.5), new ShooterStop(), new IntakeSpinStop()));
+    
     Inputs.getIntakeFloorPos().whileTrue(new IntakeFloorPos());
 
     Inputs.getIntakeBasePos().whileTrue(new IntakeBasePos());
@@ -223,10 +224,9 @@ public class RobotContainer {
     // Inputs.getAutoShootStop2().onTrue(new ShooterAutoShootTeleop().andThen(new
     // ParallelRaceGroup(new IntakeBasePos(), new WaitCommand(0.5))));
     // //getAutoAlignShooter
-    Inputs.getAutoAlignShooter().onTrue(new SequentialCommandGroup(new AimAtSpeaker(), new ShooterWaitPosition()));
+    Inputs.getAutoAlignShooter().onTrue(new SequentialCommandGroup(new AutoAimIntake(), new ShooterWaitPosition()));
     // Inputs.getTurnToSpeaker().onTrue(swerve.faceSpeaker());
     Inputs.getAutoAimShooter().whileTrue(new AutoAimShooter());
-    Inputs.getAutoAimShooter2().whileTrue(new AutoAimShooter());
 
     Inputs.getPivotClimbPosition().whileTrue(new PivotClimb());
     // Inputs. 0 goToAmp().onTrue(swerve.moveToAmp());
@@ -242,7 +242,7 @@ public class RobotContainer {
                 swerve.getSpeakerX(),
                 swerve.getSpeakerY()) * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
-    Inputs.getAmpTransfer().whileTrue(new IntakeFromSource());
+    //Inputs.getAmpTransfer().whileTrue(new IntakeFromSource());
 
   }
 

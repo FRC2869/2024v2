@@ -202,7 +202,7 @@ public class Inputs {
     }
 
     public static Trigger getAutoAimShooter() {
-        return operatorBoard.button(29);
+        return operatorBoard.button(25);
     }
 
     public static Trigger getAutoAimShooter2() {
@@ -288,9 +288,6 @@ public class Inputs {
         return operatorBoard.button(24);
     }
 
-    public static Trigger getClimberStop() {
-        return operatorBoard.button(25);
-    }
 
     public static Trigger getShooterIntake() {
         return operatorBoard.button(26);
