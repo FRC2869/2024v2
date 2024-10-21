@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -293,6 +294,25 @@ public class Inputs {
         return operatorBoard.button(26);
     }
 
+    public static Trigger getPivotMoveUp() {
+        return operatorBoard.button(32);
+    }
+
+    public static Trigger getPivotMoveDown() {
+        return operatorBoard.button(31);
+    }
+
+    public static Trigger getRUMBLE() {
+        return operatorBoard.button(29);
+    }
+
+    public static void RUMBLERUMBLE(double rumble) {
+        try {
+            driver1.setRumble(RumbleType.kLeftRumble, 1.0);
+        }
+        catch (Exception e) {}
+    }
+
     // public static Trigger getAutoIntakeUp2() {
     //     // TODO Auto-generated method stub
     //     throw new UnsupportedOperationException("Unimplemented method 'getAutoIntakeUp2'");
@@ -320,6 +340,10 @@ public class Inputs {
 
     public static Trigger getPivotClimbPosition() {
         return operatorBoard.button(28);
+    }
+
+    public static Trigger getIntakeFromShooter() {
+        return operatorBoard.button(30);
     }
 
     // public static Trigger getTurnToSpeaker() {

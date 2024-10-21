@@ -94,7 +94,8 @@ public class Constants {
         public static final double kMinAngle = -750;
         public static final double kMaxAngle = 0;
         // public static final double floorPosition = -710;
-        public static final double floorPosition = -650;
+        // public static final double floorPosition = -650;
+        public static final double floorPosition = -725;
         public static final double basePosition = 0;
         public static final double closePosition = -17;
         public static final double farPosition = -80;//-45
@@ -144,6 +145,7 @@ public class Constants {
             BASE, AMP, FAR, CLOSE, CLIMB,
         } //57, 13
         public static double adjustment = 2;
+        public static double smallAdjustment = .5;
 
         public static final double blueSpeakerX = 0.365;
         public static final double blueSpeakerY= 5.56;

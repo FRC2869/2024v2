@@ -126,7 +126,7 @@ public class LimelightSubsystem extends SubsystemBase {
     try{
       if(SwerveSubsystem.getInstance().getRobotRelativeSpeeds().vxMetersPerSecond<0.25||SwerveSubsystem.getInstance().getRobotRelativeSpeeds().vyMetersPerSecond<0.25){
         if(Constants.currentRobotState != RobotState.AUTON){
-          updateVisionOdometry();
+          //updateVisionOdometry();
         }
       }
     }

@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.RobotState;
 import frc.robot.commands.LoadAutoCommand;
+import frc.robot.commands.RumbleRumble;
 import frc.robot.commands.SwerveResetGyro;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.IntakePivotSubsystem;
@@ -71,6 +72,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     Constants.currentRobotState = RobotState.DISABLED;
     LimelightSubsystem.getInstance().setLEDsOff();
+    Inputs.getRUMBLE().whileTrue(new RumbleRumble().ignoringDisable(true));
     // lights.candle.setLEDs(0, 0, 100);
     //lights.setLights(LightingSetting.DISABLED);
     // lights.game();

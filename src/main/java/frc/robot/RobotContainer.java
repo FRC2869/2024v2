@@ -42,7 +42,9 @@ import frc.robot.commands.PivotBase;
 import frc.robot.commands.PivotClimb;
 import frc.robot.commands.PivotFar;
 import frc.robot.commands.PivotReset;
+import frc.robot.commands.RumbleRumble;
 import frc.robot.commands.SetClimberSpeed;
+import frc.robot.commands.SetIntakePivotSpeed;
 import frc.robot.commands.SetPosition;
 import frc.robot.commands.SwerveResetGyro;
 import frc.robot.commands.Intake.IntakeBasePos;
@@ -65,6 +67,7 @@ import frc.robot.commands.Shooter.ShooterAutoShootAuton;
 import frc.robot.commands.Shooter.ShooterAutoShootStop;
 import frc.robot.commands.Shooter.ShooterAutoShootTeleop;
 import frc.robot.commands.Shooter.ShooterFarShoot;
+import frc.robot.commands.Shooter.ShooterIntake;
 import frc.robot.commands.Shooter.ShooterRevWait;
 import frc.robot.commands.Shooter.ShooterShoot;
 import frc.robot.commands.Shooter.ShooterShootSlow;
@@ -85,7 +88,7 @@ public class RobotContainer {
 
   private enum Autos {
     Nothing, ShootOne, FivePieceWingCenterSub, ThreePieceSourceCenterSub, FourPieceAmpCenterSub, FourPieceAmpCenter,
-    FivePieceWingCenter, MessUp
+    FivePieceWingCenter, MessUp, ShootAndMove
   }
 
   // private double MaxSpeed = 5; // 6 meters per second desired top speed
@@ -137,6 +140,7 @@ public class RobotContainer {
     newautopick = new SendableChooser<>();
     newautopick.addOption("Nothing", Autos.Nothing);
     newautopick.addOption("ShootOne", Autos.ShootOne); // shoots and waits
+    newautopick.addOption("ShootAndMove", Autos.ShootAndMove);
     newautopick.addOption("MessUp", Autos.MessUp);
     newautopick.addOption("3PieceSourceCenterSub", Autos.ThreePieceSourceCenterSub);
     newautopick.addOption("4PieceAmpCenter", Autos.FourPieceAmpCenter);
@@ -193,7 +197,9 @@ public class RobotContainer {
     Inputs.getPivotAmp2().whileTrue(new PivotAmp());
     // Inputs.getShooterFarShoot().onTrue(new ShooterFarShoot());
     Inputs.getShooterFarShoot().onTrue(new ShooterFarShoot());
-    Inputs.getSourceIntake().whileTrue(new IntakeFromShooter().andThen(new ShooterStop()).andThen(new IntakeSpinStop()));
+    //Inputs.getSourceIntake().whileTrue(new IntakeFromShooter().andThen(new ShooterStop()).andThen(new IntakeSpinStop()));
+    Inputs.getSourceIntake().onTrue(new IntakeFromShooter());
+    Inputs.getRUMBLE().whileTrue(new RumbleRumble());
     Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeFloorPos()));
     // Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new ParallelRaceGroup(new IntakeFloorPos(), new IntakeWaitNote()), new IntakeAutoRetract()));
     // Inputs.getAutoIntakeDown2().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeWaitNote(), new IntakeAutoRetract()));
@@ -202,6 +208,7 @@ public class RobotContainer {
     Inputs.getShooterStop2().onTrue(new ShooterStop());
     Inputs.getClimberMovingUp().whileTrue(new SetClimberSpeed(1));
     Inputs.getClimberMovingDown().whileTrue(new SetClimberSpeed(-1));
+    Inputs.getIntakeFromShooter().whileTrue(new ShooterIntake());
     Inputs.getAmpAutoOuttake()
         .onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new IntakeSpinOut(),
             new ParallelRaceGroup(new PivotAmp(), new IntakeClosePos(),
@@ -229,6 +236,8 @@ public class RobotContainer {
     Inputs.getAutoAimShooter().whileTrue(new AutoAimShooter());
 
     Inputs.getPivotClimbPosition().whileTrue(new PivotClimb());
+    Inputs.getPivotMoveDown().whileTrue(new SetIntakePivotSpeed(-Constants.PivotConstants.smallAdjustment));
+    Inputs.getPivotMoveUp().whileTrue(new SetIntakePivotSpeed(Constants.PivotConstants.smallAdjustment));
     // Inputs. 0 goToAmp().onTrue(swerve.moveToAmp());
     Inputs.getToggleFaceSpeaker()
         .whileTrue(drivetrain.applyRequest(() -> drive.withVelocityY(Inputs.getTranslationY() * MaxSpeed) // Drive
@@ -283,6 +292,9 @@ public class RobotContainer {
       case MessUp:
         generateTrajectories("MessUp");
         return SwerveSubsystem.getInstance().getAuto("MessUp");
+      case ShootAndMove:
+        generateTrajectories("1PieceSourceMove");
+        return SwerveSubsystem.getInstance().getAuto("1PieceSourceMove");
       // case OtherAuto:
       //   return new AutoFollowPath("KajillionNote.1", "KajillionNote.2", "KajillionNote.3", "KajillionNote.4", "KajillionNote.5", "KajillionNote.6", "KajillionNote.7");
       default: //Autos.Nothing
