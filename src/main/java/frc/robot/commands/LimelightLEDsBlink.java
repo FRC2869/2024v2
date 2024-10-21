@@ -5,23 +5,28 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.Constants;
+import frc.robot.subsystems.LimelightSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ShooterAmpScore extends InstantCommand {
-  private ShooterSubsystem shooter;
+public class LimelightLEDsBlink extends InstantCommand {
+  private LimelightSubsystem limelight;
 
-  public ShooterAmpScore() {
-    shooter = ShooterSubsystem.getInstance();
-    addRequirements(shooter);
+  public LimelightLEDsBlink() {
+    limelight = LimelightSubsystem.getInstance();
+    addRequirements(limelight);
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
-  // Called when the command is initially scheduled.
+boolean hasRun = false;
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setSpeed(.2, .2);
+    if(!hasRun){
+      hasRun = true;
+      System.out.println(this.getName()+ " Start:"+Constants.timer.get());
+    }
+    limelight.setLEDsBlink();
   }
 }

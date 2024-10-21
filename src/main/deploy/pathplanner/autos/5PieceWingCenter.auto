@@ -1,0 +1,262 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.5075558423995972,
+      "y": 5.489124298095703
+    },
+    "rotation": 3.696661700113942e-26
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterShootSlow"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterRevWait"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAutoPickup"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShooterShoot"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterYAY.1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAutoRetract"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShooterShoot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeWaitPosition"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAutoPickup"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterYAY.2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAutoRetract"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShooterShoot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeWaitPosition"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAutoPickup"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterYAY.3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAutoRetract"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShooterShoot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeWaitPosition"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShootStop"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeAutoPickup"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ShooterShootSlow"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterYAY.4"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAutoRetract"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShooterShoot"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterYAY.5"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShootStop"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": true
+}

@@ -5,9 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Inputs;
+import frc.robot.Constants;
 import frc.robot.subsystems.PivotSubsystem;
 
+/**
+ * Sets the shooter pivot to the Speed Control using Inputs.getPivotOverride()
+ * Never Ends
+ * On Interupt stays on speed control and sets speed to 0
+ */
 public class DefaultPivot extends Command {
   private PivotSubsystem pivot;
 
@@ -22,22 +27,23 @@ public class DefaultPivot extends Command {
   @Override
   public void initialize() {}
 
+boolean hasRun = false;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pivot.setSpeed(Inputs.getPivotOverride());
+    if(!hasRun){
+      hasRun = true;
+      System.out.println(this.getName()+ " Start:"+Constants.timer.get());
+    }
+    // pivot.setSpeed(Inputs.getPivotOverride());
     pivot.setPositionControl(false);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println(this.getName()+ " End:"+Constants.timer.get());
     pivot.setSpeed(0);
   }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
 }

@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3509924162705473,
+      "y": 5.511956166769477
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterRevWait"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": true
+}
