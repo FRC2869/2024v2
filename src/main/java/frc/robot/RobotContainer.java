@@ -199,7 +199,6 @@ public class RobotContainer {
     Inputs.getShooterFarShoot().onTrue(new ShooterFarShoot());
     //Inputs.getSourceIntake().whileTrue(new IntakeFromShooter().andThen(new ShooterStop()).andThen(new IntakeSpinStop()));
     Inputs.getSourceIntake().onTrue(new IntakeFromShooter());
-    Inputs.getRUMBLE().whileTrue(new RumbleRumble());
     Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeFloorPos()));
     // Inputs.getAutoIntakeDown().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new ParallelRaceGroup(new IntakeFloorPos(), new IntakeWaitNote()), new IntakeAutoRetract()));
     // Inputs.getAutoIntakeDown2().onTrue(new SequentialCommandGroup(new IntakeAutoPickup(), new IntakeWaitNote(), new IntakeAutoRetract()));
@@ -276,6 +275,7 @@ public class RobotContainer {
         return new SequentialCommandGroup(new ShooterAutoShootTeleop(), new WaitCommand(50000));
       case FivePieceWingCenterSub:
         generateTrajectories("5PieceWingCenterSub");
+        System.out.println("1");
         return SwerveSubsystem.getInstance().getAuto("5PieceWingCenterSub");
       case ThreePieceSourceCenterSub:
         generateTrajectories("3PieceSourceCenterSub");

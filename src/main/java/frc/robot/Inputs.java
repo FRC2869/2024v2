@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -39,6 +40,7 @@ public class Inputs {
      * Start intake - XboxController X
      * Start outtake - Xbox
      */
+    private static final XboxController controllerLol = new XboxController(Constants.OperatorConstants.DriverController.port);
     private static final CommandXboxController driver1 = new CommandXboxController(Constants.OperatorConstants.DriverController.port); 
     // private static final CommandXboxController driver2 = new CommandXboxController(Constants.OperatorConstants.DriverController2.port); 
     // private static final CommandXboxController operator = new CommandXboxController(Constants.OperatorConstants.OperatorController.port); 
@@ -308,9 +310,8 @@ public class Inputs {
 
     public static void RUMBLERUMBLE(double rumble) {
         try {
-            driver1.setRumble(RumbleType.kLeftRumble, 1.0);
-        }
-        catch (Exception e) {}
+            controllerLol.setRumble(RumbleType.kLeftRumble, rumble);
+        } catch (Exception e) {}
     }
 
     // public static Trigger getAutoIntakeUp2() {
