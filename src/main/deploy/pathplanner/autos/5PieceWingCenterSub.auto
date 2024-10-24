@@ -247,7 +247,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShooterAutoShootAuton"
+            "name": "ShooterAutoShootStop"
           }
         }
       ]
