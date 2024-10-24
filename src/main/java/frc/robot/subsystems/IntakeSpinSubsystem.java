@@ -77,7 +77,7 @@ public class IntakeSpinSubsystem extends SubsystemBase{
      * @return a boolean stating true if the current spikes more than .25 seconds after the intake changes direction (signifying a note is inside the intake)
      */
     public boolean isIntake() {
-        return (time.get()>0.25)&&(spinMotor.getSupplyCurrent().getValue() > 24.5);
+        return (time.get()>0.25)&&(spinMotor.getSupplyCurrent().getValue() > 25);
         // return (spinMotor.getVelocity().getValue() < 3);
     }
 
@@ -85,8 +85,6 @@ public class IntakeSpinSubsystem extends SubsystemBase{
     public void periodic(){
         SmartDashboard.putNumber("intake current",spinMotor.getSupplyCurrent().getValue());
         SmartDashboard.putBoolean("Is intaked?", isIntake());
-        SmartDashboard.putNumber("Dream Speed", spinSpeed);
-        SmartDashboard.putNumber("Reality check (sad)", spinMotor.get());
         spinMotor.set(spinSpeed);
     }
 }

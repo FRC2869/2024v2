@@ -275,7 +275,6 @@ public class RobotContainer {
         return new SequentialCommandGroup(new ShooterAutoShootTeleop(), new WaitCommand(50000));
       case FivePieceWingCenterSub:
         generateTrajectories("5PieceWingCenterSub");
-        System.out.println("1");
         return SwerveSubsystem.getInstance().getAuto("5PieceWingCenterSub");
       case ThreePieceSourceCenterSub:
         generateTrajectories("3PieceSourceCenterSub");

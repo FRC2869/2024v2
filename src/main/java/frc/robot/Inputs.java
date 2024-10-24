@@ -310,7 +310,7 @@ public class Inputs {
 
     public static void RUMBLERUMBLE(double rumble) {
         try {
-            controllerLol.setRumble(RumbleType.kLeftRumble, rumble);
+            controllerLol.setRumble(RumbleType.kBothRumble, rumble);
         } catch (Exception e) {}
     }
 

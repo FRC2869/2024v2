@@ -116,7 +116,7 @@ public class LimelightSubsystem extends SubsystemBase {
       rejectUpdate = true;
     }
     if(!rejectUpdate){
-      swerve.addVisionMeasurement(limelightMeasurement.pose, limelightMeasurement.timestampSeconds, VecBuilder.fill(.7,.7,9999999));
+      //swerve.addVisionMeasurement(limelightMeasurement.pose, limelightMeasurement.timestampSeconds, VecBuilder.fill(.7,.7,9999999));
     }
   }
 

@@ -152,7 +152,6 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return PathPlannerAuto to run
    */
   public Command getAuto(String autoName){
-    System.out.println(autoName);
     resetOdometry(PathPlannerAuto.getStaringPoseFromAutoFile(autoName));
     return new PathPlannerAuto(autoName);
   }

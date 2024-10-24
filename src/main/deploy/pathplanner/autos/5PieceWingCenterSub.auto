@@ -75,12 +75,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Nothing"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -163,12 +157,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Nothing"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -229,12 +217,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Nothing"
           }
         },
         {
