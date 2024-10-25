@@ -5,21 +5,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.CommandSwerveDrivetrain;
-import frc.robot.RobotContainer;
+import frc.robot.Constants;
+import frc.robot.subsystems.PivotSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class DrivetrainResetGyro extends InstantCommand {
-  private CommandSwerveDrivetrain swerve;
+public class PivotAdjustDown extends InstantCommand {
+  private PivotSubsystem pivot;
 
-  public DrivetrainResetGyro() {
-    swerve = RobotContainer.drivetrain;
+  public PivotAdjustDown() {
+    pivot = PivotSubsystem.getInstance();
+    addRequirements(pivot);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  // Called when the command is initially scheduled.
+boolean hasRun = false;
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void initialize() {}
+  public void execute() {
+    if(!hasRun){
+      hasRun = true;
+      System.out.println(this.getName()+ " Start:"+Constants.timer.get());
+    }
+    pivot.adjustDown();
+    pivot.setPositionControl(true);
+  }
 }
