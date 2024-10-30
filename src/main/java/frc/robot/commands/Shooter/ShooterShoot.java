@@ -26,11 +26,11 @@ boolean hasRun = false;
   public void execute() {
     if(!hasRun){
       hasRun = true;
-      System.out.println(this.getName()+ " Start:"+Constants.timer.get());
+      // System.out.println(this.getName()+ " Start:"+Constants.timer.get());
     }
     // shooter.setSpeed(1, 1);
     // shooter.setVeloControl(false);
-    shooter.setSpeed(65, 65);
+    shooter.setSpeed(Constants.ShooterConstants.SHOOTERSPEED, Constants.ShooterConstants.SHOOTERSPEED);
     shooter.setVeloControl(true);
     // new LEDCommand(LightingSetting.AUTO).schedule();
   }

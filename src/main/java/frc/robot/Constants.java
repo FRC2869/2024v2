@@ -13,12 +13,13 @@ public class Constants {
     }
     public static RobotState currentRobotState = RobotState.DISABLED;
 
+    public static double[] testArray = {1};
+
     public static class FieldConstants {
 
         public static final Pose2d redSpeakerPose = new Pose2d(16.36, 5.528, new Rotation2d(0));
         public static final Pose2d blueSpeakerPose = new Pose2d(.2, 5.528, new Rotation2d(0));
         //ALL ARE SET TO INCHES
-        
         /** meters */
         public static final double fieldWidth = 323.125/39.37;
         /**meters */
@@ -79,6 +80,7 @@ public class Constants {
         public static enum LightingSetting {
             TELEOP, ORANGEWHITEGREENWITHBLUESPECKSITUATION, CANSHOOT, AUTO, DISABLED, GAME, LOSE, WIN, Pattern1, Pattern2, Pattern3, Pattern4, GAMEOVER, INTAKING
           }
+        public static double SHOOTERSPEED = 61;
         public static final int id2 = 18;
         public static final int id1 = 19;
         public static final MotorConfiguration config = new MotorConfiguration(0.075, 0, 0, 0, 2, 1, -1, 0, 0, 60,

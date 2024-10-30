@@ -47,6 +47,7 @@ import frc.robot.commands.SetClimberSpeed;
 import frc.robot.commands.SetIntakePivotSpeed;
 import frc.robot.commands.SetPosition;
 import frc.robot.commands.SwerveResetGyro;
+import frc.robot.commands.TestCommand;
 import frc.robot.commands.Intake.IntakeBasePos;
 import frc.robot.commands.Intake.IntakeClosePos;
 import frc.robot.commands.Intake.IntakeFarPos;
@@ -205,7 +206,7 @@ public class RobotContainer {
 
     // Inputs.getShooterAdjustUp().onTrue(new PivotAdjustUp());
     Inputs.getShooterStop2().onTrue(new ShooterStop());
-    Inputs.getClimberMovingUp().whileTrue(new SetClimberSpeed(1));
+    Inputs.getClimberMovingUp().onTrue(new TestCommand());
     Inputs.getClimberMovingDown().whileTrue(new SetClimberSpeed(-1));
     Inputs.getIntakeFromShooter().whileTrue(new ShooterIntake());
     Inputs.getAmpAutoOuttake()

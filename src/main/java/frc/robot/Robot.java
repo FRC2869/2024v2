@@ -51,6 +51,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumberArray("Test", Constants.testArray);
     SmartDashboard.putNumber("Timer", Timer.getMatchTime());
     CommandScheduler.getInstance().run();
     SmartDashboard.putNumber("gyro", SwerveSubsystem.getInstance().getHeading().getDegrees());
