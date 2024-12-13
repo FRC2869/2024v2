@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7669041752815247,
+      "y": 3.2866599559783936
+    },
+    "rotation": 5.6681737386607925e-27
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeAutoPickup"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "testpath.1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeAutoRetract"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "testpath.2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterAutoShootStop"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": true
+}

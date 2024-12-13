@@ -5,30 +5,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSpinSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class RunIntakeMotor extends Command {
-  IntakeSpinSubsystem madhavwashere;
-  /** Creates a new RunIntakeMotor. */
-  public RunIntakeMotor() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    madhavwashere = IntakeSpinSubsystem.getInstance();
+public class madhavswcoding extends Command {
+  private ShooterSubsystem myshooter1;
+  /** Creates a new madhavswcoding. */
+  public madhavswcoding() {
+  myshooter1 = ShooterSubsystem.getInstance();
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    myshooter1.setSpeed(2, 2);
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    madhavwashere.spinIn();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    madhavwashere.spinStop();
+    myshooter1.setSpeed(0, 0);
   }
 
   // Returns true when the command should end.

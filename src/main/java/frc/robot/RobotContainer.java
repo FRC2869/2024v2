@@ -43,6 +43,7 @@ import frc.robot.commands.PivotClimb;
 import frc.robot.commands.PivotFar;
 import frc.robot.commands.PivotReset;
 import frc.robot.commands.RumbleRumble;
+import frc.robot.commands.RunIntakeMotor;
 import frc.robot.commands.SetClimberSpeed;
 import frc.robot.commands.SetIntakePivotSpeed;
 import frc.robot.commands.SetPosition;
@@ -89,7 +90,7 @@ public class RobotContainer {
 
   private enum Autos {
     Nothing, ShootOne, FivePieceWingCenterSub, ThreePieceSourceCenterSub, FourPieceAmpCenterSub, FourPieceAmpCenter,
-    FivePieceWingCenter, MessUp, ShootAndMove
+    FivePieceWingCenter, MessUp, ShootAndMove, pickuprun
   }
 
   // private double MaxSpeed = 5; // 6 meters per second desired top speed
@@ -148,6 +149,7 @@ public class RobotContainer {
     newautopick.addOption("4PieceAmpCenterSub", Autos.FourPieceAmpCenterSub);
     newautopick.addOption("5PieceWingCenter", Autos.FivePieceWingCenter);
     newautopick.addOption("5PieceWingCenterSub", Autos.FivePieceWingCenterSub);
+    newautopick.addOption("pickuprun", Autos.pickuprun);
     // SUPER ULTIMATE PATH!!!!!!! (WATCH OUT, LIBERALS)
     Shuffleboard.getTab("auto").add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
     System.out.println("RC");
@@ -209,6 +211,7 @@ public class RobotContainer {
     Inputs.getClimberMovingUp().onTrue(new TestCommand());
     Inputs.getClimberMovingDown().whileTrue(new SetClimberSpeed(-1));
     Inputs.getIntakeFromShooter().whileTrue(new ShooterIntake());
+    Inputs.madhavwashere().whileTrue(new RunIntakeMotor());
     Inputs.getAmpAutoOuttake()
         .onTrue(new SequentialCommandGroup(new ShooterAmpLoad(), new IntakeSpinOut(),
             new ParallelRaceGroup(new PivotAmp(), new IntakeClosePos(),
@@ -295,6 +298,9 @@ public class RobotContainer {
       case ShootAndMove:
         generateTrajectories("1PieceSourceMove");
         return SwerveSubsystem.getInstance().getAuto("1PieceSourceMove");
+      case pickuprun:
+        generateTrajectories("TestAuto");
+        return SwerveSubsystem.getInstance().getAuto("TestAuto");
       // case OtherAuto:
       //   return new AutoFollowPath("KajillionNote.1", "KajillionNote.2", "KajillionNote.3", "KajillionNote.4", "KajillionNote.5", "KajillionNote.6", "KajillionNote.7");
       default: //Autos.Nothing

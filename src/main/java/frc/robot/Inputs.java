@@ -215,6 +215,9 @@ public class Inputs {
     public static Trigger getShooterFarShoot(){
         return operatorBoard.button(15);
     }
+    public static Trigger madhavwashere(){
+        return operatorBoard.button(5);
+    }
     
     // public static Trigger getAimAtSpeaker(){
     //     // return operatorBoard.button();
